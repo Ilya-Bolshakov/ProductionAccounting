@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Hosting;
 using ProductionAccounting.Registrators;
-using ProductionAccounting.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace ProductionAccounting
 {
@@ -26,9 +23,9 @@ namespace ProductionAccounting
             .CreateDefaultBuilder(args)
             .ConfigureServices(
                  (hostContext, services) => services
-                    //.AddDatabase(hostContext.Configuration.GetSection("Database"))
                     //.AddServices()
-                    .AddViewModels())
+                    .AddViewModels()
+                    .AddDb(hostContext.Configuration.GetSection("Database")))
             ;
 
 
