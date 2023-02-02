@@ -4,7 +4,8 @@ using System;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using ProductionAccounting.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProductionAccounting
 {
@@ -34,11 +35,17 @@ namespace ProductionAccounting
             var host = Host;
             base.OnStartup(e);
             await host.StartAsync();
+            using var serv = Services.CreateAsyncScope();
+            var db = serv.ServiceProvider.GetRequiredService<ProductionAccountingContext>();
+            await db.Database.MigrateAsync();
         }
 
         protected override async void OnExit(ExitEventArgs e)
         {
             using var host = Host;
+            using var serv = Services.CreateAsyncScope();
+            var db = serv.ServiceProvider.GetRequiredService<ProductionAccountingContext>();
+            await db.Database.EnsureDeletedAsync();
             base.OnExit(e);
             await host.StopAsync();
         }
