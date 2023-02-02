@@ -26,8 +26,10 @@ namespace ProductionAccounting
                  (hostContext, services) => services
                     //.AddServices()
                     .AddViewModels()
-                    .AddDb(hostContext.Configuration.GetSection("Database")))
-            ;
+                    .AddDb(hostContext.Configuration.GetSection("Database"))
+                    .AddRepositories()
+
+                 );
 
 
         protected override async void OnStartup(StartupEventArgs e)

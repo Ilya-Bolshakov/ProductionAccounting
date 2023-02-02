@@ -9,6 +9,6 @@ namespace ProductionAccounting.DAL.Entities
 {
     public class Product : NamedEntity
     {
-        public ICollection<Operation> Operations { get; set; }
+        public virtual ICollection<Operation> Operations { get; set; }
     }
 }
