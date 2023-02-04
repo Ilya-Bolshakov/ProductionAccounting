@@ -25,5 +25,9 @@ namespace ProductionAccounting.Interfaces
         void Delete(int id);
 
         Task DeleteAsync(int id);
+
+        void SaveChanges();
+
+        Task SaveChangesAsync();
     }
 }
