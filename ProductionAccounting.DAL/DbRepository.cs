@@ -12,7 +12,7 @@ namespace ProductionAccounting.DAL
 {
     public class DbRepository<T> : IRepository<T> where T : Entity, new()
     {
-        private readonly ProductionAccountingContext _context;
+        protected readonly ProductionAccountingContext _context;
         public bool AutoSaveChanges { get; set; }
         public DbRepository(ProductionAccountingContext productionAccounting)
         {
