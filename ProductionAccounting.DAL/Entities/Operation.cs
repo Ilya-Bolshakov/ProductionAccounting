@@ -15,5 +15,6 @@ namespace ProductionAccounting.DAL.Entities
         public int OperationDuration { get; set; }
         public OperationСoefficient OperationСoefficient { get; set; }
         public ICollection<Product> Products { get; set; }
+        //Стоимость операций = стоимость * секунды * коефф. Вычисляемое поле
     }
 }

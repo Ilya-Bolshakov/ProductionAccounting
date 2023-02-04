@@ -9,6 +9,7 @@ namespace ProductionAccounting.DAL.Context
         public DbSet<Operation> Operations { get; set; }
         public DbSet<OperationСoefficient> OperationСoefficients { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ExecutedOperation> ExecutedOperations { get; set; }
         public ProductionAccountingContext(DbContextOptions<ProductionAccountingContext> options) : base(options)
         {
 
