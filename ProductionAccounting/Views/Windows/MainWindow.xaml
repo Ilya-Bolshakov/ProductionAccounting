@@ -7,8 +7,24 @@
         mc:Ignorable="d"
         DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}"
         Title="{Binding Title}" Height="450" Width="800">
-    
-    <Grid>
-
-    </Grid>
+    <DockPanel>
+        <Menu IsMainMenu="True">
+            <MenuItem Header="Сотрудники" Command="{Binding ShowEmployeeViewCommand}"></MenuItem>
+            <MenuItem Header="Операции" Command="{Binding ShowOperationsViewCommand}"/>
+        </Menu>
+        <StatusBar>
+            <StatusBarItem>Тест</StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../../Templates/ModelMainView.xaml">
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <ContentControl Content="{Binding CurrentViewModel}"/>
+        </Grid>
+    </DockPanel>
 </Window>
