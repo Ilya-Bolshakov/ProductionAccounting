@@ -8,8 +8,5 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type vm:OperationViewModel}">
         <view:OperationView DataContext="{Binding}"/>
-    </DataTemplate> 
-    <DataTemplate DataType="{x:Type vm:MainViewModel}">
-        <view:Main DataContext="{Binding}"/>
     </DataTemplate>
 </ResourceDictionary>
