@@ -32,5 +32,27 @@ namespace ProductionAccounting
                 DragMove();
             }
         }
+
+        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void ButtonWindowState_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow.WindowState != WindowState.Maximized)
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Normal;
+            }
+        }
+
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

@@ -50,21 +50,23 @@
                             Content="_____"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            BorderThickness="0">
+                            BorderThickness="0" Click="ButtonMinimize_Click">
                     </Button>
                     <Button Width="40"
                             Height="20"
                             Content="☐"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            BorderThickness="0">
+                            BorderThickness="0"
+                            Click="ButtonWindowState_Click">
                     </Button>
                     <Button Width="20"
                             Height="20"
                             Content="❌"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            BorderThickness="0">
+                            BorderThickness="0"
+                            Click="ButtonExit_Click">
                     </Button>
                 </StackPanel>
             </Grid>
