@@ -44,5 +44,16 @@ namespace ProductionAccounting.ViewModels
         {
             CurrentViewModel = new OperationViewModel();
         }
+
+        private ICommand _showMainViewCommand;
+
+        public ICommand ShowMainViewCommand => _showMainViewCommand ??= new LambdaCommand(OnShowMainViewCommandExecuted, CanShowMainViewCommandExecute);
+
+        private bool CanShowMainViewCommandExecute() => true;
+
+        private void OnShowMainViewCommandExecuted()
+        {
+            CurrentViewModel = new MainViewModel();
+        }
     }
 }

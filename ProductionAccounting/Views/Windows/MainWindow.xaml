@@ -73,7 +73,8 @@
             <Button Grid.Row="1" 
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    Style="{StaticResource MainButton}">
+                    Style="{StaticResource MainButton}"
+                    Command="{Binding ShowMainViewCommand}">
                 <TextBlock Text="Производство"
                        Foreground="#FFC7C7F1"
                        FontSize="20"
@@ -104,27 +105,4 @@
             <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>
     </Border>
-
-
-
-    <!--<DockPanel>
-        <Menu IsMainMenu="True">
-            <MenuItem Header="Сотрудники" Command="{Binding ShowEmployeeViewCommand}"></MenuItem>
-            <MenuItem Header="Операции" Command="{Binding ShowOperationsViewCommand}"/>
-        </Menu>
-        <StatusBar>
-            <StatusBarItem>Тест</StatusBarItem>
-        </StatusBar>
-        <Grid>
-            <Grid.Resources>
-                <ResourceDictionary>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="../../Templates/ModelMainView.xaml">
-                        </ResourceDictionary>
-                    </ResourceDictionary.MergedDictionaries>
-                </ResourceDictionary>
-            </Grid.Resources>
-            <ContentControl Content="{Binding CurrentViewModel}"/>
-        </Grid>
-    </DockPanel>-->
 </Window>
