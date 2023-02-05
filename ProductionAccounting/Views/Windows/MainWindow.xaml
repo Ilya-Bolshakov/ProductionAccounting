@@ -16,15 +16,60 @@
     <Border Background="#272537"
             CornerRadius="8">
         <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../../Templates/ModelMainView.xaml">
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Grid.Resources>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
                 <RowDefinition Height="75"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Background="Transparent"
+            <Grid HorizontalAlignment="Stretch"
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Border MouseDown="Border_MouseDown"
+                        Background="#252525">
+                </Border>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            >
+                    <Button Width="40"
+                            Height="20"
+                            Content="_____"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0">
+                    </Button>
+                    <Button Width="40"
+                            Height="20"
+                            Content="☐"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0">
+                    </Button>
+                    <Button Width="20"
+                            Height="20"
+                            Content="❌"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0">
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Button Grid.Row="1" 
+                    Background="Transparent"
                     BorderBrush="Transparent"
                     Style="{StaticResource MainButton}">
                 <TextBlock Text="Производство"
@@ -34,12 +79,13 @@
                        HorizontalAlignment="Left" />
             </Button>
 
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="2">
                 <RadioButton Content="Сотрудники"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
-                             Style="{StaticResource MenuButtomTheme}"/>
+                             Style="{StaticResource MenuButtomTheme}"
+                             Command="{Binding ShowEmployeeViewCommand}"/>
 
                 <RadioButton Content="Операции"
                              Height="50"
@@ -53,8 +99,10 @@
                              FontSize="14"
                              Style="{StaticResource MenuButtomTheme}"/>
             </StackPanel>
+            <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>
     </Border>
+
 
 
     <!--<DockPanel>
