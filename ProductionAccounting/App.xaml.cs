@@ -26,7 +26,7 @@ namespace ProductionAccounting
                  (hostContext, services) => services
                     //.AddServices()
                     .AddViewModels()
-                    .AddDb(hostContext.Configuration)
+                    .AddDb(hostContext.Configuration.GetSection("Database"))
                     .AddRepositories()
                  );
 
