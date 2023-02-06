@@ -28,7 +28,6 @@ namespace ProductionAccounting
                     .AddViewModels()
                     .AddDb(hostContext.Configuration.GetSection("Database"))
                     .AddRepositories()
-
                  );
 
 

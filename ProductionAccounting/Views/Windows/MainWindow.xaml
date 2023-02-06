@@ -5,10 +5,126 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductionAccounting"
         mc:Ignorable="d"
-        DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}"
-        Title="{Binding Title}" Height="450" Width="800">
-    
-    <Grid>
+        Background="Transparent"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Height="600" Width="920"
+        WindowStyle="None"
+        DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}">
 
-    </Grid>
+
+    <Border Background="#272537"
+            CornerRadius="8">
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../../Templates/ModelMainView.xaml">
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Stretch"
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Border MouseDown="Border_MouseDown"
+                        Background="#252525">
+                </Border>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            >
+                    <Button Width="40"
+                            Height="20"
+                            Content="_____"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0" Click="ButtonMinimize_Click">
+                    </Button>
+                    <Button Width="40"
+                            Height="20"
+                            Content="☐"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Click="ButtonWindowState_Click">
+                    </Button>
+                    <Button Width="20"
+                            Height="20"
+                            Content="❌"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Click="ButtonExit_Click">
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Button Grid.Row="1" 
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Style="{StaticResource MainButton}">
+                <TextBlock Text="Производство"
+                       Foreground="#FFC7C7F1"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left" />
+            </Button>
+
+            <StackPanel Grid.Row="2">
+                <RadioButton Content="Сотрудники"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtomTheme}"
+                             Command="{Binding ShowEmployeeViewCommand}"/>
+
+                <RadioButton Content="Операции"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtomTheme}"/>
+
+                <RadioButton Content="Будущее"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtomTheme}"/>
+            </StackPanel>
+            <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
+        </Grid>
+    </Border>
+
+
+
+    <!--<DockPanel>
+        <Menu IsMainMenu="True">
+            <MenuItem Header="Сотрудники" Command="{Binding ShowEmployeeViewCommand}"></MenuItem>
+            <MenuItem Header="Операции" Command="{Binding ShowOperationsViewCommand}"/>
+        </Menu>
+        <StatusBar>
+            <StatusBarItem>Тест</StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../../Templates/ModelMainView.xaml">
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <ContentControl Content="{Binding CurrentViewModel}"/>
+        </Grid>
+    </DockPanel>-->
 </Window>

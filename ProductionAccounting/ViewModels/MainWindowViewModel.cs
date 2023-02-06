@@ -1,9 +1,7 @@
-﻿using MathCore.WPF.ViewModels;
+﻿using MathCore.WPF.Commands;
+using MathCore.WPF.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
 {
@@ -17,5 +15,34 @@ namespace ProductionAccounting.ViewModels
             set { Set(ref _title, value); }
         }
 
+        private ViewModel _currentViewModel;
+
+        public ViewModel CurrentViewModel
+        {
+            get { return _currentViewModel; }
+            private set { Set(ref _currentViewModel, value); }
+        }
+
+        private ICommand _showEmployeeViewCommand;
+
+        public ICommand ShowEmployeeViewCommand => _showEmployeeViewCommand ??= new LambdaCommand(OnShowEmployeeViewCommandExecuted, CanShowEmployeeViewCommandExecute);
+
+        private bool CanShowEmployeeViewCommandExecute() => true;
+
+        private void OnShowEmployeeViewCommandExecuted()
+        {
+            CurrentViewModel = new EmployeeViewModel();
+        }
+
+        private ICommand _showOperationsViewCommand;
+
+        public ICommand ShowOperationsViewCommand => _showOperationsViewCommand ??= new LambdaCommand(OnShowOperationsViewCommandExecuted, CanShowOperationsViewCommandExecute);
+
+        private bool CanShowOperationsViewCommandExecute() => true;
+
+        private void OnShowOperationsViewCommandExecuted()
+        {
+            CurrentViewModel = new OperationViewModel();
+        }
     }
 }
