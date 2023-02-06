@@ -6,5 +6,6 @@ namespace ProductionAccounting.Locators
     public class ViewModelLocator
     {
         public MainWindowViewModel MainWindowModel => App.Services.GetRequiredService<MainWindowViewModel>();
+        public EmployeeViewModel EmployeeViewModel => App.Services.GetRequiredService<EmployeeViewModel>();
     }
 }
