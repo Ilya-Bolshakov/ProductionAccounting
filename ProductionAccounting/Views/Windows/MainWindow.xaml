@@ -92,7 +92,7 @@
                              Command="{Binding ShowOperationsViewCommand}"/>
 
                 <RadioButton Content="Будущее"
-                             Style="{StaticResource MenuButtomTheme}" FontSize="18"/>
+                             Style="{StaticResource MenuButtomTheme}"/>
             </StackPanel>
             <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>

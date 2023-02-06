@@ -3,8 +3,10 @@ using MathCore.WPF.ViewModels;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
@@ -34,9 +36,14 @@ namespace ProductionAccounting.ViewModels
 
         private bool GetEmployeesViewCommandExecute() => true;
 
-        private void GetEmployeesViewCommandExecuted()
+        private async void GetEmployeesViewCommandExecuted()
         {
-            var employees = _employeeRepository.Items.ToList().Select(e => new EmployeeModel().MapToDto(e));
+            
+            var task = Task.Run(() =>
+            {
+                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel().MapToDto(e));
+            });
+            var employees = await task;
             Employees = employees.ToObservableCollection();
         }
     }
