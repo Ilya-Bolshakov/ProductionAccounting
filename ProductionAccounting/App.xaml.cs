@@ -33,7 +33,7 @@ namespace ProductionAccounting
             .CreateDefaultBuilder(args)
             .ConfigureServices(
                  (hostContext, services) => services
-                    //.AddServices()
+                    .AddServices()
                     .AddViewModels()
                     .AddDb(hostContext.Configuration.GetSection("Database"))
                     .AddRepositories()

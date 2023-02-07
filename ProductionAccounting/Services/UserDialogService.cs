@@ -12,7 +12,7 @@ namespace ProductionAccounting.Services
     {
         public bool Edit(EmployeeModel employee)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }
