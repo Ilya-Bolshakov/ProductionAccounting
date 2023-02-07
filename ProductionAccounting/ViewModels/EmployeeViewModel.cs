@@ -97,6 +97,29 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
+        #region Команда редактирования сотрудников
+        private ICommand _editEmployeeViewCommand;
+
+        public ICommand EditEmployeeViewCommand => _editEmployeeViewCommand ??= new LambdaCommand(EditEmployeeViewCommandExecuted, EditEmployeeViewCommandExecute);
+
+        private bool EditEmployeeViewCommandExecute() => true;
+
+        private async void EditEmployeeViewCommandExecuted()
+        {
+            if (!_userDialog.Edit(SelectedItem))
+            {
+                return;
+            }
+            var updateEmp = _employeeRepository.GetById(SelectedItem.Id);
+            updateEmp.Name = SelectedItem.Name;
+            updateEmp.Surname = SelectedItem.Surname;
+            updateEmp.Patronymic = SelectedItem.Patronymic;
+            _employeeRepository.Update(updateEmp);
+            await _employeeRepository.SaveChangesAsync();
+
+        }
+        #endregion
+
         #region Команда удаления сотрудников
         private ICommand _deleteEmployeeViewCommand;
 
