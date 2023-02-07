@@ -2,6 +2,7 @@
 using MathCore.WPF.ViewModels;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
+using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Windows.Input;
 
@@ -14,6 +15,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<OperationСoefficient> _operationСoefficient;
         private readonly IRepository<Operation> _operation;
         private readonly IRepository<Product> _product;
+        private readonly IUserDialog _userDialog;
 
 
         private string? _title = "Test string";
@@ -29,7 +31,8 @@ namespace ProductionAccounting.ViewModels
             IRepository<ExecutedOperation> executedOperation,
             IRepository<OperationСoefficient> operationСoefficient,
             IRepository<Operation> operation,
-            IRepository<Product> product
+            IRepository<Product> product,
+            IUserDialog userDialog
             )
         {
             _employees = employees;
@@ -37,6 +40,7 @@ namespace ProductionAccounting.ViewModels
             _operation = operation;
             _product = product;
             _operationСoefficient = operationСoefficient;
+            _userDialog = userDialog;
         }
 
         private ViewModel _currentViewModel;
@@ -55,7 +59,7 @@ namespace ProductionAccounting.ViewModels
 
         private void OnShowEmployeeViewCommandExecuted()
         {
-            CurrentViewModel = new EmployeeViewModel(_employees);
+            CurrentViewModel = new EmployeeViewModel(_employees, _userDialog);
         }
 
         private ICommand _showOperationsViewCommand;

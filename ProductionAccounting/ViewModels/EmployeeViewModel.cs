@@ -3,6 +3,7 @@ using MathCore.WPF.ViewModels;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using ProductionAccounting.Services.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,9 +16,11 @@ namespace ProductionAccounting.ViewModels
     public class EmployeeViewModel : ViewModel
     {
         private readonly IRepository<Employee> _employeeRepository;
-        public EmployeeViewModel(IRepository<Employee> repository)
+        private readonly IUserDialog _userDialog;
+        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog userDialog)
         {
             _employeeRepository = repository;
+            _userDialog = userDialog;
         }
 
         private ObservableCollection<EmployeeModel> _employees;
@@ -41,6 +44,17 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        private EmployeeModel _selectedItem;
+        public EmployeeModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                Set(ref _selectedItem, value);
+            }
+        }
+
+        #region Команда загрузки сотрудников
         private ICommand _getEmployeesViewCommand;
 
         public ICommand GetEmployeesViewCommand => _getEmployeesViewCommand ??= new LambdaCommand(GetEmployeesViewCommandExecuted, GetEmployeesViewCommandExecute);
@@ -58,5 +72,38 @@ namespace ProductionAccounting.ViewModels
             Employees = employees.ToObservableCollection();
             OnLoading = Visibility.Hidden;
         }
+        #endregion
+
+        #region Команда добавления сотрудников
+        private ICommand _addEmployeeViewCommand;
+
+        public ICommand AddEmployeeViewCommand => _addEmployeeViewCommand ??= new LambdaCommand(AddEmployeeViewCommandExecuted, AddEmployeeViewCommandExecute);
+
+        private bool AddEmployeeViewCommandExecute() => true;
+
+        private async void AddEmployeeViewCommandExecuted()
+        {
+            EmployeeModel employee = new();
+            if (!_userDialog.Edit(employee))
+            {
+                return;
+            }
+            _employeeRepository.Add(employee.MapToOrm());
+
+        }
+        #endregion
+
+        #region Команда удаления сотрудников
+        private ICommand _deleteEmployeeViewCommand;
+
+        public ICommand DeleteEmployeeViewCommand => _deleteEmployeeViewCommand ??= new LambdaCommand(DeleteEmployeeViewCommandExecuted, DeleteEmployeeViewCommandExecute);
+
+        private bool DeleteEmployeeViewCommandExecute() => SelectedItem != null;
+
+        private async void DeleteEmployeeViewCommandExecuted()
+        {
+            var removeModel = SelectedItem;
+        }
+        #endregion
     }
 }

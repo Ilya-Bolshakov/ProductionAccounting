@@ -23,5 +23,14 @@ namespace ProductionAccounting.Models
                 Patronymic = orm.Patronymic,
             };
         }
+
+        public Employee MapToOrm()
+        {
+            Employee emp = new Employee();
+            emp.Name = Name;
+            emp.Surname = Surname;
+            emp.Patronymic = Patronymic;
+            return emp;
+        }
     }
 }
