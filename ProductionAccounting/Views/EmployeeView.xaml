@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
       xmlns:local="clr-namespace:ProductionAccounting.Views" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance {x:Type viewmodels:EmployeeViewModel}}"
@@ -52,7 +53,8 @@
                     Style="{StaticResource CommonButtonStyle}"/>
             </Grid>
         </Grid>
-
-
+        <fa:IconBlock Grid.Column="1" 
+                      Icon="Spinner" 
+                      Visibility="{Binding OnLoading}"/>
     </Grid>
 </UserControl>

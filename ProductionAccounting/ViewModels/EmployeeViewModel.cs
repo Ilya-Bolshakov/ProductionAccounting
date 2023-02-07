@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
@@ -30,6 +31,16 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        private Visibility _onLoading;
+        public Visibility OnLoading
+        {
+            get { return _onLoading; }
+            private set
+            {
+                Set(ref _onLoading, value);
+            }
+        }
+
         private ICommand _getEmployeesViewCommand;
 
         public ICommand GetEmployeesViewCommand => _getEmployeesViewCommand ??= new LambdaCommand(GetEmployeesViewCommandExecuted, GetEmployeesViewCommandExecute);
@@ -38,13 +49,14 @@ namespace ProductionAccounting.ViewModels
 
         private async void GetEmployeesViewCommandExecuted()
         {
-            
+            OnLoading = Visibility.Visible;
             var task = Task.Run(() =>
             {
                 return _employeeRepository.Items.ToList().Select(e => new EmployeeModel().MapToDto(e));
             });
             var employees = await task;
             Employees = employees.ToObservableCollection();
+            OnLoading = Visibility.Hidden;
         }
     }
 }
