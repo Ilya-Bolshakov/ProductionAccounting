@@ -48,7 +48,11 @@ namespace ProductionAccounting.ViewModels
         public ViewModel CurrentViewModel
         {
             get { return _currentViewModel; }
-            private set { Set(ref _currentViewModel, value); }
+            private set 
+            {
+                if (_currentViewModel?.GetType() != value?.GetType())
+                    Set(ref _currentViewModel, value); 
+            }
         }
 
         private ICommand _showEmployeeViewCommand;

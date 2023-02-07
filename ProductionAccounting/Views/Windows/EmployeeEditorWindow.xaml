@@ -26,5 +26,21 @@
                  Text="{Binding Name}"/>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
+        <Grid Grid.Column="1"
+              Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Margin="10,0,10,0"
+                    Command="{StaticResource DialogResultCommand}"
+                    Content="Применить"
+                    CommandParameter="True"/>
+            <Button Grid.Column="1"
+                    Margin="10,0,10,0"
+                    Content="Отменить"
+                    CommandParameter="False"/>
+        </Grid>
     </Grid>
 </Window>

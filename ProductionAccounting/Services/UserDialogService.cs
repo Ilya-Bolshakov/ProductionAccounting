@@ -1,10 +1,7 @@
 ﻿using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProductionAccounting.ViewModels;
+using ProductionAccounting.Views.Windows;
 
 namespace ProductionAccounting.Services
 {
@@ -12,7 +9,20 @@ namespace ProductionAccounting.Services
     {
         public bool Edit(EmployeeModel employee)
         {
-            return false;
+            var employeeVM = new EmployeeEditorWindowViewModel(employee);
+
+            var employeeV = new EmployeeEditorWindow()
+            {
+                DataContext = employeeVM,
+            };
+
+            if (employeeV.ShowDialog() != true) return false;
+
+            employee.Name = employeeVM.Name;
+            employee.Surname = employeeVM.Surname;
+            employee.Patronymic = employeeVM.Patronymic;
+
+            return true;
         }
     }
 }

@@ -81,14 +81,18 @@ namespace ProductionAccounting.ViewModels
 
         private bool AddEmployeeViewCommandExecute() => true;
 
-        private void AddEmployeeViewCommandExecuted()
+        private async void AddEmployeeViewCommandExecuted()
         {
             EmployeeModel employee = new();
             if (!_userDialog.Edit(employee))
             {
                 return;
             }
+            Employees.Add(employee);
             _employeeRepository.Add(employee.MapToOrm());
+            await _employeeRepository.SaveChangesAsync();
+
+            SelectedItem = employee;
 
         }
         #endregion

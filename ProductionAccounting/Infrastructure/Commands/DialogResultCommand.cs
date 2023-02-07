@@ -22,7 +22,7 @@ namespace ProductionAccounting.Infrastructure.Commands
 
             var dialogResult = DialogResult;
             if (parameter != null)
-                dialogResult = (bool?)Convert.ChangeType(parameter, typeof(bool?));
+                dialogResult = Convert.ToBoolean(parameter);
             window.DialogResult = dialogResult;
             window.Close();
         }
