@@ -14,6 +14,7 @@ namespace ProductionAccounting.Registrators
             .AddSingleton<MainWindowViewModel>()
             .AddTransient<EmployeeViewModel>()
             .AddTransient<OperationViewModel>()
+            .AddTransient<EmployeeEditorWindowViewModel>()
         ;
     }
 }

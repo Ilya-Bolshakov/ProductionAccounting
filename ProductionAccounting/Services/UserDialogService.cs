@@ -1,4 +1,5 @@
-﻿using ProductionAccounting.Services.Interfaces;
+﻿using ProductionAccounting.Models;
+using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace ProductionAccounting.Services
 {
     public class UserDialogService : IUserDialog
     {
-
+        public bool Edit(EmployeeModel employee)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

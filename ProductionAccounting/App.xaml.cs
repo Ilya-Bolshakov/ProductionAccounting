@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ProductionAccounting
 {
@@ -14,6 +15,14 @@ namespace ProductionAccounting
     /// </summary>
     public partial class App : Application
     {
+        public static Window ActiveWindow => Application.Current.Windows.OfType<Window>()
+            .FirstOrDefault(w => w.IsActive);
+
+        public static Window FocusedWindow => Application.Current.Windows.OfType<Window>()
+            .FirstOrDefault(w => w.IsFocused);
+
+        public static Window CurrentWindow => FocusedWindow ?? ActiveWindow;
+
         private static IHost _host;
 
         public static IHost Host => _host ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();

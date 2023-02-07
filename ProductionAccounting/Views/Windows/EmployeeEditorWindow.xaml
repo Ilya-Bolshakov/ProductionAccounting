@@ -4,9 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows"
+        xmlns:vm="clr-namespace:ProductionAccounting.ViewModels"
         mc:Ignorable="d"
-        Title="EmployeeEditorWindow" Height="450" Width="800">
+        Title="EmployeeEditorWindow" Height="200" Width="360"
+        d:DataContext="{d:DesignInstance vm:EmployeeEditorWindowViewModel, IsDesignTimeCreatable=True}">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Имя" />
+        <TextBlock Grid.Row="1" Text="Фамилия"/>
+        <TextBlock Grid.Row="2" Text="Отчество"/>
+        <TextBox Grid.Column="1" 
+                 Text="{Binding Name}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
     </Grid>
 </Window>

@@ -81,7 +81,7 @@ namespace ProductionAccounting.ViewModels
 
         private bool AddEmployeeViewCommandExecute() => true;
 
-        private async void AddEmployeeViewCommandExecuted()
+        private void AddEmployeeViewCommandExecuted()
         {
             EmployeeModel employee = new();
             if (!_userDialog.Edit(employee))
@@ -100,7 +100,7 @@ namespace ProductionAccounting.ViewModels
 
         private bool DeleteEmployeeViewCommandExecute() => SelectedItem != null;
 
-        private async void DeleteEmployeeViewCommandExecuted()
+        private void DeleteEmployeeViewCommandExecuted()
         {
             var removeModel = SelectedItem;
         }

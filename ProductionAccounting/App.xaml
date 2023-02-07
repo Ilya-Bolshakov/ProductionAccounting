@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Styles/MainStyles.xaml"/>
                 <ResourceDictionary Source="Styles/MenuButtomTheme.xaml"/>
                 <ResourceDictionary Source="Styles/CommonButtonStyle.xaml"/>
+                <ResourceDictionary Source="Infrastructure/Commands/AppCommands.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <locators:ViewModelLocator x:Key="ViewModelLocator"/>
         </ResourceDictionary>
