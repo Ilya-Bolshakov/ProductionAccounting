@@ -6,7 +6,10 @@
     <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
         <view:EmployeeView DataContext="{Binding}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:OperationViewModel}">
-        <view:OperationView DataContext="{Binding}"/>
+    <DataTemplate DataType="{x:Type vm:ProductsViewModel}">
+        <view:ProductsView DataContext="{Binding}"/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CoefficientViewModel}">
+        <view:CoefficientView DataContext="{Binding}"/>
     </DataTemplate>
 </ResourceDictionary>

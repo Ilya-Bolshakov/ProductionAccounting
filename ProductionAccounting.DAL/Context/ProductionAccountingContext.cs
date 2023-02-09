@@ -14,5 +14,10 @@ namespace ProductionAccounting.DAL.Context
         {
 
         }
+
+        public ProductionAccountingContext()
+        {
+
+        }
     }
 }

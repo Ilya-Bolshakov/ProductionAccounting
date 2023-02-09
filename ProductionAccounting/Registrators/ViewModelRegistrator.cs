@@ -11,9 +11,9 @@ namespace ProductionAccounting.Registrators
     public static class ViewModelRegistrator
     {
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
-            .AddSingleton<MainWindowViewModel>()
+            .AddTransient<MainWindowViewModel>()
             .AddTransient<EmployeeViewModel>()
-            .AddTransient<OperationViewModel>()
+            .AddTransient<ProductsViewModel>()
             .AddTransient<EmployeeEditorWindowViewModel>()
         ;
     }

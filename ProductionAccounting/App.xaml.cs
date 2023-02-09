@@ -55,7 +55,7 @@ namespace ProductionAccounting
             using var host = Host;
             using var serv = Services.CreateAsyncScope();
             var db = serv.ServiceProvider.GetRequiredService<ProductionAccountingContext>();
-            await db.Database.EnsureDeletedAsync();
+            //await db.Database.EnsureDeletedAsync();
             base.OnExit(e);
             await host.StopAsync();
         }

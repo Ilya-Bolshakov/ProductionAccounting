@@ -87,9 +87,18 @@
                              Command="{Binding ShowEmployeeViewCommand}">
                 </RadioButton>
 
-                <RadioButton Content="Операции"
+                <RadioButton Content="Изделия"
                              Style="{StaticResource MenuButtomTheme}"
-                             Command="{Binding ShowOperationsViewCommand}"/>
+                             Command="{Binding ShowProductsViewCommand}">
+                </RadioButton>
+                <RadioButton Content="Операции"
+                             Style="{StaticResource SubMenuButtomTheme}">
+                </RadioButton>
+
+                <RadioButton Content="Коэффициенты"
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowCoefficientViewCommand}">
+                </RadioButton>
 
                 <RadioButton Content="Будущее"
                              Style="{StaticResource MenuButtomTheme}"/>

@@ -2,7 +2,7 @@
 
 namespace ProductionAccounting.ViewModels
 {
-    public class OperationViewModel : ViewModel
+    public class ProductsViewModel : ViewModel
     {
     }
 }

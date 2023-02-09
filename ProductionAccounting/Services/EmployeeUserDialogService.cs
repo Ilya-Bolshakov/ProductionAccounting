@@ -8,6 +8,10 @@ namespace ProductionAccounting.Services
 {
     public class EmployeeUserDialogService : IUserDialog<EmployeeModel>
     {
+        public EmployeeUserDialogService()
+        {
+
+        }
         public bool ConfirmOperation(string info, string caption)
         {
             return MessageBox.Show(info, 

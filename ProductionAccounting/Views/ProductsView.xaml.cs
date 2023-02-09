@@ -18,9 +18,9 @@ namespace ProductionAccounting.Views
     /// <summary>
     /// Логика взаимодействия для OperationView.xaml
     /// </summary>
-    public partial class OperationView : UserControl
+    public partial class ProductsView : UserControl
     {
-        public OperationView()
+        public ProductsView()
         {
             InitializeComponent();
         }

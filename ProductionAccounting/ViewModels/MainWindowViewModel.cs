@@ -56,6 +56,7 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        #region Команда открытия вьюхи сотрудников
         private ICommand _showEmployeeViewCommand;
 
         public ICommand ShowEmployeeViewCommand => _showEmployeeViewCommand ??= new LambdaCommand(OnShowEmployeeViewCommandExecuted, CanShowEmployeeViewCommandExecute);
@@ -66,16 +67,32 @@ namespace ProductionAccounting.ViewModels
         {
             CurrentViewModel = new EmployeeViewModel(_employees, _userDialog);
         }
+        #endregion
 
-        private ICommand _showOperationsViewCommand;
+        #region Команда открытия вьюхи изделий
+        private ICommand _showProductsViewCommand;
 
-        public ICommand ShowOperationsViewCommand => _showOperationsViewCommand ??= new LambdaCommand(OnShowOperationsViewCommandExecuted, CanShowOperationsViewCommandExecute);
+        public ICommand ShowProductsViewCommand => _showProductsViewCommand ??= new LambdaCommand(OnShowProductsViewCommandExecuted, CanShowProductsViewCommandExecute);
 
-        private bool CanShowOperationsViewCommandExecute() => true;
+        private bool CanShowProductsViewCommandExecute() => true;
 
-        private void OnShowOperationsViewCommandExecuted()
+        private void OnShowProductsViewCommandExecuted()
         {
-            CurrentViewModel = new OperationViewModel();
+            CurrentViewModel = new ProductsViewModel();
         }
+        #endregion
+
+        #region Команда открытия вьюхи коэффициентов
+        private ICommand _showCoefficientViewCommand;
+
+        public ICommand ShowCoefficientViewCommand => _showCoefficientViewCommand ??= new LambdaCommand(OnShowCoefficientViewCommandExecuted, CanShowCoefficientViewCommandExecute);
+
+        private bool CanShowCoefficientViewCommandExecute() => true;
+
+        private void OnShowCoefficientViewCommandExecuted()
+        {
+            CurrentViewModel = new CoefficientViewModel();
+        }
+        #endregion
     }
 }
