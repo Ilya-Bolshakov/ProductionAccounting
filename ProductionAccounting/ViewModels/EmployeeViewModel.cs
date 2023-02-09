@@ -127,9 +127,13 @@ namespace ProductionAccounting.ViewModels
 
         private bool DeleteEmployeeViewCommandExecute() => SelectedItem != null;
 
-        private void DeleteEmployeeViewCommandExecuted()
+        private async void DeleteEmployeeViewCommandExecuted()
         {
             var removeModel = SelectedItem;
+            if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
+            Employees.Remove(removeModel);
+            await _employeeRepository.DeleteAsync(removeModel.Id);
+            if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
         }
         #endregion
     }

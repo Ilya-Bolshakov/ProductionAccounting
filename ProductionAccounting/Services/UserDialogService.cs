@@ -2,11 +2,21 @@
 using ProductionAccounting.Services.Interfaces;
 using ProductionAccounting.ViewModels;
 using ProductionAccounting.Views.Windows;
+using System.Windows;
 
 namespace ProductionAccounting.Services
 {
     public class UserDialogService : IUserDialog
     {
+        public bool ConfirmOperation(string info, string caption)
+        {
+            return MessageBox.Show(info, 
+                                   caption, 
+                                   MessageBoxButton.YesNo, 
+                                   MessageBoxImage.Warning, 
+                                   MessageBoxResult.Yes) == MessageBoxResult.Yes;
+        }
+
         public bool Edit(EmployeeModel employee)
         {
             var employeeVM = new EmployeeEditorWindowViewModel(employee);

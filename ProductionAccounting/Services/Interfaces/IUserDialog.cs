@@ -10,5 +10,7 @@ namespace ProductionAccounting.Services.Interfaces
     public interface IUserDialog
     {
         bool Edit(EmployeeModel employee);
+
+        bool ConfirmOperation(string info, string caption);
     }
 }
