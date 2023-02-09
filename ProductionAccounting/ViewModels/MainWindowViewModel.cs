@@ -27,6 +27,11 @@ namespace ProductionAccounting.ViewModels
             set { Set(ref _title, value); }
         }
 
+        public MainWindowViewModel()
+        {
+
+        }
+
         public MainWindowViewModel(
             IRepository<Employee> employees,
             IRepository<ExecutedOperation> executedOperation,

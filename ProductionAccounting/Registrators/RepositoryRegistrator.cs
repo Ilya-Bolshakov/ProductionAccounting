@@ -17,7 +17,7 @@ namespace ProductionAccounting.Registrators
             .AddTransient<IRepository<Employee>, DbRepository<Employee>>()
             .AddTransient<IRepository<Operation>, OperationRepository>()
             .AddTransient<IRepository<OperationСoefficient>, DbRepository<OperationСoefficient>>()
-            .AddTransient<IRepository<Product>, DbRepository<Product>>()
+            .AddTransient<IRepository<Product>, ProductRepository>()
             .AddTransient<IRepository<ExecutedOperation>, ExecutedOperationRepository>();
     }
 }

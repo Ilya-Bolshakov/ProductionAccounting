@@ -17,6 +17,12 @@ namespace ProductionAccounting.ViewModels
     {
         private readonly IRepository<Employee> _employeeRepository;
         private readonly IUserDialog<EmployeeModel> _userDialog;
+
+        public EmployeeViewModel()
+        {
+
+        }
+
         public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog)
         {
             _employeeRepository = repository;
