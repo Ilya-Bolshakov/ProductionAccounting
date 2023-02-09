@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace ProductionAccounting.Services
 {
-    public class UserDialogService : IUserDialog
+    public class EmployeeUserDialogService : IUserDialog<EmployeeModel>
     {
         public bool ConfirmOperation(string info, string caption)
         {

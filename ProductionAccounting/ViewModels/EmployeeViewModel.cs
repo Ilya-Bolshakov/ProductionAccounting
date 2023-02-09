@@ -16,8 +16,8 @@ namespace ProductionAccounting.ViewModels
     public class EmployeeViewModel : ViewModel
     {
         private readonly IRepository<Employee> _employeeRepository;
-        private readonly IUserDialog _userDialog;
-        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog userDialog)
+        private readonly IUserDialog<EmployeeModel> _userDialog;
+        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog)
         {
             _employeeRepository = repository;
             _userDialog = userDialog;
@@ -133,6 +133,7 @@ namespace ProductionAccounting.ViewModels
             if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
             Employees.Remove(removeModel);
             await _employeeRepository.DeleteAsync(removeModel.Id);
+            await _employeeRepository.SaveChangesAsync();
             if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
         }
         #endregion

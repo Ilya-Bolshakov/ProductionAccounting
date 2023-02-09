@@ -2,6 +2,7 @@
 using MathCore.WPF.ViewModels;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
+using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Windows.Input;
@@ -15,7 +16,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<OperationСoefficient> _operationСoefficient;
         private readonly IRepository<Operation> _operation;
         private readonly IRepository<Product> _product;
-        private readonly IUserDialog _userDialog;
+        private readonly IUserDialog<EmployeeModel> _userDialog;
 
 
         private string? _title = "Test string";
@@ -32,7 +33,7 @@ namespace ProductionAccounting.ViewModels
             IRepository<OperationСoefficient> operationСoefficient,
             IRepository<Operation> operation,
             IRepository<Product> product,
-            IUserDialog userDialog
+            IUserDialog<EmployeeModel> userDialog
             )
         {
             _employees = employees;
