@@ -66,6 +66,7 @@ namespace ProductionAccounting.DAL
 
         public void Delete(int id)
         {
+            var removeItem = Items.FirstOrDefault(x => x.Id == id);
             _context.Remove(new T { Id = id });
             if (AutoSaveChanges)
                 _context.SaveChanges();
@@ -73,7 +74,8 @@ namespace ProductionAccounting.DAL
 
         public async Task DeleteAsync(int id)
         {
-            _context.Remove(new T { Id = id });
+            var removeItem = Items.FirstOrDefault(x => x.Id == id);
+            _context.Remove(removeItem);
             if (AutoSaveChanges)
                 await _context.SaveChangesAsync();
         }

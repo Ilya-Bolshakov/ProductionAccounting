@@ -8,7 +8,7 @@
         Background="Transparent"
         ResizeMode="NoResize"
         AllowsTransparency="True"
-        Height="600" Width="920"
+        Height="720" Width="1280"
         WindowStyle="None"
         DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}">
 
@@ -83,25 +83,18 @@
 
             <StackPanel Grid.Row="2">
                 <RadioButton Content="Сотрудники"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
                              Style="{StaticResource MenuButtomTheme}"
-                             Command="{Binding ShowEmployeeViewCommand}"/>
+                             Command="{Binding ShowEmployeeViewCommand}">
+                </RadioButton>
 
                 <RadioButton Content="Операции"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
-                             Style="{StaticResource MenuButtomTheme}"/>
+                             Style="{StaticResource MenuButtomTheme}"
+                             Command="{Binding ShowOperationsViewCommand}"/>
 
                 <RadioButton Content="Будущее"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
                              Style="{StaticResource MenuButtomTheme}"/>
             </StackPanel>
-            <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
+            <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>
     </Border>
 
