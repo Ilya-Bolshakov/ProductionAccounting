@@ -4,7 +4,6 @@ using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
-using System;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels

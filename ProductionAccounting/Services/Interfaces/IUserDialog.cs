@@ -1,11 +1,4 @@
-﻿using ProductionAccounting.Interfaces;
-using ProductionAccounting.Models;
-using ProductionAccounting.Models.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProductionAccounting.Models.Base;
 
 namespace ProductionAccounting.Services.Interfaces
 {

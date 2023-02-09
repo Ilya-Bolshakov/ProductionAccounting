@@ -2,7 +2,6 @@
 using ProductionAccounting.Registrators;
 using System;
 using System.Windows;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Context;
 using Microsoft.EntityFrameworkCore;
