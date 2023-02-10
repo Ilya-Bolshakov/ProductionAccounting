@@ -17,12 +17,12 @@
     </i:Interaction.Triggers>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="200"/>
+        <ColumnDefinition Width="150"/>
         <ColumnDefinition/>
     </Grid.ColumnDefinitions>
     <Grid Grid.Column="1">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="650"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -45,9 +45,9 @@
             </Grid.ColumnDefinitions>
             <Button 
                     Height="40" 
-                    Content="Добавить сотрудника"
+                    Content="Добавить новый коэффициент"
                     Style="{StaticResource CommonButtonStyle}"
-                    Command="{Binding AddEmployeeViewCommand}">
+                    Command="{Binding AddCoeffsViewCommand}">
             </Button>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
@@ -58,12 +58,12 @@
                     Height="40"
                     Content="Редактирование"
                     Style="{StaticResource CommonButtonStyle}"
-                    Command="{Binding EditEmployeeViewCommand}"/>
+                    Command="{Binding EditCoeffsViewCommand}"/>
                 <Button Grid.Row="1"
                     Height="40"
                     Content="Удаление"
                     Style="{StaticResource CommonButtonStyle}"
-                    Command="{Binding DeleteEmployeeViewCommand}"/>
+                    Command="{Binding DeleteCoeffsViewCommand}"/>
             </Grid>
         </Grid>
     </Grid>

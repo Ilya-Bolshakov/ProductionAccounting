@@ -76,5 +76,67 @@ namespace ProductionAccounting.ViewModels
             OnLoading = Visibility.Hidden;
         }
         #endregion
+
+        #region Команда добавления коэффициента
+        private ICommand _addCoeffsViewCommand;
+
+        public ICommand AddCoeffsViewCommand => _addCoeffsViewCommand ??= new LambdaCommand(AddCoeffsViewCommandExecuted, AddCoeffsViewCommandExecute);
+
+        private bool AddCoeffsViewCommandExecute() => true;
+
+        private async void AddCoeffsViewCommandExecuted()
+        {
+            CoefficientModel coeff = new();
+            if (!_userDialog.Edit(coeff))
+            {
+                return;
+            }
+            Coefficients.Add(coeff);
+            _coefficientRepository.Add(coeff.MapToOrm());
+            await _coefficientRepository.SaveChangesAsync();
+
+            SelectedItem = coeff;
+        }
+        #endregion
+
+        #region Команда редактирования коэффициента
+        private ICommand _editCoeffsViewCommand;
+
+        public ICommand EditCoeffsViewCommand => _editCoeffsViewCommand ??= new LambdaCommand(EditCoeffsViewCommandExecuted, EditCoeffsViewCommandExecute);
+
+        private bool EditCoeffsViewCommandExecute() => SelectedItem != null;
+
+        private async void EditCoeffsViewCommandExecuted()
+        {
+            if (!_userDialog.Edit(SelectedItem))
+            {
+                return;
+            }
+            var updateC = _coefficientRepository.GetById(SelectedItem.Id);
+            updateC.Name = SelectedItem.Name;
+            updateC.CoefficientValue = SelectedItem.CoefficientValue;
+            _coefficientRepository.Update(updateC);
+            await _coefficientRepository.SaveChangesAsync();
+
+        }
+        #endregion
+
+        #region Команда удаления сотрудников
+        private ICommand _deleteCoeffsViewCommand;
+
+        public ICommand DeleteCoeffsViewCommand => _deleteCoeffsViewCommand ??= new LambdaCommand(DeleteCoeffsViewCommandExecuted, DeleteCoeffsViewCommandExecute);
+
+        private bool DeleteCoeffsViewCommandExecute() => SelectedItem != null;
+
+        private async void DeleteCoeffsViewCommandExecuted()
+        {
+            var removeModel = SelectedItem;
+            if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить это значение коэффициента?", "Удаление элемента")) return;
+            Coefficients.Remove(removeModel);
+            await _coefficientRepository.DeleteAsync(removeModel.Id);
+            await _coefficientRepository.SaveChangesAsync();
+            if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+        }
+        #endregion
     }
 }

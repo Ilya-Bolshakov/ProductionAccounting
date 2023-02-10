@@ -107,7 +107,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand EditEmployeeViewCommand => _editEmployeeViewCommand ??= new LambdaCommand(EditEmployeeViewCommandExecuted, EditEmployeeViewCommandExecute);
 
-        private bool EditEmployeeViewCommandExecute() => true;
+        private bool EditEmployeeViewCommandExecute() => SelectedItem != null;
 
         private async void EditEmployeeViewCommandExecuted()
         {
