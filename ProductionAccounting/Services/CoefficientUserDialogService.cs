@@ -33,9 +33,9 @@ namespace ProductionAccounting.Services
             {
                 MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через запятую",
                                 "Ошибка",
-                                MessageBoxButton.YesNo,
+                                MessageBoxButton.OK,
                                 MessageBoxImage.Error,
-                                MessageBoxResult.OK);
+                                MessageBoxResult.Cancel);
                 return false;
             });
 

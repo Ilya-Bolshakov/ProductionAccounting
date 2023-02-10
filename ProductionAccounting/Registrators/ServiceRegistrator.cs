@@ -10,6 +10,7 @@ namespace ProductionAccounting.Registrators
         public static IServiceCollection AddServices(this IServiceCollection services) => services
             .AddTransient<IUserDialog<EmployeeModel>, EmployeeUserDialogService>()
             .AddTransient<IUserDialog<CoefficientModel>, CoefficientUserDialogService>()
+            .AddTransient<IUserDialog<OperationModel>, OperationUserDialogService>()
             ;
     }
 }

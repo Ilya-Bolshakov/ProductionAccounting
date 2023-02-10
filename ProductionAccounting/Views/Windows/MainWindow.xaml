@@ -92,7 +92,8 @@
                              Command="{Binding ShowProductsViewCommand}">
                 </RadioButton>
                 <RadioButton Content="Операции"
-                             Style="{StaticResource SubMenuButtomTheme}">
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowOperationViewCommand}">
                 </RadioButton>
 
                 <RadioButton Content="Коэффициенты"

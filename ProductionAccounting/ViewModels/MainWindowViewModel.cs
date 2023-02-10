@@ -17,6 +17,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<Product> _product;
         private readonly IUserDialog<EmployeeModel> _userDialog;
         private readonly IUserDialog<CoefficientModel> _coeffDialog;
+        private readonly IUserDialog<OperationModel> _operationDialog;
 
 
         private string? _title = "Test string";
@@ -34,7 +35,8 @@ namespace ProductionAccounting.ViewModels
             IRepository<Operation> operation,
             IRepository<Product> product,
             IUserDialog<EmployeeModel> userDialog,
-            IUserDialog<CoefficientModel> coeffDialog
+            IUserDialog<CoefficientModel> coeffDialog,
+            IUserDialog<OperationModel> operationDialog
             )
         {
             _employees = employees;
@@ -44,6 +46,7 @@ namespace ProductionAccounting.ViewModels
             _operationСoefficient = operationСoefficient;
             _userDialog = userDialog;
             _coeffDialog = coeffDialog;
+            _operationDialog = operationDialog;
         }
 
         private ViewModel _currentViewModel;
@@ -94,6 +97,19 @@ namespace ProductionAccounting.ViewModels
         private void OnShowCoefficientViewCommandExecuted()
         {
             CurrentViewModel = new CoefficientViewModel(_operationСoefficient, _coeffDialog);
+        }
+        #endregion
+
+        #region Команда открытия вьюхи операций
+        private ICommand _showOperationViewCommand;
+
+        public ICommand ShowOperationViewCommand => _showOperationViewCommand ??= new LambdaCommand(OnShowOperationViewCommandExecuted, CanShowOperationViewCommandExecute);
+
+        private bool CanShowOperationViewCommandExecute() => true;
+
+        private void OnShowOperationViewCommandExecuted()
+        {
+            CurrentViewModel = new OperationsViewModel(_operation, _operationDialog);
         }
         #endregion
     }

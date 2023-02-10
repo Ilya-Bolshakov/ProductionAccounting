@@ -12,4 +12,7 @@
     <DataTemplate DataType="{x:Type vm:CoefficientViewModel}">
         <view:CoefficientView DataContext="{Binding}"/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:OperationsViewModel}">
+        <view:OperationsView DataContext="{Binding}"/>
+    </DataTemplate>
 </ResourceDictionary>
