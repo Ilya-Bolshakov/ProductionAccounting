@@ -71,7 +71,7 @@ namespace ProductionAccounting.ViewModels
             OnLoading = Visibility.Visible;
             var task = Task.Run(() =>
             {
-                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel().MapToDto(e));
+                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
             });
             var employees = await task;
             Employees = employees.ToObservableCollection();

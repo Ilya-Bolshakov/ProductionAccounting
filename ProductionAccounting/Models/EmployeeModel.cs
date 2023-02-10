@@ -5,21 +5,20 @@ namespace ProductionAccounting.Models
 {
     public class EmployeeModel : Model
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }
 
-
-        public EmployeeModel MapToDto(Employee orm)
+        public EmployeeModel()
         {
-            return new EmployeeModel()
-            {
-                Id = orm.Id,
-                Name = orm.Name,
-                Surname = orm.Surname,
-                Patronymic = orm.Patronymic,
-            };
+        }
+
+        public EmployeeModel(Employee orm)
+        {
+            Name = orm.Name;
+            Surname = orm.Surname;
+            Patronymic = orm.Patronymic;
+            Id = orm.Id;
         }
 
         public Employee MapToOrm()
