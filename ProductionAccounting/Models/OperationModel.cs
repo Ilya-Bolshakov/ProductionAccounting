@@ -5,11 +5,29 @@ namespace ProductionAccounting.Models
 {
     public class OperationModel : Model
     {
-        public CoefficientModel Coefficient { get; set; }
-        public decimal Cost { get; set; }
-        public int OperationDuration { get; set; }
-        private decimal _price;
+        private CoefficientModel _coefficient;
+        public CoefficientModel Coefficient
+        {
+            get { return _coefficient; }
+            set { _coefficient = value; OnPropertyChanged(nameof(Coefficient)); }
+        }
 
+        private decimal _cost;
+        public decimal Cost
+        {
+            get { return _cost; }
+            set { _cost = value; OnPropertyChanged(nameof(Cost)); }
+        }
+
+        private int _operationDuration;
+        public int OperationDuration
+        {
+            get { return _operationDuration; }
+            set { _operationDuration = value; OnPropertyChanged(nameof(OperationDuration)); OnPropertyChanged(nameof(Price)); }
+        }
+
+
+        private decimal _price;
         public decimal Price
         {
             get
@@ -17,10 +35,16 @@ namespace ProductionAccounting.Models
                 _price = Cost* OperationDuration *Coefficient.CoefficientValue;
                 return _price;
             }
-            private set { _price = value; }
+            set { _price = value; OnPropertyChanged(nameof(Price));  }
         }
 
-        public string Name { get; set; }
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; OnPropertyChanged(nameof(Name)); }
+        }
 
         public OperationModel()
         { }

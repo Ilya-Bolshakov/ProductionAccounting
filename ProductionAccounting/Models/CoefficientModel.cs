@@ -10,8 +10,20 @@ namespace ProductionAccounting.Models
 {
     public class CoefficientModel : Model
     {
-        public string Name { get; set; }
-        public decimal CoefficientValue { get; set; }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; OnPropertyChanged(nameof(Name)); }
+        }
+
+        public decimal _coefficientValue;
+        public decimal CoefficientValue
+        {
+            get { return _coefficientValue; }
+            set { _coefficientValue = value; OnPropertyChanged(nameof(CoefficientValue)); }
+        }
+
 
         public CoefficientModel()
         { }

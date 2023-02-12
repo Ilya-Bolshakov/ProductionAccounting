@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductionAccounting.DAL.Context;
 
@@ -10,9 +11,11 @@ using ProductionAccounting.DAL.Context;
 namespace ProductionAccounting.DAL.Migrations
 {
     [DbContext(typeof(ProductionAccountingContext))]
-    partial class ProductionAccountingContextModelSnapshot : ModelSnapshot
+    [Migration("20230212192815_ChangeOperationCost")]
+    partial class ChangeOperationCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
