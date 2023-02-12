@@ -1,14 +1,15 @@
-﻿using ProductionAccounting.Models;
+﻿using ProductionAccounting.DAL.Entities;
+using ProductionAccounting.Interfaces;
+using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
 using ProductionAccounting.ViewModels;
 using ProductionAccounting.Views.Windows;
 using System;
-using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace ProductionAccounting.Services
 {
-    public class OperationUserDialogService : IUserDialog<OperationModel>
+    public class OperationUserDialogService : IUserDialogWithRepository<OperationModel, OperationСoefficient>
     {
         public bool ConfirmOperation(string info, string caption)
         {
@@ -19,11 +20,11 @@ namespace ProductionAccounting.Services
                                   MessageBoxResult.Yes) == MessageBoxResult.Yes;
         }
 
-        public bool Edit(OperationModel model)
+        public bool Edit(OperationModel model, IRepository<OperationСoefficient> repository)
         {
-            var operationVM = new OperationEditorViewModel(model);
+            var operationVM = new OperationEditorViewModel(model, repository);
 
-            var coeffV = new OperationEditorWindow()
+            var operationV = new OperationEditorWindow()
             {
                 DataContext = operationVM,
             };
@@ -38,7 +39,7 @@ namespace ProductionAccounting.Services
                 return false;
             });
 
-            //if (coeffV.ShowDialog() != true) return false;
+            if (operationV.ShowDialog() != true) return false;
             //var regex = new Regex(@"\b\d+\.\d{2}\b");
             //var coeffValueString = operationVM.CoefficientValue.ToString();
             //var matches = regex.Matches(coeffValueString);
@@ -50,8 +51,10 @@ namespace ProductionAccounting.Services
             //{
             //    if (!String.IsNullOrEmpty(coeffValueString.Replace(matches.First().ToString(), ""))) return errorMessage();
             //}
-            //model.Name = operationVM.Name;
-            //model.CoefficientValue = operationVM.CoefficientValue;
+            model.Name = operationVM.Name;
+            model.Coefficient = operationVM.Coefficient;
+            model.Cost = operationVM.Cost;
+            model.OperationDuration = operationVM.OperationDuration;
             return true;
         }
     }

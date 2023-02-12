@@ -15,11 +15,13 @@ namespace ProductionAccounting.ViewModels
     public class OperationsViewModel : ViewModel
     {
         private readonly IRepository<Operation> _operationRepository;
-        private readonly IUserDialog<OperationModel> _userDialog;
-        public OperationsViewModel(IRepository<Operation> repository, IUserDialog<OperationModel> userDialog)
+        private readonly IRepository<OperationСoefficient> _operationCoefficient;
+        private readonly IUserDialogWithRepository<OperationModel, OperationСoefficient> _userDialogWithRepo;
+        public OperationsViewModel(IRepository<Operation> repository, IRepository<OperationСoefficient> coefficientRepository, IUserDialogWithRepository<OperationModel, OperationСoefficient> userDialog)
         {
             _operationRepository = repository;
-            _userDialog = userDialog;
+            _userDialogWithRepo = userDialog;
+            _operationCoefficient = coefficientRepository;
         }
 
         public OperationsViewModel()
@@ -86,7 +88,7 @@ namespace ProductionAccounting.ViewModels
         private async void AddOperationsExecuted()
         {
             OperationModel operation = new();
-            if (!_userDialog.Edit(operation))
+            if (!_userDialogWithRepo.Edit(operation, _operationCoefficient))
             {
                 return;
             }
@@ -108,7 +110,7 @@ namespace ProductionAccounting.ViewModels
 
         private async void EditOperationsExecuted()
         {
-            if (!_userDialog.Edit(SelectedItem))
+            if (!_userDialogWithRepo.Edit(SelectedItem, _operationCoefficient))
             {
                 return;
             }
@@ -133,7 +135,7 @@ namespace ProductionAccounting.ViewModels
         private async void DeleteOperationsExecuted()
         {
             var removeModel = SelectedItem;
-            if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
+            if (!_userDialogWithRepo.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
             Operations.Remove(removeModel);
             await _operationRepository.DeleteAsync(removeModel.Id);
             await _operationRepository.SaveChangesAsync();

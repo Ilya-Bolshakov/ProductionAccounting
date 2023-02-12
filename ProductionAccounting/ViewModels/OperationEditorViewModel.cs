@@ -1,13 +1,11 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows;
 using System.Linq;
 
 namespace ProductionAccounting.ViewModels
@@ -84,14 +82,13 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
-        public OperationEditorViewModel(OperationModel operation)
+        public OperationEditorViewModel(OperationModel operation, IRepository<OperationСoefficient> repository)
         {
             Name = operation.Name;
             Cost = operation.Cost;
             OperationDuration = operation.OperationDuration;
             Coefficient = (CoefficientModel)operation.Coefficient?.Clone() ?? new CoefficientModel();
-            using var serv = App.Services.CreateAsyncScope();
-            _repository = serv.ServiceProvider.GetRequiredService<IRepository<OperationСoefficient>>();
+            _repository = repository;
         }
 
         public OperationEditorViewModel()

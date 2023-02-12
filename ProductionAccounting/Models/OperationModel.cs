@@ -8,7 +8,18 @@ namespace ProductionAccounting.Models
         public CoefficientModel Coefficient { get; set; }
         public decimal Cost { get; set; }
         public int OperationDuration { get; set; }
-        public decimal Price { get; private set; }
+        private decimal _price;
+
+        public decimal Price
+        {
+            get
+            {   
+                _price = Cost* OperationDuration *Coefficient.CoefficientValue;
+                return _price;
+            }
+            private set { _price = value; }
+        }
+
         public string Name { get; set; }
 
         public OperationModel()
@@ -20,7 +31,6 @@ namespace ProductionAccounting.Models
             Cost = orm.Cost;
             OperationDuration = orm.OperationDuration;
             Id = orm.Id;
-            Price = Cost * OperationDuration * Coefficient.CoefficientValue;
         }
 
         public Operation MapToOrm()
