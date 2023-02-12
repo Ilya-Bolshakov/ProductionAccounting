@@ -31,7 +31,7 @@ namespace ProductionAccounting.Services
 
             Func<bool> errorMessage = new Func<bool>(() =>
             {
-                MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через запятую",
+                MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через точку",
                                 "Ошибка",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error,
@@ -40,19 +40,27 @@ namespace ProductionAccounting.Services
             });
 
             if (coeffV.ShowDialog() != true) return false;
-            var regex = new Regex(@"\b\d+\.\d{2}\b");
+            var regex = new Regex(@"\b\d+\,\d{0,2}\b");
             var coeffValueString = coeffVM.CoefficientValue.ToString();
-            var matches = regex.Matches(coeffValueString);
-            if (matches.Count != 1)
+            if (int.TryParse(coeffValueString, out var num))
             {
-                return errorMessage();
+                coeffVM.CoefficientValue = num;
             }
             else
             {
-                if(!String.IsNullOrEmpty(coeffValueString.Replace(matches.First().ToString(), ""))) return errorMessage();
+                var matches = regex.Matches(coeffValueString);
+                if (matches.Count != 1)
+                {
+                    return errorMessage();
+                }
+                else
+                {
+                    if (!String.IsNullOrEmpty(coeffValueString.Replace(matches.First().ToString(), ""))) return errorMessage();
+                    model.CoefficientValue = coeffVM.CoefficientValue;
+                }
             }
+            
             model.Name = coeffVM.Name;
-            model.CoefficientValue = coeffVM.CoefficientValue;
             return true;
         }
     }

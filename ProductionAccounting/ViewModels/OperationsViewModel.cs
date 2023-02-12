@@ -118,10 +118,9 @@ namespace ProductionAccounting.ViewModels
             updateop.Name = SelectedItem.Name;
             updateop.Cost = SelectedItem.Cost;
             updateop.OperationDuration = SelectedItem.OperationDuration;
-            updateop.OperationСoefficient = SelectedItem.Coefficient.MapToOrm();
+            updateop.OperationСoefficient = _operationCoefficient.GetById(SelectedItem.Coefficient.Id);
             _operationRepository.Update(updateop);
             await _operationRepository.SaveChangesAsync();
-
         }
         #endregion
 

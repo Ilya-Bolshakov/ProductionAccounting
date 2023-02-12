@@ -40,5 +40,10 @@ namespace ProductionAccounting.Models
             model.Id = Id;
             return model;
         }
+
+        public override string ToString()
+        {
+            return $"{Name}, Значение: {CoefficientValue}";
+        }
     }
 }

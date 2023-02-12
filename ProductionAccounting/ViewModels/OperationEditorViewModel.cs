@@ -79,6 +79,7 @@ namespace ProductionAccounting.ViewModels
             });
             var coeffs = await task;
             Coefficients = coeffs.ToObservableCollection();
+            Coefficient = Coefficients.FirstOrDefault(i => i.Id == Coefficient.Id);
         }
         #endregion
 

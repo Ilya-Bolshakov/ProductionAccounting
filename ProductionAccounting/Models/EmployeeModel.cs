@@ -5,9 +5,28 @@ namespace ProductionAccounting.Models
 {
     public class EmployeeModel : Model
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Patronymic { get; set; }
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; OnPropertyChanged(nameof(Name)); }
+        }
+        private string _surname;
+
+        public string Surname
+        {
+            get { return _surname; }
+            set { _surname = value; OnPropertyChanged(nameof(Surname)); }
+        }
+        private string _patronymic;
+
+        public string Patronymic
+        {
+            get { return _patronymic; }
+            set { _patronymic = value; OnPropertyChanged(nameof(Patronymic)); }
+        }
+
 
         public EmployeeModel()
         {

@@ -31,6 +31,7 @@ namespace ProductionAccounting.Models
             Cost = orm.Cost;
             OperationDuration = orm.OperationDuration;
             Id = orm.Id;
+            Name = orm.Name;
         }
 
         public Operation MapToOrm()
