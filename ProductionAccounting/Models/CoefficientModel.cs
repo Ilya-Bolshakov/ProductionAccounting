@@ -31,5 +31,14 @@ namespace ProductionAccounting.Models
             c.CoefficientValue = CoefficientValue;
             return c;
         }
+
+        public override object Clone()
+        {
+            CoefficientModel model = new CoefficientModel();
+            model.Name = Name;
+            model.CoefficientValue = CoefficientValue;
+            model.Id = Id;
+            return model;
+        }
     }
 }

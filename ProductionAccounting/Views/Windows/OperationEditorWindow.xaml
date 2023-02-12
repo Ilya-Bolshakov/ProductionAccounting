@@ -3,12 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProductionAccounting.Views.Windows" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
+        xmlns:local="clr-namespace:ProductionAccounting.Views.Windows" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="OperationEditorWindow" Height="450" Width="800"
-        d:DataContext="{d:DesignInstance viewmodels:OperationsViewModel, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance viewmodels:OperationEditorViewModel, IsDesignTimeCreatable=True}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetCoefficient}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -17,13 +24,19 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Название" />
+        <TextBlock Text="Название операции" />
         <TextBlock Grid.Row="1" Text="Значение коэффициента"/>
+        <TextBlock Grid.Row="2" Text="Стоимость"/>
+        <TextBlock Grid.Row="3" Text="Длительность операции"/>
         <TextBox Grid.Column="1" 
                  Text="{Binding Name}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CoefficientValue}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1"
+                  ItemsSource="{Binding Coefficients}"
+                  SelectedItem="{Binding Coefficient}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Cost}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OperationDuration}"/>
         <Grid Grid.Column="1"
-              Grid.Row="2">
+              Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

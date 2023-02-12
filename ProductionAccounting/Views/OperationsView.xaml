@@ -49,7 +49,7 @@
                     Height="40" 
                     Content="Добавить сотрудника"
                     Style="{StaticResource CommonButtonStyle}"
-                    Command="{Binding AddEmployeeViewCommand}">
+                    Command="{Binding AddOperations}">
                 </Button>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -60,12 +60,12 @@
                     Height="40"
                     Content="Редактирование"
                     Style="{StaticResource CommonButtonStyle}"
-                    Command="{Binding EditEmployeeViewCommand}"/>
+                    Command="{Binding EditOperations}"/>
                     <Button Grid.Row="1"
                     Height="40"
                     Content="Удаление"
                     Style="{StaticResource CommonButtonStyle}"
-                    Command="{Binding DeleteEmployeeViewCommand}"/>
+                    Command="{Binding DeleteOperations}"/>
                 </Grid>
             </Grid>
         </Grid>

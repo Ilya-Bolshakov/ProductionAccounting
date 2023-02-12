@@ -34,5 +34,16 @@ namespace ProductionAccounting.Models
                 OperationСoefficient = Coefficient.MapToOrm()
             };
         }
+
+        public override object Clone()
+        {
+            var model = new OperationModel();
+            model.Id = Id;
+            model.Cost = Cost;
+            model.OperationDuration = OperationDuration;
+            model.Name = Name;
+            model.Coefficient = (CoefficientModel)Coefficient.Clone();
+            return model;
+        }
     }
 }

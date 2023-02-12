@@ -30,5 +30,15 @@ namespace ProductionAccounting.Models
             emp.Patronymic = Patronymic;
             return emp;
         }
+
+        public override object Clone()
+        {
+            EmployeeModel emp = new EmployeeModel();
+            emp.Id = Id;
+            emp.Name = Name;
+            emp.Surname = Surname;
+            emp.Patronymic = Patronymic;
+            return emp;
+        }
     }
 }
