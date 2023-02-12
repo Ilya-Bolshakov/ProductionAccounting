@@ -18,15 +18,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IUserDialog<EmployeeModel> _userDialog;
         private readonly IUserDialog<CoefficientModel> _coeffDialog;
         private readonly IUserDialogWithRepository<OperationModel, OperationСoefficient> _operationDialog;
-
-
-        private string? _title = "Test string";
-
-        public string? Title
-        {
-            get { return _title; }
-            set { Set(ref _title, value); }
-        }
+        private readonly IUserDialogWithRepository<ProductModel, Operation> _productDialog;
 
         public MainWindowViewModel(
             IRepository<Employee> employees,
@@ -36,7 +28,8 @@ namespace ProductionAccounting.ViewModels
             IRepository<Product> product,
             IUserDialog<EmployeeModel> userDialog,
             IUserDialog<CoefficientModel> coeffDialog,
-            IUserDialogWithRepository<OperationModel, OperationСoefficient> operationDialog
+            IUserDialogWithRepository<OperationModel, OperationСoefficient> operationDialog,
+            IUserDialogWithRepository<ProductModel, Operation> productDialog
             )
         {
             _employees = employees;
@@ -47,6 +40,7 @@ namespace ProductionAccounting.ViewModels
             _userDialog = userDialog;
             _coeffDialog = coeffDialog;
             _operationDialog = operationDialog;
+            _productDialog = productDialog;
         }
 
         private ViewModel _currentViewModel;
@@ -83,7 +77,7 @@ namespace ProductionAccounting.ViewModels
 
         private void OnShowProductsViewCommandExecuted()
         {
-            CurrentViewModel = new ProductsViewModel();
+            CurrentViewModel = new ProductsViewModel(_operation, _product, _productDialog);
         }
         #endregion
 
