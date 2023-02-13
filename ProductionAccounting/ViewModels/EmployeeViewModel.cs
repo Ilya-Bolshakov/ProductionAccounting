@@ -19,7 +19,6 @@ namespace ProductionAccounting.ViewModels
 
         public EmployeeViewModel()
         {
-
         }
 
         public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog)
