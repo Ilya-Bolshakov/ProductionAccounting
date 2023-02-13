@@ -47,7 +47,7 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        #region Команда загрузки коэффов
+        #region Команда загрузки операций
         private ICommand _getOperations;
 
         public ICommand GetOperations => _getOperations ??= new LambdaCommand(GetCoefficientsExecuted, GetCoefficientsExecute);

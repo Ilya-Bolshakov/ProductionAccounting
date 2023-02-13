@@ -46,7 +46,7 @@
                 </Grid.ColumnDefinitions>
                 <Button 
                     Height="40" 
-                    Content="Добавить сотрудника"
+                    Content="Добавить изделие"
                     Style="{StaticResource CommonButtonStyle}"
                     Command="{Binding AddProducts}">
                 </Button>

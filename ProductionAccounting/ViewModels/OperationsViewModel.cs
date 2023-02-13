@@ -58,7 +58,7 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        #region Команда загрузки сотрудников
+        #region Команда загрузки операций
         private ICommand _getOperations;
 
         public ICommand GetOperations => _getOperations ??= new LambdaCommand(GetOperationsExecuted, GetOperationsExecute);
@@ -78,7 +78,7 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
-        #region Команда добавления сотрудников
+        #region Команда добавления операций
         private ICommand _addOperations;
 
         public ICommand AddOperations => _addOperations ??= new LambdaCommand(AddOperationsExecuted, AddOperationsExecute);
@@ -101,7 +101,7 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
-        #region Команда редактирования сотрудников
+        #region Команда редактирования операций
         private ICommand _editOperations;
 
         public ICommand EditOperations => _editOperations ??= new LambdaCommand(EditOperationsExecuted, EditOperationsExecute);
@@ -124,7 +124,7 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
-        #region Команда удаления сотрудников
+        #region Команда удаления операций
         private ICommand _deleteOperations;
 
         public ICommand DeleteOperations => _deleteOperations ??= new LambdaCommand(DeleteOperationsExecuted, DeleteOperationsExecute);
