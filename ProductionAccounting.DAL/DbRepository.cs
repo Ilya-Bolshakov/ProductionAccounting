@@ -14,6 +14,10 @@ namespace ProductionAccounting.DAL
     {
         protected readonly ProductionAccountingContext _context;
         public bool AutoSaveChanges { get; set; }
+        public DbRepository()
+        {
+
+        }
         public DbRepository(ProductionAccountingContext productionAccounting)
         {
             _context = productionAccounting;

@@ -2,7 +2,6 @@
 using ProductionAccounting.Registrators;
 using System;
 using System.Windows;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Context;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +54,7 @@ namespace ProductionAccounting
             using var host = Host;
             using var serv = Services.CreateAsyncScope();
             var db = serv.ServiceProvider.GetRequiredService<ProductionAccountingContext>();
-            await db.Database.EnsureDeletedAsync();
+            //await db.Database.EnsureDeletedAsync();
             base.OnExit(e);
             await host.StopAsync();
         }

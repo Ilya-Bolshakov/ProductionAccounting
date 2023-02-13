@@ -4,7 +4,6 @@ using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,8 +15,14 @@ namespace ProductionAccounting.ViewModels
     public class EmployeeViewModel : ViewModel
     {
         private readonly IRepository<Employee> _employeeRepository;
-        private readonly IUserDialog _userDialog;
-        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog userDialog)
+        private readonly IUserDialog<EmployeeModel> _userDialog;
+
+        public EmployeeViewModel()
+        {
+
+        }
+
+        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog)
         {
             _employeeRepository = repository;
             _userDialog = userDialog;
@@ -66,7 +71,7 @@ namespace ProductionAccounting.ViewModels
             OnLoading = Visibility.Visible;
             var task = Task.Run(() =>
             {
-                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel().MapToDto(e));
+                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
             });
             var employees = await task;
             Employees = employees.ToObservableCollection();
@@ -102,7 +107,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand EditEmployeeViewCommand => _editEmployeeViewCommand ??= new LambdaCommand(EditEmployeeViewCommandExecuted, EditEmployeeViewCommandExecute);
 
-        private bool EditEmployeeViewCommandExecute() => true;
+        private bool EditEmployeeViewCommandExecute() => SelectedItem != null;
 
         private async void EditEmployeeViewCommandExecuted()
         {
@@ -133,6 +138,7 @@ namespace ProductionAccounting.ViewModels
             if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
             Employees.Remove(removeModel);
             await _employeeRepository.DeleteAsync(removeModel.Id);
+            await _employeeRepository.SaveChangesAsync();
             if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
         }
         #endregion

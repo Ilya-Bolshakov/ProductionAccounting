@@ -1,34 +1,58 @@
 ﻿using ProductionAccounting.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProductionAccounting.Models.Base;
 
 namespace ProductionAccounting.Models
 {
-    public class EmployeeModel
+    public class EmployeeModel : Model
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Patronymic { get; set; }
+        private string _name;
 
-
-        public EmployeeModel MapToDto(Employee orm)
+        public string Name
         {
-            return new EmployeeModel()
-            {
-                Id = orm.Id,
-                Name = orm.Name,
-                Surname = orm.Surname,
-                Patronymic = orm.Patronymic,
-            };
+            get { return _name; }
+            set { _name = value; OnPropertyChanged(nameof(Name)); }
+        }
+        private string _surname;
+
+        public string Surname
+        {
+            get { return _surname; }
+            set { _surname = value; OnPropertyChanged(nameof(Surname)); }
+        }
+        private string _patronymic;
+
+        public string Patronymic
+        {
+            get { return _patronymic; }
+            set { _patronymic = value; OnPropertyChanged(nameof(Patronymic)); }
+        }
+
+
+        public EmployeeModel()
+        {
+        }
+
+        public EmployeeModel(Employee orm)
+        {
+            Name = orm.Name;
+            Surname = orm.Surname;
+            Patronymic = orm.Patronymic;
+            Id = orm.Id;
         }
 
         public Employee MapToOrm()
         {
             Employee emp = new Employee();
+            emp.Id = Id;
+            emp.Name = Name;
+            emp.Surname = Surname;
+            emp.Patronymic = Patronymic;
+            return emp;
+        }
+
+        public override object Clone()
+        {
+            EmployeeModel emp = new EmployeeModel();
             emp.Id = Id;
             emp.Name = Name;
             emp.Surname = Surname;

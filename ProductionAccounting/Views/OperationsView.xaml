@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="ProductionAccounting.Views.OperationsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+             xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
+             d:DataContext="{d:DesignInstance {x:Type viewmodels:OperationsViewModel}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1000">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetOperations}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="#272537">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="850"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="480"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Операции" Foreground="White">
+                <DataGrid ItemsSource="{Binding Operations}"
+                          SelectedItem="{Binding SelectedItem}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название операции" Width="*" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Стоимость" Width="*" Binding="{Binding Cost}"/>
+                        <DataGridTextColumn Header="Коэффициент" Width="*" Binding="{Binding Coefficient.CoefficientValue}"/>
+                        <DataGridTextColumn Header="Длительность операции" Width="*" Binding="{Binding OperationDuration}"/>
+                        <DataGridTextColumn Header="Итоговая цена" Width="*" Binding="{Binding Price}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button 
+                    Height="40" 
+                    Content="Добавить изделие"
+                    Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding AddOperations}">
+                </Button>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button
+                    Height="40"
+                    Content="Редактирование"
+                    Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding EditOperations}"/>
+                    <Button Grid.Row="1"
+                    Height="40"
+                    Content="Удаление"
+                    Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding DeleteOperations}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <fa:IconBlock Grid.Column="1" 
+                      Icon="Spinner" 
+                      Visibility="{Binding OnLoading}"/>
+    </Grid>
+</UserControl>

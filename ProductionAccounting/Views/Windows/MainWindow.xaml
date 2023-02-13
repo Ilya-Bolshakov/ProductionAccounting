@@ -8,7 +8,7 @@
         Background="Transparent"
         ResizeMode="NoResize"
         AllowsTransparency="True"
-        Height="720" Width="1280"
+        Height="800" Width="1280"
         WindowStyle="None"
         DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}">
 
@@ -87,9 +87,19 @@
                              Command="{Binding ShowEmployeeViewCommand}">
                 </RadioButton>
 
-                <RadioButton Content="Операции"
+                <RadioButton Content="Изделия"
                              Style="{StaticResource MenuButtomTheme}"
-                             Command="{Binding ShowOperationsViewCommand}"/>
+                             Command="{Binding ShowProductsViewCommand}">
+                </RadioButton>
+                <RadioButton Content="Операции"
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowOperationViewCommand}">
+                </RadioButton>
+
+                <RadioButton Content="Коэффициенты"
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowCoefficientViewCommand}">
+                </RadioButton>
 
                 <RadioButton Content="Будущее"
                              Style="{StaticResource MenuButtomTheme}"/>

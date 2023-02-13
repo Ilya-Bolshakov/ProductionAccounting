@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ProductionAccounting.Views
+namespace ProductionAccounting.Views.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для OperationView.xaml
+    /// Логика взаимодействия для CoefficientEditorWindow.xaml
     /// </summary>
-    public partial class OperationView : UserControl
+    public partial class CoefficientEditorWindow : Window
     {
-        public OperationView()
+        public CoefficientEditorWindow()
         {
             InitializeComponent();
         }

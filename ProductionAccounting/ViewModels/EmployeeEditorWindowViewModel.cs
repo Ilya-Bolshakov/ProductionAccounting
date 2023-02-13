@@ -41,5 +41,10 @@ namespace ProductionAccounting.ViewModels
             Surname = employee.Surname;
             Patronymic = employee.Patronymic;
         }
+
+        public EmployeeEditorWindowViewModel()
+        {
+
+        }
     }
 }

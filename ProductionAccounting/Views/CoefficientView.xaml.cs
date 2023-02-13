@@ -3,11 +3,11 @@
 namespace ProductionAccounting.Views
 {
     /// <summary>
-    /// Логика взаимодействия для EmployeeView.xaml
+    /// Логика взаимодействия для CoefficientView.xaml
     /// </summary>
-    public partial class EmployeeView : UserControl
+    public partial class CoefficientView : UserControl
     {
-        public EmployeeView()
+        public CoefficientView()
         {
             InitializeComponent();
         }

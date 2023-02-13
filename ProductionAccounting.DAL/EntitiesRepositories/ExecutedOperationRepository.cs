@@ -15,6 +15,11 @@ namespace ProductionAccounting.DAL.EntitiesRepositories
         {
         }
 
+        public ExecutedOperationRepository()
+        {
+
+        }
+
         public override IQueryable<ExecutedOperation> Items => base.Items.Include(i => i.Employee)
                                                                          .Include(i => i.Operation);
     }

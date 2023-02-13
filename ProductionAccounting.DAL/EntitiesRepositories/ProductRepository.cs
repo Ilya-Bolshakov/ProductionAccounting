@@ -10,5 +10,10 @@ namespace ProductionAccounting.DAL.EntitiesRepositories
         public ProductRepository(ProductionAccountingContext context) : base(context)
         {
         }
+
+        public ProductRepository()
+        {
+
+        }
     }
 }

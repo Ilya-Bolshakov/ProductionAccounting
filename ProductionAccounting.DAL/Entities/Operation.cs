@@ -10,7 +10,7 @@ namespace ProductionAccounting.DAL.Entities
 {
     public class Operation : NamedEntity
     {
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,5)")]
         public decimal Cost { get; set; }
         public int OperationDuration { get; set; }
         public OperationСoefficient OperationСoefficient { get; set; }

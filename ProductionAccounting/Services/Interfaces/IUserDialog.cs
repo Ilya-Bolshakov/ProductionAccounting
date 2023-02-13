@@ -1,16 +1,9 @@
-﻿using ProductionAccounting.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProductionAccounting.Models.Base;
 
 namespace ProductionAccounting.Services.Interfaces
 {
-    public interface IUserDialog
+    public interface IUserDialog<T> : IUserDialogBase where T : Model
     {
-        bool Edit(EmployeeModel employee);
-
-        bool ConfirmOperation(string info, string caption);
+        bool Edit(T model);
     }
 }

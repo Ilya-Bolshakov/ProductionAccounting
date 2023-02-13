@@ -1,0 +1,51 @@
+﻿<Window x:Class="ProductionAccounting.Views.Windows.ProductEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewmodels:ProductEditorViewModel, IsDesignTimeCreatable=True}"
+        Title="ProductEditorWindow" Height="450" Width="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetOperations}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Название изделия" />
+        <TextBlock Grid.Row="1" Text="Список операций"/>
+        <TextBox Grid.Column="1" 
+                 Text="{Binding Name}"/>
+        <ListBox Grid.Row="1" Grid.Column="1"
+                  ItemsSource="{Binding Operations}"
+                  SelectionMode="Multiple"
+                  Name="LB"/>
+        <Grid Grid.Column="1"
+              Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Margin="10,0,10,0"
+                    Command="{Binding EditProduct}"
+                    CommandParameter="{Binding ElementName=LB, Path=SelectedItems}"
+                    Content="Применить"/>
+            <Button Grid.Column="1"
+                    Margin="10,0,10,0"
+                    Content="Отменить"
+                    Command="{StaticResource DialogResultCommand}"
+                    CommandParameter="False"/>
+        </Grid>
+    </Grid>
+</Window>

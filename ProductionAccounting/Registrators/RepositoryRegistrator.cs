@@ -3,11 +3,6 @@ using ProductionAccounting.DAL;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.DAL.EntitiesRepositories;
 using ProductionAccounting.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductionAccounting.Registrators
 {
@@ -17,7 +12,7 @@ namespace ProductionAccounting.Registrators
             .AddTransient<IRepository<Employee>, DbRepository<Employee>>()
             .AddTransient<IRepository<Operation>, OperationRepository>()
             .AddTransient<IRepository<OperationСoefficient>, DbRepository<OperationСoefficient>>()
-            .AddTransient<IRepository<Product>, DbRepository<Product>>()
+            .AddTransient<IRepository<Product>, ProductRepository>()
             .AddTransient<IRepository<ExecutedOperation>, ExecutedOperationRepository>();
     }
 }

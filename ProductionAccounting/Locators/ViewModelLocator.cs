@@ -7,7 +7,7 @@ namespace ProductionAccounting.Locators
     {
         public MainWindowViewModel MainWindowModel => App.Services.GetRequiredService<MainWindowViewModel>();
         public EmployeeViewModel EmployeeViewModel => App.Services.GetRequiredService<EmployeeViewModel>();
-        public OperationViewModel OperationViewModel => App.Services.GetRequiredService<OperationViewModel>();
+        public ProductsViewModel OperationViewModel => App.Services.GetRequiredService<ProductsViewModel>();
         public EmployeeEditorWindowViewModel EmployeeEditorWindowViewModel => App.Services.GetRequiredService<EmployeeEditorWindowViewModel>();
     }
 }

@@ -3,11 +3,11 @@
 namespace ProductionAccounting.Views.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для EmployeeEditorWindow.xaml
+    /// Логика взаимодействия для ProductEditorWindow.xaml
     /// </summary>
-    public partial class EmployeeEditorWindow : Window
+    public partial class ProductEditorWindow : Window
     {
-        public EmployeeEditorWindow()
+        public ProductEditorWindow()
         {
             InitializeComponent();
         }
