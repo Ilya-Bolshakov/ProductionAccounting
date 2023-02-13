@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductionAccounting.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace ProductionAccounting.Services.Interfaces
 {
     public interface IUserPrintDialog
     {
-        public bool ShowPrintDialog();
+        public bool ShowPrintDialog(TabelModel model);
     }
 }

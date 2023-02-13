@@ -1,13 +1,18 @@
 ﻿using MathCore.WPF.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductionAccounting.ViewModels
 {
     public class PrintViewModel : ViewModel
     {
+        private Int32 _width;
+        public Int32 Width
+        {
+            get { return _width; }
+            set
+            {
+                Set(ref _width, value);
+            }
+        }
     }
 }

@@ -67,6 +67,8 @@
                     Command="{Binding DeleteProducts}"/>
                 </Grid>
             </Grid>
+            <Button Grid.Column="2"
+                    Command="{Binding Print}"/>
         </Grid>
         <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 

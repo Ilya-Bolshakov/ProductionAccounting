@@ -18,6 +18,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<Operation> _operationRepository;
         private readonly IUserDialogWithRepository<ProductModel, Operation> _userDialogWithRepo;
+        private readonly IUserPrintDialog _printDialog;
 
 
         private ObservableCollection<ProductModel> _products;
@@ -145,13 +146,28 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
+        #region Команда печати
+        private ICommand _print;
+
+        public ICommand Print => _print ??= new LambdaCommand(PrintExecuted, PrintExecute);
+
+        private bool PrintExecute() => SelectedItem != null;
+
+        private void PrintExecuted()
+        {
+            TabelModel model = new(SelectedItem);
+            _printDialog.ShowPrintDialog(model);
+        }
+        #endregion
+
 
         public ProductsViewModel(IRepository<Operation> operationRepository, IRepository<Product> productRepository,
-            IUserDialogWithRepository<ProductModel, Operation> userDialog)
+            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog)
         {
             _operationRepository = operationRepository;
             _productRepository = productRepository;
             _userDialogWithRepo = userDialog;
+            _printDialog = printDialog;
         }
     }
 }

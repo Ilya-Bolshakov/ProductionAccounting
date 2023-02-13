@@ -14,6 +14,7 @@ namespace ProductionAccounting.Registrators
             .AddTransient<IUserDialog<CoefficientModel>, CoefficientUserDialogService>()
             .AddTransient<IUserDialogWithRepository<OperationModel, OperationСoefficient>, OperationUserDialogService>()
             .AddTransient<IUserDialogWithRepository<ProductModel, Operation>, ProductUserDialogService>()
+            .AddTransient<IUserPrintDialog, PrintDialog>()
             ;
     }
 }
