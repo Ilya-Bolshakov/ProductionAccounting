@@ -35,7 +35,7 @@ namespace ProductionAccounting.Services
 
             Func<bool> errorMessage = new Func<bool>(() =>
             {
-                MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через запятую",
+                MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через точку",
                                 "Ошибка",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error,

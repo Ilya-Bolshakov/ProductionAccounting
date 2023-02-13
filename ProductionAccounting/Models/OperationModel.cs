@@ -80,5 +80,10 @@ namespace ProductionAccounting.Models
             model.Coefficient = (CoefficientModel)Coefficient.Clone();
             return model;
         }
+
+        public override string ToString()
+        {
+            return $"Название операции: {Name}. Стоимость: {Cost}. Длительность: {OperationDuration}";
+        }
     }
 }

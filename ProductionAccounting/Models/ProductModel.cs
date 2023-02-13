@@ -1,4 +1,5 @@
 ﻿using ProductionAccounting.DAL.Entities;
+using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models.Base;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace ProductionAccounting.Models
 {
     public class ProductModel : Model
     {
+        private readonly IRepository<Operation> _repository;
         private List<OperationModel> _operations;
         public List<OperationModel> Operations
         {

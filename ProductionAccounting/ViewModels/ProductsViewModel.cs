@@ -85,8 +85,16 @@ namespace ProductionAccounting.ViewModels
                 return;
             }
             Products.Add(product);
-            _productRepository.Add(product.MapToOrm());
-            await _operationRepository.SaveChangesAsync();
+            var productDb = new Product();
+            productDb.Name = product.Name;
+            productDb.Operations = new List<Operation>();
+            foreach (var item in product.Operations)
+            {
+                var operDb = _operationRepository.GetById(item.Id);
+                productDb.Operations.Add(operDb);
+            }
+            _productRepository.Add(productDb);
+            await _productRepository.SaveChangesAsync();
 
             SelectedItem = product;
 
@@ -108,7 +116,12 @@ namespace ProductionAccounting.ViewModels
             }
             var updatep = _productRepository.GetById(SelectedItem.Id);
             updatep.Name = SelectedItem.Name;
-            updatep.Operations = SelectedItem.Operations.Select(o => o.MapToOrm()).ToList();
+            updatep.Operations = new List<Operation>();
+            foreach (var item in SelectedItem.Operations)
+            {
+                var operDb = _operationRepository.GetById(item.Id);
+                updatep.Operations.Add(operDb);
+            }
             _productRepository.Update(updatep);
             await _productRepository.SaveChangesAsync();
         }

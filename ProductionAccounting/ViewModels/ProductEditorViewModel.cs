@@ -1,6 +1,7 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
 using ProductionAccounting.DAL.Entities;
+using ProductionAccounting.Infrastructure.Commands;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using System;
@@ -61,6 +62,26 @@ namespace ProductionAccounting.ViewModels
             });
             var operations = await task;
             Operations = operations;
+        }
+        #endregion
+
+        #region Команда редактирования изделия
+        private ICommand _editProduct;
+
+        public ICommand EditProduct => _editProduct ??= new LambdaCommand<IList<object>>(EditProductExecuted, EditProductExecute);
+
+        private bool EditProductExecute() => true;
+
+        private void EditProductExecuted(IList<object> operations)
+        {
+            var selOp = operations.Select(o => (OperationModel)o).ToList();
+            SelectedOperations = selOp;
+            var command = new DialogResultCommand();
+            if (command.CanExecute(true))
+            {
+                command.Execute(true);
+            }
+            
         }
         #endregion
 

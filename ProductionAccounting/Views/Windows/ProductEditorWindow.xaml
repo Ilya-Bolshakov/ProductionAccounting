@@ -26,9 +26,10 @@
         <TextBlock Grid.Row="1" Text="Список операций"/>
         <TextBox Grid.Column="1" 
                  Text="{Binding Name}"/>
-        <ComboBox Grid.Row="1" Grid.Column="1"
-                  ItemsSource="{Binding Coefficients}"
-                  SelectedItem="{Binding Coefficient}"/>
+        <ListBox Grid.Row="1" Grid.Column="1"
+                  ItemsSource="{Binding Operations}"
+                  SelectionMode="Multiple"
+                  Name="LB"/>
         <Grid Grid.Column="1"
               Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -37,9 +38,9 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Margin="10,0,10,0"
-                    Command="{StaticResource DialogResultCommand}"
-                    Content="Применить"
-                    CommandParameter="True"/>
+                    Command="{Binding EditProduct}"
+                    CommandParameter="{Binding ElementName=LB, Path=SelectedItems}"
+                    Content="Применить"/>
             <Button Grid.Column="1"
                     Margin="10,0,10,0"
                     Content="Отменить"
