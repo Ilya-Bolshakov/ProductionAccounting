@@ -142,6 +142,7 @@ namespace ProductionAccounting.ViewModels
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
+        #endregion
 
         private void CurrentViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -161,6 +162,5 @@ namespace ProductionAccounting.ViewModels
                 IsLoaded = !(bool)p.GetValue(model);
             }
         }
-        #endregion
     }
 }
