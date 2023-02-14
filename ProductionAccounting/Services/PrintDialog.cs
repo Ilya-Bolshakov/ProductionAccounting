@@ -9,7 +9,7 @@ namespace ProductionAccounting.Services
     {
         public bool ShowPrintDialog(TabelModel model)
         {
-            var printDialogViewModel = new PrintViewModel();
+            var printDialogViewModel = new PrintViewModel(model);
             //printDialogViewModel.Width = 100;
             var printDialog = new PrintWindow()
             {

@@ -4,17 +4,44 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows" 
-        xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
+        xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" 
         mc:Ignorable="d"
         Title="PrintWindow" Height="450" Width="800"
         d:DataContext="{d:DesignInstance {x:Type viewmodels:PrintViewModel}}">
     <Grid>
-        <DataGrid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Name}"/>
+            <Button Grid.Column="3"
+                    Height="40" 
+                    Content="Вывод на печать"
+                    Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding ToPrint}"/>
+        </Grid>
+        <DataGrid Grid.Row="1"
+            ItemsSource="{Binding Operations}"
+            SelectedItem="{Binding SelectedItem}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название"/>
+                <DataGridTextColumn Header="Название"
+                                    Width="150"
+                                    Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Коэффициент"
+                                    Width="140"
+                                    Binding="{Binding Coefficient}"/>
+                <DataGridTextColumn Header="Итоговая цена"
+                                    Width="100"
+                                    Binding="{Binding Price}"/>
                 <DataGridTextColumn Header="Поле для вписывания"
-                                    x:Name="col"
-                                    Width="{Binding Source={x:Reference col}, Path=Width}"/>
+                                    Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

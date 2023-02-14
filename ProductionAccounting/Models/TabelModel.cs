@@ -6,6 +6,7 @@ namespace ProductionAccounting.Models
     {
         public List<OperationModel> Operations { get; set; }
         public string Name { get; set; }
+        public decimal Price { get; set; }
 
         public TabelModel(ProductModel product)
         {
