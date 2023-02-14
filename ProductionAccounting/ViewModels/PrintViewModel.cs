@@ -1,14 +1,9 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
 using ProductionAccounting.Models;
-using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Input;
-using iTextSharp;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System.IO;
+using ProductionAccounting.Services;
 
 namespace ProductionAccounting.ViewModels
 {
@@ -59,42 +54,10 @@ namespace ProductionAccounting.ViewModels
 
         private void ToPrintExecuted()
         {
-            System.IO.FileStream fs = new FileStream(
-                $"Изделие '{Name}' Шаблон.pdf", FileMode.Create);
-            Document document = new Document(PageSize.A4, 25, 25, 30, 30);
-
-            string ttf = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIAL.TTF");
-            var baseFont = BaseFont.CreateFont(ttf, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            var font = new iTextSharp.text.Font(baseFont, 18, iTextSharp.text.Font.NORMAL);
-
-            PdfWriter writer = PdfWriter.GetInstance(document, fs);
-            document.AddAuthor("Ilya B.");
-            document.AddCreator("Product Print");
-            document.AddTitle("The document title - PDF creation using iTextSharp");
-            document.Open();
-            var paragraph = new Paragraph(Name, font);
-            paragraph.Alignment = Element.ALIGN_CENTER;
-            document.Add(paragraph);
-            var table = new Table(4);
-            table.Width = 100;
-            float[] widths = new float[] { 15f, 5f, 10f, 70f };
-            table.Widths = widths;
-            font.Size = 14;
-
-            foreach (var item in Operations)
+            using (var pdfCreator = new PdfCreator(Name))
             {
-                var cell = new Cell(new Phrase(item.Name + '\n' + '\n' + '\n', font));
-                table.AddCell(cell);
-                cell = new Cell(new Phrase(item.Coefficient.CoefficientValue.ToString()));
-                table.AddCell(cell);
-                cell = new Cell(new Phrase(item.Price.ToString()));
-                table.AddCell(cell);
-                table.AddCell(new Cell());
+                pdfCreator.CreatePdf(Operations);
             }
-            document.Add(table);
-            document.Close();
-            writer.Close();
-            fs.Close();
         }
         #endregion
     }

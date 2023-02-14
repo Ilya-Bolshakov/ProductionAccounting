@@ -26,38 +26,39 @@ namespace ProductionAccounting.Services
 
         public bool Edit(ProductModel model, IRepository<Operation> repository)
         {
-            var productVM = new ProductEditorViewModel(repository, model);
-
-            var productV = new ProductEditorWindow()
+            try
             {
-                DataContext = productVM,
-            };
+                var productVM = new ProductEditorViewModel(repository, model);
 
-            Func<bool> errorMessage = new Func<bool>(() =>
+                var productV = new ProductEditorWindow()
+                {
+                    DataContext = productVM,
+                };
+
+                Func<bool> errorMessage = new Func<bool>(() =>
+                {
+                    MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через точку",
+                                    "Ошибка",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error,
+                                    MessageBoxResult.Cancel);
+                    return false;
+                });
+
+                if (productV.ShowDialog() != true) return false;
+                model.Name = productVM.Name;
+                model.Operations = productVM.SelectedOperations;
+                return true;
+            }
+            catch (System.Exception)
             {
-                MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через точку",
-                                "Ошибка",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error,
-                                MessageBoxResult.Cancel);
+                MessageBox.Show("Ошибка при работе программы, попробуйте еще раз",
+                                                 "Ошибка",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Error,
+                                                 MessageBoxResult.Yes);
                 return false;
-            });
-
-            if (productV.ShowDialog() != true) return false;
-            //var regex = new Regex(@"\b\d+\.\d{2}\b");
-            //var coeffValueString = operationVM.CoefficientValue.ToString();
-            //var matches = regex.Matches(coeffValueString);
-            //if (matches.Count != 1)
-            //{
-            //    return errorMessage();
-            //}
-            //else
-            //{
-            //    if (!String.IsNullOrEmpty(coeffValueString.Replace(matches.First().ToString(), ""))) return errorMessage();
-            //}
-            model.Name = productVM.Name;
-            model.Operations = productVM.SelectedOperations;
-            return true;
+            }
         }
     }
 }

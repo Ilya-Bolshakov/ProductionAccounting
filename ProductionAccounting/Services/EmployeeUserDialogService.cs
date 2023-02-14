@@ -23,20 +23,33 @@ namespace ProductionAccounting.Services
 
         public bool Edit(EmployeeModel employee)
         {
-            var employeeVM = new EmployeeEditorWindowViewModel(employee);
-
-            var employeeV = new EmployeeEditorWindow()
+            try
             {
-                DataContext = employeeVM,
-            };
+                var employeeVM = new EmployeeEditorWindowViewModel(employee);
 
-            if (employeeV.ShowDialog() != true) return false;
+                var employeeV = new EmployeeEditorWindow()
+                {
+                    DataContext = employeeVM,
+                };
 
-            employee.Name = employeeVM.Name;
-            employee.Surname = employeeVM.Surname;
-            employee.Patronymic = employeeVM.Patronymic;
+                if (employeeV.ShowDialog() != true) return false;
 
-            return true;
+                employee.Name = employeeVM.Name;
+                employee.Surname = employeeVM.Surname;
+                employee.Patronymic = employeeVM.Patronymic;
+
+                return true;
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show("Ошибка при работе программы, попробуйте еще раз",
+                                                 "Ошибка",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Error,
+                                                 MessageBoxResult.Yes);
+                return false;
+            }
+            
         }
     }
 }
