@@ -37,8 +37,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private Visibility _onLoading;
-        public Visibility OnLoading
+        private bool _onLoading;
+        public bool OnLoading
         {
             get { return _onLoading; }
             private set
@@ -66,14 +66,14 @@ namespace ProductionAccounting.ViewModels
 
         private async void GetCoeffsViewCommandExecuted()
         {
-            OnLoading = Visibility.Visible;
+            OnLoading = true;
             var task = Task.Run(() =>
             {
                 return _coefficientRepository.Items.ToList().Select(e => new CoefficientModel(e));
             });
             var coefficients = await task;
             Coefficients = coefficients.ToObservableCollection();
-            OnLoading = Visibility.Hidden;
+            OnLoading = false;
         }
         #endregion
 

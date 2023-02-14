@@ -6,7 +6,7 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:ProductionAccounting.Views" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
-             xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
+             xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:c="clr-namespace:ProductionAccounting.Converters"
              mc:Ignorable="d"
              d:DesignHeight="750" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance {x:Type viewmodels:CoefficientViewModel}}">
@@ -15,6 +15,9 @@
             <i:InvokeCommandAction Command="{Binding GetCoeffsViewCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <c:VisibleBoolConverter x:Key="converter"/>
+    </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
         <ColumnDefinition Width="150"/>
@@ -69,6 +72,6 @@
     </Grid>
     <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 
-                      Visibility="{Binding OnLoading}"/>
+                      Visibility="{Binding OnLoading, Converter={StaticResource converter}}"/>
     </Grid>
 </UserControl>

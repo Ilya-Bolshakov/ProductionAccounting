@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-      xmlns:local="clr-namespace:ProductionAccounting.Views" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
-      mc:Ignorable="d"
+      xmlns:local="clr-namespace:ProductionAccounting.Views" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:c="clr-namespace:ProductionAccounting.Converters"
+             mc:Ignorable="d"
       d:DataContext="{d:DesignInstance {x:Type viewmodels:EmployeeViewModel}}"
       d:DesignHeight="750" d:DesignWidth="1000">
     <i:Interaction.Triggers>
@@ -14,6 +14,9 @@
             <i:InvokeCommandAction Command="{Binding GetEmployeesViewCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <c:VisibleBoolConverter x:Key="converter"/>
+    </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -69,6 +72,6 @@
         </Grid>
         <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 
-                      Visibility="{Binding OnLoading}"/>
+                      Visibility="{Binding OnLoading, Converter={StaticResource converter}}"/>
     </Grid>
 </UserControl>

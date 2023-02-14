@@ -32,8 +32,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private Visibility _onLoading;
-        public Visibility OnLoading
+        private bool _onLoading;
+        public bool OnLoading
         {
             get { return _onLoading; }
             private set
@@ -60,14 +60,14 @@ namespace ProductionAccounting.ViewModels
 
         private async void GetProductsExecuted()
         {
-            OnLoading = Visibility.Visible;
+            OnLoading = true;
             var task = Task.Run(() =>
             {
                 return _productRepository.Items.ToList().Select(e => new ProductModel(e));
             });
             var products = await task;
             Products = products.ToObservableCollection();
-            OnLoading = Visibility.Hidden;
+            OnLoading = false;
         }
         #endregion
 

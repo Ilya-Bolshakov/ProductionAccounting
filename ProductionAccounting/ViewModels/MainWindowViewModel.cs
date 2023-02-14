@@ -4,6 +4,8 @@ using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
+using System;
+using System.Reflection;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
@@ -44,6 +46,8 @@ namespace ProductionAccounting.ViewModels
             _operationDialog = operationDialog;
             _productDialog = productDialog;
             _printDialog = printDialog;
+
+            IsLoaded = true;
         }
 
         private ViewModel _currentViewModel;
@@ -58,16 +62,27 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        public Type CurrentViewModelType { get; set; }
+
+        public bool IsLoaded { get; set; }
+
         #region Команда открытия вьюхи сотрудников
         private ICommand _showEmployeeViewCommand;
 
         public ICommand ShowEmployeeViewCommand => _showEmployeeViewCommand ??= new LambdaCommand(OnShowEmployeeViewCommandExecuted, CanShowEmployeeViewCommandExecute);
 
-        private bool CanShowEmployeeViewCommandExecute() => true;
+        private bool CanShowEmployeeViewCommandExecute() => IsLoaded;
 
         private void OnShowEmployeeViewCommandExecuted()
         {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
             CurrentViewModel = new EmployeeViewModel(_employees, _userDialog);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
         #endregion
 
@@ -76,11 +91,17 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand ShowProductsViewCommand => _showProductsViewCommand ??= new LambdaCommand(OnShowProductsViewCommandExecuted, CanShowProductsViewCommandExecute);
 
-        private bool CanShowProductsViewCommandExecute() => true;
+        private bool CanShowProductsViewCommandExecute() => IsLoaded;
 
         private void OnShowProductsViewCommandExecuted()
         {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
             CurrentViewModel = new ProductsViewModel(_operation, _product, _productDialog, _printDialog);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
         #endregion
 
@@ -89,11 +110,17 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand ShowCoefficientViewCommand => _showCoefficientViewCommand ??= new LambdaCommand(OnShowCoefficientViewCommandExecuted, CanShowCoefficientViewCommandExecute);
 
-        private bool CanShowCoefficientViewCommandExecute() => true;
+        private bool CanShowCoefficientViewCommandExecute() => IsLoaded;
 
         private void OnShowCoefficientViewCommandExecuted()
         {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
             CurrentViewModel = new CoefficientViewModel(_operationСoefficient, _coeffDialog);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
         #endregion
 
@@ -102,11 +129,37 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand ShowOperationViewCommand => _showOperationViewCommand ??= new LambdaCommand(OnShowOperationViewCommandExecuted, CanShowOperationViewCommandExecute);
 
-        private bool CanShowOperationViewCommandExecute() => true;
+        private bool CanShowOperationViewCommandExecute() => IsLoaded;
 
         private void OnShowOperationViewCommandExecuted()
         {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+            
             CurrentViewModel = new OperationsViewModel(_operation, _operationСoefficient,  _operationDialog);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+
+        private void CurrentViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var model = Convert.ChangeType(sender, CurrentViewModelType);
+            if (e.PropertyName == "OnLoading")
+            {
+                var props = model.GetType().GetProperties();
+                PropertyInfo p = null;
+                foreach (var property in props)
+                {
+                    if (property.Name == e.PropertyName)
+                    {
+                        p = property;
+                        break;
+                    }
+                }
+                IsLoaded = !(bool)p.GetValue(model);
+            }
         }
         #endregion
     }
