@@ -5,52 +5,174 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="OperationEditorWindow" Height="450" Width="800"
+         Height="400" Width="650"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseDown="Window_MouseDown"
+        WindowStyle="None"
+        Title="OperationEditorWindow"
         d:DataContext="{d:DesignInstance viewmodels:OperationEditorViewModel, IsDesignTimeCreatable=True}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetCoefficient}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Название операции" />
-        <TextBlock Grid.Row="1" Text="Значение коэффициента"/>
-        <TextBlock Grid.Row="2" Text="Стоимость"/>
-        <TextBlock Grid.Row="3" Text="Длительность операции"/>
-        <TextBox Grid.Column="1" 
-                 Text="{Binding Name}"/>
-        <ComboBox Grid.Row="1" Grid.Column="1"
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Операции"
+                           Style="{StaticResource DialogTextBox}"/>
+                <Button x:Name="btnMinimize"                           
+                            Grid.Column="1"
+                            Click="btnMinimize_Click"
+                            Style="{StaticResource minimizeBtn}">
+                </Button>
+
+                <Button x:Name="btnClose"                          
+                            Grid.Column="2"
+                            Click="btnClose_Click"
+                            Style="{StaticResource closeBtn}">
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Название операции" 
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="1" 
+                           Text="Значение коэффициента"
+                           TextWrapping="Wrap"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Text="Стоимость"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="3" 
+                           Text="Длительность операции"
+                           TextWrapping="Wrap"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" 
+                 Text="{Binding Name}"
+                         FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,15,0"
+                         Padding="20,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+                <ComboBox Grid.Row="1" Grid.Column="1"
                   ItemsSource="{Binding Coefficients}"
-                  SelectedItem="{Binding Coefficient}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Cost}"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OperationDuration}"/>
-        <Grid Grid.Column="1"
+                  SelectedItem="{Binding Coefficient}"
+                          Margin="10,10,10,10"/>
+                <TextBox Grid.Row="2" Grid.Column="1" 
+                         Text="{Binding Cost}"
+                         FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,15,0"
+                         Padding="20,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+                <TextBox Grid.Row="3" 
+                         Grid.Column="1" 
+                         Text="{Binding OperationDuration}" 
+                         FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,15,0"
+                         Padding="20,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+                <Grid Grid.Column="1"
               Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
-                    Margin="10,0,10,0"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                    Margin="10,10,10,10"
                     Command="{StaticResource DialogResultCommand}"
                     Content="Применить"
-                    CommandParameter="True"/>
-            <Button Grid.Column="1"
-                    Margin="10,0,10,0"
+                    CommandParameter="True"
+                    Style="{StaticResource CommonButtonStyle}"/>
+                    <Button Grid.Column="1"
+                    Margin="10,10,10,10"
                     Content="Отменить"
                     Command="{StaticResource DialogResultCommand}"
-                    CommandParameter="False"/>
+                    CommandParameter="False"
+                    Style="{StaticResource CommonButtonStyle}"/>
+                </Grid>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

@@ -32,7 +32,7 @@
                 <RowDefinition Height="480"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Изделия">
+            <GroupBox Header="Изделия" Foreground="White">
                 <DataGrid ItemsSource="{Binding Products}"
                           SelectedItem="{Binding SelectedItem}">
                     <DataGrid.Columns>

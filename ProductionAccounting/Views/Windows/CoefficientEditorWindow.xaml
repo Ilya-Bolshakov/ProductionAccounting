@@ -25,7 +25,7 @@
                     <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Сотрудники"
+                <TextBlock Text="Коэффициенты"
                            Style="{StaticResource DialogTextBox}"/>
                 <Button x:Name="btnMinimize"                           
                             Grid.Column="1"
