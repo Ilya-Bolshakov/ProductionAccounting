@@ -19,7 +19,6 @@ namespace ProductionAccounting.ViewModels
 
         public EmployeeViewModel()
         {
-
         }
 
         public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog)
@@ -39,8 +38,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private Visibility _onLoading;
-        public Visibility OnLoading
+        private bool _onLoading;
+        public bool OnLoading
         {
             get { return _onLoading; }
             private set
@@ -68,14 +67,14 @@ namespace ProductionAccounting.ViewModels
 
         private async void GetEmployeesViewCommandExecuted()
         {
-            OnLoading = Visibility.Visible;
+            OnLoading = true;
             var task = Task.Run(() =>
             {
                 return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
             });
             var employees = await task;
             Employees = employees.ToObservableCollection();
-            OnLoading = Visibility.Hidden;
+            OnLoading = false;
         }
         #endregion
 
@@ -84,7 +83,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand AddEmployeeViewCommand => _addEmployeeViewCommand ??= new LambdaCommand(AddEmployeeViewCommandExecuted, AddEmployeeViewCommandExecute);
 
-        private bool AddEmployeeViewCommandExecute() => true;
+        private bool AddEmployeeViewCommandExecute() => !OnLoading;
 
         private async void AddEmployeeViewCommandExecuted()
         {

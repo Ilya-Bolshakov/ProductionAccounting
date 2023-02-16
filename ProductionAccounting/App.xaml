@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/MainStyles.xaml"/>
+                <ResourceDictionary Source="Styles/DialogStyles.xaml"/>
                 <ResourceDictionary Source="Styles/MenuButtomTheme.xaml"/>
                 <ResourceDictionary Source="Styles/CommonButtonStyle.xaml"/>
                 <ResourceDictionary Source="Infrastructure/Commands/AppCommands.xaml"/>

@@ -38,8 +38,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private Visibility _onLoading;
-        public Visibility OnLoading
+        private bool _onLoading;
+        public bool OnLoading
         {
             get { return _onLoading; }
             private set
@@ -63,18 +63,18 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand GetOperations => _getOperations ??= new LambdaCommand(GetOperationsExecuted, GetOperationsExecute);
 
-        private bool GetOperationsExecute() => true;
+        private bool GetOperationsExecute() => !OnLoading;
 
         private async void GetOperationsExecuted()
         {
-            OnLoading = Visibility.Visible;
+            OnLoading = true;
             var task = Task.Run(() =>
             {
                 return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
             });
             var operations = await task;
             Operations = operations.ToObservableCollection();
-            OnLoading = Visibility.Hidden;
+            OnLoading = false;
         }
         #endregion
 

@@ -20,6 +20,19 @@
         <Setter Property="GridLinesVisibility" Value="Vertical"/>
         <Setter Property="VerticalGridLinesBrush" Value="DarkGray"/>
         <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
+        <Setter Property="Background" Value="AliceBlue"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="#C183FF" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style TargetType="GroupBox">
+        <Setter Property="Foreground" Value="#272537"/>
+        <Setter Property="BorderBrush" Value="#272537"/>
     </Style>
 
     <Style TargetType="fa:IconBlock">

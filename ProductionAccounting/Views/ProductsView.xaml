@@ -7,14 +7,17 @@
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
       xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
       mc:Ignorable="d" 
-      xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
-      d:DesignHeight="750" d:DesignWidth="1000"
+      xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:c="clr-namespace:ProductionAccounting.Converters"
+             d:DesignHeight="750" d:DesignWidth="1000"
       d:DataContext="{d:DesignInstance {x:Type viewmodels:ProductsViewModel}}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetProducts}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <c:VisibleBoolConverter x:Key="converter"/>
+    </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -29,7 +32,7 @@
                 <RowDefinition Height="480"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Изделия" Foreground="White">
+            <GroupBox Header="Изделия">
                 <DataGrid ItemsSource="{Binding Products}"
                           SelectedItem="{Binding SelectedItem}">
                     <DataGrid.Columns>
@@ -67,9 +70,11 @@
                     Command="{Binding DeleteProducts}"/>
                 </Grid>
             </Grid>
+            <Button Grid.Column="2"
+                    Command="{Binding Print}"/>
         </Grid>
         <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 
-                      Visibility="{Binding OnLoading}"/>
+                      Visibility="{Binding OnLoading, Converter={StaticResource converter}}"/>
     </Grid>
 </UserControl>
