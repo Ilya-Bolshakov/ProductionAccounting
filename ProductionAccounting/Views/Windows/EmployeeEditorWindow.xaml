@@ -6,42 +6,78 @@
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows"
         xmlns:vm="clr-namespace:ProductionAccounting.ViewModels"
         mc:Ignorable="d"
-        Title="EmployeeEditorWindow" Height="200" Width="360"
+        Title="EmployeeEditorWindow" Height="300" Width="500"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None"
         d:DataContext="{d:DesignInstance vm:EmployeeEditorWindowViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Имя" />
-        <TextBlock Grid.Row="1" Text="Фамилия"/>
-        <TextBlock Grid.Row="2" Text="Отчество"/>
-        <TextBox Grid.Column="1" 
-                 Text="{Binding Name}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
-        <Grid Grid.Column="1"
-              Grid.Row="3">
+    <Border CornerRadius="25"
+            BorderThickness="3">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#462Ad8" Offset="0"/>
+                <GradientStop Color="#DA34AE" Offset="0.75"/>
+                <GradientStop Color="#8A16C1" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                <GradientStop Color="#060531" Offset="0"/>
+                <GradientStop Color="#1B1448" Offset="0.75"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </Grid>
+        <!--<Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
+            <TextBlock Text="Имя" />
+            <TextBlock Grid.Row="1" Text="Фамилия"/>
+            <TextBlock Grid.Row="2" Text="Отчество"/>
+            <TextBox Grid.Column="1" 
+                 Text="{Binding Name}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
+            <Grid Grid.Column="1"
+              Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
                     Margin="10,0,10,0"
                     Command="{StaticResource DialogResultCommand}"
                     Content="Применить"
                     CommandParameter="True"/>
-            <Button Grid.Column="1"
+                <Button Grid.Column="1"
                     Margin="10,0,10,0"
                     Content="Отменить"
                     Command="{StaticResource DialogResultCommand}"
                     CommandParameter="False"/>
-        </Grid>
-    </Grid>
+            </Grid>
+        </Grid>-->
+    </Border>
+    
 </Window>

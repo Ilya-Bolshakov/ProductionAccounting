@@ -51,7 +51,7 @@
                 </Grid.ColumnDefinitions>
                 <Button 
                     Height="40" 
-                    Content="Добавить изделие"
+                    Content="Добавить операцию"
                     Style="{StaticResource CommonButtonStyle}"
                     Command="{Binding AddOperations}">
                 </Button>
