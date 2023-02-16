@@ -71,7 +71,22 @@
                 </Grid>
             </Grid>
             <Button Grid.Column="2"
-                    Command="{Binding Print}"/>
+                    Command="{Binding Print}"
+                    Style="{StaticResource CommonButtonStyle}"
+                    VerticalAlignment="Center">
+                <Button.Content>
+                    <fa:IconBlock Icon="Print" RenderTransformOrigin="0.5,0.5" Padding="10,10,10,10">
+                        <fa:IconBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.99999999999999989" ScaleY="0.99999999999999989"/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="91.507607999999991"/>
+                                <TranslateTransform Y="0"/>
+                            </TransformGroup>
+                        </fa:IconBlock.RenderTransform>
+                    </fa:IconBlock>
+                </Button.Content>
+            </Button>
         </Grid>
         <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 
