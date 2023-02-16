@@ -62,7 +62,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand GetCoeffsViewCommand => _getCoeffsViewCommand ??= new LambdaCommand(GetCoeffsViewCommandExecuted, GetCoeffsViewCommandExecute);
 
-        private bool GetCoeffsViewCommandExecute() => true;
+        private bool GetCoeffsViewCommandExecute() => !OnLoading;
 
         private async void GetCoeffsViewCommandExecuted()
         {

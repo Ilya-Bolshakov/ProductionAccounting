@@ -76,7 +76,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand AddProducts => _addProducts ??= new LambdaCommand(AddProductsExecuted, AddProductsExecute);
 
-        private bool AddProductsExecute() => true;
+        private bool AddProductsExecute() => !OnLoading;
 
         private async void AddProductsExecuted()
         {

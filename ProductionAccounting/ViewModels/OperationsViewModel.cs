@@ -63,7 +63,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand GetOperations => _getOperations ??= new LambdaCommand(GetOperationsExecuted, GetOperationsExecute);
 
-        private bool GetOperationsExecute() => true;
+        private bool GetOperationsExecute() => !OnLoading;
 
         private async void GetOperationsExecuted()
         {

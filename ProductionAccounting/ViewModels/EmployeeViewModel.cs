@@ -83,7 +83,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand AddEmployeeViewCommand => _addEmployeeViewCommand ??= new LambdaCommand(AddEmployeeViewCommandExecuted, AddEmployeeViewCommandExecute);
 
-        private bool AddEmployeeViewCommandExecute() => true;
+        private bool AddEmployeeViewCommandExecute() => !OnLoading;
 
         private async void AddEmployeeViewCommandExecuted()
         {
