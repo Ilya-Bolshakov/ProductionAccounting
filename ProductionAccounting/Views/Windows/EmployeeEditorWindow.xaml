@@ -6,28 +6,14 @@
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows"
         xmlns:vm="clr-namespace:ProductionAccounting.ViewModels"
         mc:Ignorable="d"
-        Title="EmployeeEditorWindow" Height="300" Width="500"
+        Title="EmployeeEditorWindow" Height="400" Width="650"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         Background="Transparent"
+        MouseDown="Window_MouseDown"
         WindowStyle="None"
         d:DataContext="{d:DesignInstance vm:EmployeeEditorWindowViewModel, IsDesignTimeCreatable=True}">
-    <Border CornerRadius="25"
-            BorderThickness="3">
-        <Border.BorderBrush>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#462Ad8" Offset="0"/>
-                <GradientStop Color="#DA34AE" Offset="0.75"/>
-                <GradientStop Color="#8A16C1" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.BorderBrush>
-
-        <Border.Background>
-            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                <GradientStop Color="#060531" Offset="0"/>
-                <GradientStop Color="#1B1448" Offset="0.75"/>
-            </LinearGradientBrush>
-        </Border.Background>
+    <Border Style="{StaticResource DialogBorder}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -40,44 +26,128 @@
                     <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
+                <TextBlock Text="Сотрудники"
+                           Style="{StaticResource DialogTextBox}"/>
+                <Button x:Name="btnMinimize"                           
+                            Grid.Column="1"
+                            Click="btnMinimize_Click"
+                            Style="{StaticResource minimizeBtn}">
+                </Button>
+
+                <Button x:Name="btnClose"                          
+                            Grid.Column="2"
+                            Click="btnClose_Click"
+                            Style="{StaticResource closeBtn}">
+                </Button>
             </Grid>
-        </Grid>
-        <!--<Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Имя" />
-            <TextBlock Grid.Row="1" Text="Фамилия"/>
-            <TextBlock Grid.Row="2" Text="Отчество"/>
-            <TextBox Grid.Column="1" 
-                 Text="{Binding Name}"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
-            <Grid Grid.Column="1"
-              Grid.Row="3">
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0"
-                    Margin="10,0,10,0"
-                    Command="{StaticResource DialogResultCommand}"
-                    Content="Применить"
-                    CommandParameter="True"/>
-                <Button Grid.Column="1"
-                    Margin="10,0,10,0"
-                    Content="Отменить"
-                    Command="{StaticResource DialogResultCommand}"
-                    CommandParameter="False"/>
+                <TextBlock Text="Имя"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Text="Фамилия"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Text="Отчество"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" 
+                         Text="{Binding Name}"
+                         FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,15,0"
+                         Padding="20,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}" FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,15,0"
+                         Padding="20,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}" FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,15,0"
+                         Padding="20,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+                <Grid Grid.Column="1"
+              Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                        Margin="10,0,10,10"
+                        Command="{StaticResource DialogResultCommand}"
+                        Content="Применить"
+                        CommandParameter="True"
+                        Style="{StaticResource CommonButtonStyle}"/>
+                    <Button Grid.Column="1"
+                        Margin="10,0,10,10"
+                        Content="Отменить"
+                        Command="{StaticResource DialogResultCommand}"
+                        CommandParameter="False"
+                            Style="{StaticResource CommonButtonStyle}"/>
+                </Grid>
             </Grid>
-        </Grid>-->
+
+        </Grid>
     </Border>
-    
+
 </Window>
