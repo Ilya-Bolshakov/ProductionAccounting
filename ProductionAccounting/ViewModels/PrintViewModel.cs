@@ -39,8 +39,11 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        public TabelModel TabelModel { get; private set; }
+
         public PrintViewModel(TabelModel model)
         {
+            TabelModel = model;
             Operations = new List<OperationModel>(model.Operations);
             Name = model.Name;
         }
@@ -54,9 +57,16 @@ namespace ProductionAccounting.ViewModels
 
         private void ToPrintExecuted()
         {
-            using (var pdfCreator = new PdfCreator(Name))
+            try
             {
-                pdfCreator.CreatePdf(Operations);
+                using (var pdfCreator = new PdfCreator(TabelModel))
+                {
+                    pdfCreator.CreatePdf();
+                }
+            }
+            catch (System.Exception)
+            {
+                throw;
             }
         }
         #endregion
