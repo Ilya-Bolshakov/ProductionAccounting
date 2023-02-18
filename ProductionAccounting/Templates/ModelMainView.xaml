@@ -15,4 +15,7 @@
     <DataTemplate DataType="{x:Type vm:OperationsViewModel}">
         <view:OperationsView DataContext="{Binding}"/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:InsertDataViewModel}">
+        <view:InsertDataView DataContext="{Binding}"/>
+    </DataTemplate>
 </ResourceDictionary>

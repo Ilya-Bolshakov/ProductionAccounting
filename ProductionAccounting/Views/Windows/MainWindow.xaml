@@ -101,6 +101,11 @@
                              Command="{Binding ShowCoefficientViewCommand}">
                 </RadioButton>
 
+                <RadioButton Content="Добавление данных из табелей"
+                             Style="{StaticResource MenuButtomTheme}"
+                             Command="{Binding ShowInsertDataViewCommand}">
+                </RadioButton>
+
                 <RadioButton Content="Будущее"
                              Style="{StaticResource MenuButtomTheme}"/>
             </StackPanel>

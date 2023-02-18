@@ -148,6 +148,26 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
+        #region Команда открытия вьюхи добавления данных
+        private ICommand _showInsertDataViewCommand;
+
+        public ICommand ShowInsertDataViewCommand => _showInsertDataViewCommand ??= new LambdaCommand(ShowInsertDataViewCommandExecuted, ShowInsertDataViewCommandExecute);
+
+        private bool ShowInsertDataViewCommandExecute() => IsLoaded;
+
+        private void ShowInsertDataViewCommandExecuted()
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
+            CurrentViewModel = new InsertDataViewModel();
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+        #endregion
+
         private void CurrentViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var model = Convert.ChangeType(sender, CurrentViewModelType);
