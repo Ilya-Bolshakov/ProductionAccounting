@@ -1,13 +1,11 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using ProductionAccounting.Models;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductionAccounting.Services
 {
@@ -86,9 +84,12 @@ namespace ProductionAccounting.Services
 
         private FileStream GetNewPdfStream()
         {
+            
             var fileName = $"Изделие '{TabelModel.Name}' Шаблон.pdf";
+            IConfiguration config = App.Host.Services.GetRequiredService<IConfiguration>();
+            var filePath = Path.Combine(config["SavePdfsFolder"], fileName);
             return new FileStream(
-                fileName, FileMode.Create);
+                filePath, FileMode.Create);
         }
 
         public void Dispose() => Dispose(true);

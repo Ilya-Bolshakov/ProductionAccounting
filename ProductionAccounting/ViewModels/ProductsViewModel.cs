@@ -1,8 +1,11 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using ProductionAccounting.Services;
 using ProductionAccounting.Services.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +22,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<Operation> _operationRepository;
         private readonly IUserDialogWithRepository<ProductModel, Operation> _userDialogWithRepo;
         private readonly IUserPrintDialog _printDialog;
+        private readonly IChangeSaveFolderService _changeSaveFolderService;
 
 
         private ObservableCollection<ProductModel> _products;
@@ -160,14 +164,31 @@ namespace ProductionAccounting.ViewModels
         }
         #endregion
 
+        #region Команда изменения папки
+        private ICommand _editFolder;
+
+        public ICommand EditFolder => _editFolder ??= new LambdaCommand(EditFolderExecuted, EditFolderExecute);
+
+        private bool EditFolderExecute() => true;
+
+        private void EditFolderExecuted()
+        {
+            ChangeSaveFolderService service = new ChangeSaveFolderService();
+            if (service.ShowDialog())
+            {
+                service.EditFolder();
+            }
+        }
+        #endregion
 
         public ProductsViewModel(IRepository<Operation> operationRepository, IRepository<Product> productRepository,
-            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog)
+            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog, IChangeSaveFolderService changeSaveFolderService)
         {
             _operationRepository = operationRepository;
             _productRepository = productRepository;
             _userDialogWithRepo = userDialog;
             _printDialog = printDialog;
+            _changeSaveFolderService = changeSaveFolderService;
         }
     }
 }
