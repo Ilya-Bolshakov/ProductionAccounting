@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using ProductionAccounting.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace ProductionAccounting.Services
             TabelModel = tabelModel;
         }
 
-        public void CreatePdf()
+        public string CreatePdf()
         {
             try
             {
@@ -43,24 +44,36 @@ namespace ProductionAccounting.Services
                 var paragraph = new Paragraph(TabelModel.Name, font);
                 paragraph.Alignment = Element.ALIGN_CENTER;
                 _document.Add(paragraph);
-                var table = new Table(4);
+                var table = new Table(5);
                 table.Width = 100;
-                float[] widths = new float[] { 15f, 5f, 10f, 70f };
+                float[] widths = new float[] { 15f, 5f, 10f, 65f, 5f };
                 table.Widths = widths;
                 font.Size = 14;
 
+                var cell = new Cell(new Phrase("Название операции", font));
+                table.AddCell(cell);
+                cell = new Cell(new Phrase("Коэффициент", font));
+                table.AddCell(cell);
+                cell = new Cell(new Phrase("Цена", font));
+                table.AddCell(cell);
+                cell = new Cell(new Phrase("Количество", font));
+                table.AddCell(cell);
+                cell = new Cell(new Phrase("Итого", font));
+                table.AddCell(cell);
+
                 foreach (var item in TabelModel.Operations)
                 {
-                    var cell = new Cell(new Phrase(item.Name + '\n' + '\n' + '\n', font));
+                    cell = new Cell(new Phrase(item.Name + '\n' + '\n' + '\n', font));
                     table.AddCell(cell);
                     cell = new Cell(new Phrase(item.Coefficient.CoefficientValue.ToString()));
                     table.AddCell(cell);
                     cell = new Cell(new Phrase(item.Price.ToString()));
                     table.AddCell(cell);
                     table.AddCell(new Cell());
+                    table.AddCell(new Cell());
                 }
                 _document.Add(table);
-                throw new Exception();
+                return _stream.Name;
             }
             catch (Exception)
             {
