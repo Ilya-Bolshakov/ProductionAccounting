@@ -3,10 +3,189 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ProductionAccounting.Views"
-             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:ProductionAccounting.Views" 
+             xmlns:c="clr-namespace:ProductionAccounting.Converters" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance {x:Type viewmodels:InsertDataViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetData}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <c:VisibleBoolConverter x:Key="converter"/>
+        <c:NumberOfOperationsConverter x:Key="numberConverter"/>
+    </UserControl.Resources>
+    <Grid Background="#272537">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="270"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Сотрудник"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="1"
+                          ItemsSource="{Binding EmployeeList}"
+                          SelectedItem="{Binding SelectedEmployee}"
+                          Height="30"
+                          FontSize="14"
+                          Name="CB_Employee"
+                          IsEditable="True"
+                          VerticalAlignment="Top"
+                           IsTextSearchEnabled="False"
+                          TextBoxBase.TextChanged="ComboBoxEmployees_TextChanged">
+                </ComboBox>
+
+                <TextBlock Text="Год"
+                           Grid.Column="1"
+                           Margin="10,0,10,0"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1"
+                         Grid.Row="1"
+                 Text="{Binding CurrentYear, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Top"
+                         Margin="10,0,10,36"
+                         Padding="0,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+
+                <TextBlock Text="Месяц"
+                           Grid.Column="2"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                <ComboBox Grid.Column="2"
+                          Grid.Row="1"
+                          FontSize="20"
+                          Height="30"
+                          VerticalAlignment="Top"
+                           ItemsSource="{Binding Monthes}"
+                          SelectedItem="{Binding CurrentMonth}"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Операция"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="1"
+                          IsEditable="True"
+                          ItemsSource="{Binding OperationList}"
+                          SelectedItem="{Binding SelectedOperation}"
+                          Height="30"
+                          VerticalAlignment="Top"
+                          FontSize="16"
+                          Name="CB"
+                          IsTextSearchEnabled="False"
+                          TextBoxBase.TextChanged="ComboBox_TextChanged">
+                </ComboBox>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding NumberOfOperations, Converter={StaticResource numberConverter}}"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Введите новое число выполненных операций" 
+                           Grid.Column="1"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBox Grid.Column="2" 
+                 Text="{Binding NewNumberOfOperations, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="LightGray"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         Margin="0,0,0,0"
+                         Padding="5,0,0,0">
+                    <TextBox.Background>
+                        <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                    </TextBox.Background>
+                </TextBox>
+            </Grid>
+            <Button Grid.Row="3"
+                    Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding InsertData}"
+                    Content="Сохранить"
+                    Height="40"
+                    Width="120"/>
+        </Grid>
+        <fa:IconBlock Grid.Column="1" 
+                      Icon="Spinner" 
+                      Visibility="{Binding OnLoading, Converter={StaticResource converter}}"/>
     </Grid>
 </UserControl>

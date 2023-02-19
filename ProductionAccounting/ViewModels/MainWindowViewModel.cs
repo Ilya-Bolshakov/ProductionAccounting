@@ -24,6 +24,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IUserDialogWithRepository<ProductModel, Operation> _productDialog;
         private readonly IUserPrintDialog _printDialog;
         private readonly IChangeSaveFolderService _changeSaveFolderService;
+        private readonly IAddingJobDataService _addingJobDataService;
 
 
         public MainWindowViewModel(
@@ -37,7 +38,8 @@ namespace ProductionAccounting.ViewModels
             IUserDialogWithRepository<OperationModel, OperationСoefficient> operationDialog,
             IUserDialogWithRepository<ProductModel, Operation> productDialog,
             IUserPrintDialog printDialog,
-            IChangeSaveFolderService changeSaveFolderService
+            IChangeSaveFolderService changeSaveFolderService,
+            IAddingJobDataService addingJobDataService
             )
         {
             _employees = employees;
@@ -51,6 +53,8 @@ namespace ProductionAccounting.ViewModels
             _productDialog = productDialog;
             _printDialog = printDialog;
             _changeSaveFolderService = changeSaveFolderService;
+            _addingJobDataService = addingJobDataService;
+
             IsLoaded = true;
         }
 
@@ -162,7 +166,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new InsertDataViewModel();
+            CurrentViewModel = new InsertDataViewModel(_operation, _employees, _addingJobDataService);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
