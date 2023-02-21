@@ -17,6 +17,7 @@ namespace ProductionAccounting.Registrators
             .AddTransient<IUserPrintDialog, PrintDialog>()
             .AddTransient<IChangeSaveFolderService, ChangeSaveFolderService>()
             .AddTransient<IAddingJobDataService, AddingJobDataService>()
+            .AddTransient<ICalculateSalaryService, CalculateSalaryService>()
             ;
     }
 }

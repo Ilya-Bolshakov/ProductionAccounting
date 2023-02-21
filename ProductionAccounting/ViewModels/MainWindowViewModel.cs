@@ -25,6 +25,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IUserPrintDialog _printDialog;
         private readonly IChangeSaveFolderService _changeSaveFolderService;
         private readonly IAddingJobDataService _addingJobDataService;
+        private readonly ICalculateSalaryService _salaryService;
 
 
         public MainWindowViewModel(
@@ -39,7 +40,8 @@ namespace ProductionAccounting.ViewModels
             IUserDialogWithRepository<ProductModel, Operation> productDialog,
             IUserPrintDialog printDialog,
             IChangeSaveFolderService changeSaveFolderService,
-            IAddingJobDataService addingJobDataService
+            IAddingJobDataService addingJobDataService,
+            ICalculateSalaryService salaryService
             )
         {
             _employees = employees;
@@ -54,6 +56,7 @@ namespace ProductionAccounting.ViewModels
             _printDialog = printDialog;
             _changeSaveFolderService = changeSaveFolderService;
             _addingJobDataService = addingJobDataService;
+            _salaryService = salaryService;
 
             IsLoaded = true;
         }
@@ -167,6 +170,26 @@ namespace ProductionAccounting.ViewModels
             }
 
             CurrentViewModel = new InsertDataViewModel(_operation, _employees, _addingJobDataService);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+        #endregion
+
+        #region Команда открытия вьюхи расчет зарплат
+        private ICommand _showCalculateSalaryViewCommand;
+
+        public ICommand ShowCalculateSalaryViewCommand => _showCalculateSalaryViewCommand ??= new LambdaCommand(ShowCalculateSalaryViewCommandExecuted, ShowCalculateSalaryViewCommandExecute);
+
+        private bool ShowCalculateSalaryViewCommandExecute() => IsLoaded;
+
+        private void ShowCalculateSalaryViewCommandExecuted()
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
+            CurrentViewModel = new CalculateSalaryViewModel(_salaryService);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }

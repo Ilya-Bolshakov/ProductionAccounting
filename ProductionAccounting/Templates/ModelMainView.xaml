@@ -18,4 +18,7 @@
     <DataTemplate DataType="{x:Type vm:InsertDataViewModel}">
         <view:InsertDataView DataContext="{Binding}"/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CalculateSalaryViewModel}">
+        <view:CalculateSalaryView DataContext="{Binding}"/>
+    </DataTemplate>
 </ResourceDictionary>
