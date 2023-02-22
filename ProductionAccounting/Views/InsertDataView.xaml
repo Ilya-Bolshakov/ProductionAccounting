@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <c:VisibleBoolConverter x:Key="converter"/>
         <c:NumberOfOperationsConverter x:Key="numberConverter"/>
+        <c:ReverseConverter x:Key="reverseConverter"/>
     </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
@@ -52,6 +53,7 @@
                 <ComboBox Grid.Row="1"
                           ItemsSource="{Binding EmployeeList}"
                           SelectedItem="{Binding SelectedEmployee}"
+                          IsEnabled="{Binding OnLoading, Converter={StaticResource reverseConverter}}"
                           Height="30"
                           FontSize="14"
                           Name="CB_Employee"
@@ -122,6 +124,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"/>
                 <ComboBox Grid.Row="1"
+                          IsEnabled="{Binding OnLoading, Converter={StaticResource reverseConverter}}"
                           IsEditable="True"
                           ItemsSource="{Binding OperationList}"
                           SelectedItem="{Binding SelectedOperation}"

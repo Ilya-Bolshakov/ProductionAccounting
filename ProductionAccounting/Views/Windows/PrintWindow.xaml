@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows" 
         xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" 
         mc:Ignorable="d"
-        Title="PrintWindow" Height="450" Width="800"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        Title="{Binding Name, StringFormat=Создание шаблона для изделия {0}}" Height="450" Width="800"
         d:DataContext="{d:DesignInstance {x:Type viewmodels:PrintViewModel}}">
     <Grid>
         <Grid.RowDefinitions>
@@ -20,7 +21,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="1"
-                       Text="{Binding Name}"/>
+                       Text="{Binding Name}"
+                       FontSize="26"/>
             <Button Grid.Column="3"
                     Height="40" 
                     Content="Вывод на печать"
