@@ -11,6 +11,11 @@ namespace ProductionAccounting.Services
 {
     public class OperationUserDialogService : IUserDialogWithRepository<OperationModel, OperationСoefficient>
     {
+        private readonly IShowExceptionDialogService _showExceptionDialogService;
+        public OperationUserDialogService(IShowExceptionDialogService showExceptionDialogService)
+        {
+            _showExceptionDialogService = showExceptionDialogService;
+        }
         public bool ConfirmOperation(string info, string caption)
         {
             return MessageBox.Show(info,
@@ -48,13 +53,9 @@ namespace ProductionAccounting.Services
                 model.OperationDuration = operationVM.OperationDuration;
                 return true;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                MessageBox.Show("Ошибка при работе программы, попробуйте еще раз",
-                                                 "Ошибка",
-                                                 MessageBoxButton.OK,
-                                                 MessageBoxImage.Error,
-                                                 MessageBoxResult.Yes);
+                _showExceptionDialogService.ShowDialog("Ошибка при работе программы, попробуйте еще раз. Показать ошибку для разработчика?", ex.Message);
                 return false;
             }
         }

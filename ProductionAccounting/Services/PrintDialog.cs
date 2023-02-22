@@ -8,6 +8,11 @@ namespace ProductionAccounting.Services
 {
     public class PrintDialog : IUserPrintDialog
     {
+        private readonly IShowExceptionDialogService _showExceptionDialogService;
+        public PrintDialog(IShowExceptionDialogService showExceptionDialogService)
+        {
+            _showExceptionDialogService = showExceptionDialogService;
+        }
         public bool ShowPrintDialog(TabelModel model)
         {
             try
@@ -20,13 +25,9 @@ namespace ProductionAccounting.Services
                 printDialog.ShowDialog();
                 return true;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                MessageBox.Show("Ошибка при работе программы, попробуйте еще раз",
-                                  "Ошибка",
-                                  MessageBoxButton.OK,
-                                  MessageBoxImage.Error,
-                                  MessageBoxResult.Yes);
+                _showExceptionDialogService.ShowDialog("Ошибка при работе программы, попробуйте еще раз. Показать ошибку для разработчика?", ex.Message);
                 return false;
             }
             

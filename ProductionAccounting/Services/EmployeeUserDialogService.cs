@@ -8,9 +8,10 @@ namespace ProductionAccounting.Services
 {
     public class EmployeeUserDialogService : IUserDialog<EmployeeModel>
     {
-        public EmployeeUserDialogService()
+        private readonly IShowExceptionDialogService _showExceptionDialogService;
+        public EmployeeUserDialogService(IShowExceptionDialogService showExceptionDialogService)
         {
-
+            _showExceptionDialogService = showExceptionDialogService;
         }
         public bool ConfirmOperation(string info, string caption)
         {
@@ -40,13 +41,9 @@ namespace ProductionAccounting.Services
 
                 return true;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                MessageBox.Show("Ошибка при работе программы, попробуйте еще раз",
-                                                 "Ошибка",
-                                                 MessageBoxButton.OK,
-                                                 MessageBoxImage.Error,
-                                                 MessageBoxResult.Yes);
+                _showExceptionDialogService.ShowDialog("Ошибка при работе программы, попробуйте еще раз. Показать ошибку для разработчика?", ex.Message);
                 return false;
             }
             

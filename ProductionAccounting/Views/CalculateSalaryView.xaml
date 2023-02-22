@@ -17,6 +17,7 @@
     </i:Interaction.Triggers>
     <UserControl.Resources>
         <c:VisibleBoolConverter x:Key="converter"/>
+        <c:ReverseConverter x:Key="reverveConverter"/>
     </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
@@ -53,6 +54,7 @@
                 <ComboBox Grid.Row="1"
                           ItemsSource="{Binding EmployeeList}"
                           SelectedItem="{Binding SelectedEmployee}"
+                          IsEnabled="{Binding OnLoading, Converter={StaticResource reverveConverter}}"
                           Height="30"
                           FontSize="14"
                           Name="CB_Employee"

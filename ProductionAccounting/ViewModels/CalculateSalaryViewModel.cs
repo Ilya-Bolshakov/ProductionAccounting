@@ -124,7 +124,7 @@ namespace ProductionAccounting.ViewModels
 
         private bool GetSalaryExecute() => !OnLoading;
 
-        private async void GetSalaryExecuted()
+        private void GetSalaryExecuted()
         {
             OnLoading = true;
             Salary = _service.CalculateEmployeeSalary(SelectedEmployee.Id, CurrentYear, CurrentMonth);

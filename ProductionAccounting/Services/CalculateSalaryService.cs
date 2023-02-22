@@ -10,22 +10,35 @@ namespace ProductionAccounting.Services
     {
         IRepository<ExecutedOperation> _repository;
         IRepository<Operation> _operationRepository;
-        public CalculateSalaryService(IRepository<ExecutedOperation> repository, IRepository<Operation> operationRepository)
+        IShowExceptionDialogService _showExceptionDialog;
+
+        public CalculateSalaryService(IRepository<ExecutedOperation> repository, IRepository<Operation> operationRepository, IShowExceptionDialogService showExceptionDialogService)
         {
             _repository = repository;
             _operationRepository = operationRepository;
+            _showExceptionDialog = showExceptionDialogService;
         }
 
         public decimal CalculateEmployeeSalary(int employeeId, int year, int month)
         {
-            var dataEmployee = _repository.Items.Where(r => r.Year == year && r.Month == month && r.Employee.Id == employeeId);
-            var operations = _operationRepository.Items;
-            var data = from employee in dataEmployee
-                    join operation in operations on employee.Operation.Id equals operation.Id
-                    select new { employee.CountExecutedOperation, operation };
-            var da = data.Select(d => new OperationModel(d.operation).Price * d.CountExecutedOperation).ToList();
+            try
+            {
+                var dataEmployee = _repository.Items.Where(r => r.Year == year && r.Month == month && r.Employee.Id == employeeId);
+                var operations = _operationRepository.Items;
+                var data = from employee in dataEmployee
+                           join operation in operations on employee.Operation.Id equals operation.Id
+                           select new { employee.CountExecutedOperation, operation };
+                var da = data.Select(d => new OperationModel(d.operation).Price * d.CountExecutedOperation).ToList();
 
-            return da.Sum();
+                return da.Sum();
+            }
+            catch (System.Exception ex)
+            {
+
+                _showExceptionDialog.ShowDialog("Ошибка при подсчете зарплаты. Попробуйте еще раз.\nПоказать ошибку для разработчика?", ex.Message);
+                return 0;
+            }
+           
         }
     }
 }
