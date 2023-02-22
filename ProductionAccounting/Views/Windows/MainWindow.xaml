@@ -104,12 +104,17 @@
                 <RadioButton Content="Расчет зарплат"
                              Style="{StaticResource MenuButtomTheme}"
                              Command="{Binding ShowCalculateSalaryViewCommand}"/>
-                
+
                 <RadioButton Content="Добавление данных из табелей"
                              Style="{StaticResource SubMenuButtomTheme}"
                              Command="{Binding ShowInsertDataViewCommand}">
                 </RadioButton>
 
+                <RadioButton Content="Добавление данных из табелей1"
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowWorkDataViewCommand}">
+                </RadioButton>
+                
             </StackPanel>
             <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>

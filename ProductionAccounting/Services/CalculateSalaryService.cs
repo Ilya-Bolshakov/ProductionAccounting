@@ -23,8 +23,9 @@ namespace ProductionAccounting.Services
             var data = from employee in dataEmployee
                     join operation in operations on employee.Operation.Id equals operation.Id
                     select new { employee.CountExecutedOperation, operation };
+            var da = data.Select(d => new OperationModel(d.operation).Price * d.CountExecutedOperation).ToList();
 
-            return data.Sum(i => i.CountExecutedOperation * new OperationModel(i.operation).Price);
+            return da.Sum();
         }
     }
 }

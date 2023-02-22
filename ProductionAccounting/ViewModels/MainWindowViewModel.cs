@@ -189,7 +189,28 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new CalculateSalaryViewModel(_salaryService);
+            CurrentViewModel = new CalculateSalaryViewModel(_salaryService, _employees);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+        #endregion
+
+
+        #region Команда открытия вьюхи расчет зарплат
+        private ICommand _showWorkDataViewCommand;
+
+        public ICommand ShowWorkDataViewCommand => _showWorkDataViewCommand ??= new LambdaCommand(ShowWorkDataViewCommandExecuted, ShowWorkDataViewCommandExecute);
+
+        private bool ShowWorkDataViewCommandExecute() => IsLoaded;
+
+        private void ShowWorkDataViewCommandExecuted()
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
+            CurrentViewModel = new WorkDataViewModel(_employees);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }

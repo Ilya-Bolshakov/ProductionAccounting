@@ -159,12 +159,12 @@ namespace ProductionAccounting.ViewModels
             });
             var operations = await task;
             OperationList = operations.ToList();
-            var getEmployeeTask = Task.Run(() =>
-            {
-                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
-            });
-            var employees = await getEmployeeTask;
-            EmployeeList = employees.ToList();
+            //var getEmployeeTask = Task.Run(() =>
+            //{
+            //    return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
+            //});
+            //var employees = await getEmployeeTask;
+            //EmployeeList = employees.ToList();
             OnLoading = false;
         }
         #endregion
