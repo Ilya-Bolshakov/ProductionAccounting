@@ -111,9 +111,10 @@
                              Command="{Binding ShowInsertDataViewCommand}">
                 </RadioButton>
 
-                <RadioButton Content="Добавление данных из табелей1"
+                <RadioButton Content="Просмотр данных о выполненных операциях"
                              Style="{StaticResource SubMenuButtomTheme}"
-                             Command="{Binding ShowWorkDataViewCommand}">
+                             Command="{Binding ShowWorkDataViewCommand}"
+                             Height="100">
                 </RadioButton>
                 
             </StackPanel>
