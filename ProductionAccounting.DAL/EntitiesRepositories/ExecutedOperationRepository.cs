@@ -21,6 +21,8 @@ namespace ProductionAccounting.DAL.EntitiesRepositories
         }
 
         public override IQueryable<ExecutedOperation> Items => base.Items.Include(i => i.Employee)
-                                                                         .Include(i => i.Operation);
+                                                                         .Include(i => i.Operation)
+                                                                         .ThenInclude(i=> i.OperationСoefficient)
+                                                                         ;
     }
 }
