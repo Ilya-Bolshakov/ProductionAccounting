@@ -1,5 +1,6 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
@@ -46,7 +47,7 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        #region Команда загрузки сотрудников
+        #region Команда загрузки данных
         private ICommand _getExecutedOperationsViewCommand;
 
         public ICommand GetExecutedOperationsViewCommand => _getExecutedOperationsViewCommand ??= new LambdaCommand(GetExecutedOperationsViewCommandExecuted, GetExecutedOperationsViewCommandExecute);
@@ -65,6 +66,32 @@ namespace ProductionAccounting.ViewModels
             ExecutedOperation = executedOperations.ToObservableCollection();
             OperationView = CollectionViewSource.GetDefaultView(ExecutedOperation);
             OperationView.Filter += _dataView_Filter;
+            OnLoading = false;
+        }
+
+        #endregion
+
+        #region Команда удаления записей
+        private ICommand _deleteExecutedOperationsViewCommand;
+
+        public ICommand DeleteExecutedOperationsViewCommand => _deleteExecutedOperationsViewCommand ??= new LambdaCommand(DeleteExecutedOperationsViewCommandExecuted, DeleteExecutedOperationsViewCommandExecute);
+
+        private bool DeleteExecutedOperationsViewCommandExecute() => SelectedItem != null && !OnLoading;
+
+        private async void DeleteExecutedOperationsViewCommandExecuted()
+        {
+            OnLoading = true;
+            await Task.Run(async () => 
+            {
+                var deleteItem = await _execRepository.Items.FirstOrDefaultAsync(i => i.Id == SelectedItem.Id);
+                if (deleteItem != null)
+                {
+                    await _execRepository.DeleteAsync(deleteItem.Id);
+                    await _execRepository.SaveChangesAsync();
+                }
+            });
+            ExecutedOperation.Remove(SelectedItem);
+            SelectedItem = null;
             OnLoading = false;
         }
 

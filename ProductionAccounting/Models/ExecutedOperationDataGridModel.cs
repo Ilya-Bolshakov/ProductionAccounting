@@ -19,6 +19,7 @@ namespace ProductionAccounting.Models
 
         public ExecutedOperationDataGridModel(ExecutedOperation orm)
         {
+            Id = orm.Id;
             Employee = new EmployeeModel(orm.Employee);
             Operation = new OperationModel(orm.Operation);
             CountExecutedOperation = orm.CountExecutedOperation;
