@@ -176,7 +176,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand InsertData => _insertData ??= new LambdaCommand(InsertDataExecuted, InsertDataExecute);
 
-        private bool InsertDataExecute() => !OnLoading;
+        private bool InsertDataExecute() => !OnLoading && SelectedEmployee != null && SelectedOperation != null;
 
         private async void InsertDataExecuted()
         {

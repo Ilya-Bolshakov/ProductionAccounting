@@ -122,7 +122,7 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand GetSalary => _getSalary ??= new LambdaCommand(GetSalaryExecuted, GetSalaryExecute);
 
-        private bool GetSalaryExecute() => !OnLoading;
+        private bool GetSalaryExecute() => !OnLoading && SelectedEmployee != null;
 
         private void GetSalaryExecuted()
         {
