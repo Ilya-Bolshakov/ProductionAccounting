@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Styles/DialogStyles.xaml"/>
                 <ResourceDictionary Source="Styles/MenuButtomTheme.xaml"/>
                 <ResourceDictionary Source="Styles/CommonButtonStyle.xaml"/>
+                <ResourceDictionary Source="Styles/ValidationTextBox.xaml"/>
                 <ResourceDictionary Source="Infrastructure/Commands/AppCommands.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <locators:ViewModelLocator x:Key="ViewModelLocator"/>

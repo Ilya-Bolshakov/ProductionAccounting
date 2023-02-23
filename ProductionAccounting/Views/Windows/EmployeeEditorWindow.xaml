@@ -79,53 +79,21 @@
                 <TextBox Grid.Column="1" 
                          Text="{Binding Name}"
                          FontSize="20"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="LightGray"
-                         BorderBrush="DarkGray"
-                         BorderThickness="0,0,0,2"
-                         Height="28"
-                         VerticalContentAlignment="Center"
-                         Margin="0,5,15,0"
-                         Padding="20,0,0,0">
-                    <TextBox.Background>
-                        <ImageBrush     Stretch="None"
-                                        AlignmentX="Left"/>
-                    </TextBox.Background>
+                         Padding="20,0,0,0"
+                         Style="{StaticResource ValidationTextBox}">
                 </TextBox>
 
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}" FontSize="20"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="LightGray"
-                         BorderBrush="DarkGray"
-                         BorderThickness="0,0,0,2"
-                         Height="28"
-                         VerticalContentAlignment="Center"
-                         Margin="0,5,15,0"
+                <TextBox Grid.Row="1" Grid.Column="1" 
+                         Text="{Binding Surname}" 
+                         FontSize="20"
+                         Style="{StaticResource ValidationTextBox}"
                          Padding="20,0,0,0">
-                    <TextBox.Background>
-                        <ImageBrush     Stretch="None"
-                                        AlignmentX="Left"/>
-                    </TextBox.Background>
                 </TextBox>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}" FontSize="20"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="LightGray"
-                         BorderBrush="DarkGray"
-                         BorderThickness="0,0,0,2"
-                         Height="28"
-                         VerticalContentAlignment="Center"
-                         Margin="0,5,15,0"
+                <TextBox Grid.Row="2" Grid.Column="1" 
+                         Text="{Binding Patronymic}" 
+                         FontSize="20"
+                         Style="{StaticResource ValidationTextBox}"
                          Padding="20,0,0,0">
-                    <TextBox.Background>
-                        <ImageBrush     Stretch="None"
-                                        AlignmentX="Left"/>
-                    </TextBox.Background>
                 </TextBox>
                 <Grid Grid.Column="1"
               Grid.Row="3">

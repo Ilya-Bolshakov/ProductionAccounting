@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="TextBox"
+           x:Key="ValidationTextBox">
+        <Style.Setters>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder/>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontFamily" Value="Montserrat"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="CaretBrush" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,15,0"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush     Stretch="None"
+                                        AlignmentX="Left"/>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>
