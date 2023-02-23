@@ -1,5 +1,6 @@
 ﻿using MathCore.WPF.ViewModels;
 using ProductionAccounting.Models;
+using ProductionAccounting.ViewModels.Base;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,9 +10,8 @@ using System.Text.RegularExpressions;
 
 namespace ProductionAccounting.ViewModels
 {
-    public class EmployeeEditorWindowViewModel : ViewModel, INotifyDataErrorInfo
+    public class EmployeeEditorWindowViewModel : ValidationViewModel
     {
-        private readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
         private string _name;
         public string Name
         {
@@ -64,8 +64,6 @@ namespace ProductionAccounting.ViewModels
 
         private string _patronymic;
 
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
         public string Patronymic
         {
             get { return _patronymic; }
@@ -90,52 +88,11 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        public bool HasErrors => _propertyErrors.Any();
-
-        private bool _isEnabledCommand;
-
-        public bool IsEnabledCommand
-        {
-            get { return _isEnabledCommand; }
-            set { Set(ref _isEnabledCommand, value); }
-        }
-
-
         public EmployeeEditorWindowViewModel(EmployeeModel employee)
         {
             Name = employee.Name;
             Surname = employee.Surname;
             Patronymic = employee.Patronymic;
-        }
-
-        public IEnumerable GetErrors(string? propertyName)
-        {
-            return _propertyErrors.GetValueOrDefault(propertyName, null);
-        }
-
-        public void AddError(string propertyName, string errorMessage)
-        {
-            if (!_propertyErrors.ContainsKey(propertyName))
-            {
-                _propertyErrors.Add(propertyName, new List<string>());
-            }
-
-            _propertyErrors[propertyName].Add(errorMessage);
-            OnErrorsChanged(propertyName);
-        }
-
-        private void OnErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            IsEnabledCommand = !HasErrors;
-        }
-
-        private void ClearErrors(string propertyName)
-        {
-            if (_propertyErrors.Remove(propertyName))
-            { 
-                OnErrorsChanged(propertyName);
-            }
         }
     }
 }
