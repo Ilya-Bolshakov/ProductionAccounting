@@ -12,7 +12,8 @@
                             <ItemsControl ItemsSource="{Binding}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"
+                                                   TextWrapping="Wrap"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

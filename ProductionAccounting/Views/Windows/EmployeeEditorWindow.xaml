@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows"
-        xmlns:vm="clr-namespace:ProductionAccounting.ViewModels"
+        xmlns:vm="clr-namespace:ProductionAccounting.ViewModels" xmlns:c="clr-namespace:ProductionAccounting.Converters"
         mc:Ignorable="d"
         Title="EmployeeEditorWindow" 
         Height="400" Width="650"
@@ -14,6 +14,9 @@
         MouseDown="Window_MouseDown"
         WindowStyle="None"
         d:DataContext="{d:DesignInstance vm:EmployeeEditorWindowViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <c:ReverseConverter x:Key="reverseConverter"/>
+    </Window.Resources>
     <Border Style="{StaticResource DialogBorder}">
         <Grid>
             <Grid.RowDefinitions>
@@ -77,20 +80,20 @@
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"/>
                 <TextBox Grid.Column="1" 
-                         Text="{Binding Name}"
+                         Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20"
                          Padding="20,0,0,0"
                          Style="{StaticResource ValidationTextBox}">
                 </TextBox>
 
                 <TextBox Grid.Row="1" Grid.Column="1" 
-                         Text="{Binding Surname}" 
+                         Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="20"
                          Style="{StaticResource ValidationTextBox}"
                          Padding="20,0,0,0">
                 </TextBox>
                 <TextBox Grid.Row="2" Grid.Column="1" 
-                         Text="{Binding Patronymic}" 
+                         Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="20"
                          Style="{StaticResource ValidationTextBox}"
                          Padding="20,0,0,0">
@@ -105,14 +108,16 @@
                         Margin="10,0,10,10"
                         Command="{StaticResource DialogResultCommand}"
                         Content="Применить"
-                        CommandParameter="True"
-                        Style="{StaticResource CommonButtonStyle}"/>
+                        CommandParameter="{Binding HasErrors}"
+                        Style="{StaticResource CommonButtonStyle}"
+                        IsEnabled="{Binding IsEnabledCommand}"/>
                     <Button Grid.Column="1"
                         Margin="10,0,10,10"
                         Content="Отменить"
                         Command="{StaticResource DialogResultCommand}"
                         CommandParameter="False"
-                            Style="{StaticResource CommonButtonStyle}"/>
+                        Style="{StaticResource CommonButtonStyle}"
+                        />
                 </Grid>
             </Grid>
 

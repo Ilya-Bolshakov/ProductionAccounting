@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ProductionAccounting.ViewModels
 {
@@ -18,9 +19,19 @@ namespace ProductionAccounting.ViewModels
             set
             {
                 ClearErrors(nameof(Name));
-                if (value != null && value.Contains("w"))
+                if (String.IsNullOrEmpty(value))
                 {
-                    AddError(nameof(Name), "Тест валидации");
+                    AddError(nameof(Name), "Имя должно быть заполнено");
+                }
+                else
+                {
+                    var regex = new Regex(@"^\s*[a-zA-Zа-яА-Я]+$");
+                    value = value.Trim();
+                    if (!regex.IsMatch(value))
+                    {
+                        AddError(nameof(Name), "Имя должно представлять из себя одно слово только из букв");
+                    }
+                    
                 }
                 Set(ref _name, value);
             }
@@ -32,6 +43,21 @@ namespace ProductionAccounting.ViewModels
             get { return _surname; }
             set
             {
+                ClearErrors(nameof(Surname));
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddError(nameof(Surname), "Фамилия должна быть заполнена");
+                }
+                else
+                {
+                    var regex = new Regex(@"^\s*[a-zA-Zа-яА-Я]+$");
+                    value = value.Trim();
+                    if (!regex.IsMatch(value))
+                    {
+                        AddError(nameof(Surname), "Поле \"Фамилия\" должно представлять из себя одно слово только из букв");
+                    }
+
+                }
                 Set(ref _surname, value);
             }
         }
@@ -45,11 +71,35 @@ namespace ProductionAccounting.ViewModels
             get { return _patronymic; }
             set
             {
+                ClearErrors(nameof(Patronymic));
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddError(nameof(Patronymic), "Поле \"Отчество\" должно быть заполнено");
+                }
+                else
+                {
+                    var regex = new Regex(@"^\s*[a-zA-Zа-яА-Я]+$");
+                    value = value.Trim();
+                    if (!regex.IsMatch(value))
+                    {
+                        AddError(nameof(Patronymic), "Поле \"Отчество\" должно представлять из себя одно слово только из букв");
+                    }
+
+                }
                 Set(ref _patronymic, value);
             }
         }
 
         public bool HasErrors => _propertyErrors.Any();
+
+        private bool _isEnabledCommand;
+
+        public bool IsEnabledCommand
+        {
+            get { return _isEnabledCommand; }
+            set { Set(ref _isEnabledCommand, value); }
+        }
+
 
         public EmployeeEditorWindowViewModel(EmployeeModel employee)
         {
@@ -77,6 +127,7 @@ namespace ProductionAccounting.ViewModels
         private void OnErrorsChanged(string propertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            IsEnabledCommand = !HasErrors;
         }
 
         private void ClearErrors(string propertyName)
