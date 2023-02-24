@@ -107,7 +107,6 @@
                     <Validation.ErrorTemplate>
                         <ControlTemplate>
                             <StackPanel>
-                                <!-- Placeholder for the TextBox itself -->
                                 <AdornedElementPlaceholder x:Name="textBox"/>
                                 <ItemsControl ItemsSource="{Binding}">
                                     <ItemsControl.ItemTemplate>
