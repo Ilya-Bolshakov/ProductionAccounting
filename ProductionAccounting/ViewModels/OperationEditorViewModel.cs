@@ -36,7 +36,7 @@ namespace ProductionAccounting.ViewModels
                     value = value.Trim();
                     if (!regex.IsMatch(value))
                     {
-                        AddError(nameof(Name), "Имя должно представлять из себя несколько слов только из букв");
+                        AddError(nameof(Name), "Название должно представлять из себя несколько слов только из букв");
                     }
 
                 }
@@ -119,7 +119,7 @@ namespace ProductionAccounting.ViewModels
                     }
                     else
                     {
-                        AddError(nameof(CostString), "Поле должно представлять из числовое значение");
+                        AddError(nameof(CostString), "Поле должно представлять из себя числовое значение");
                     }
 
                 }
