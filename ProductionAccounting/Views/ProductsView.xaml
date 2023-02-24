@@ -20,19 +20,19 @@
     </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="550"/>
+                <ColumnDefinition Width="750"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="480"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Изделия">
+            <GroupBox Header="Изделия" Foreground="White">
                 <DataGrid ItemsSource="{Binding Products}"
                           SelectedItem="{Binding SelectedItem}">
                     <DataGrid.Columns>
@@ -70,8 +70,47 @@
                     Command="{Binding DeleteProducts}"/>
                 </Grid>
             </Grid>
-            <Button Grid.Column="2"
-                    Command="{Binding Print}"/>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                    Command="{Binding Print}"
+                    Style="{StaticResource CommonButtonStyle}"
+                    VerticalAlignment="Center"
+                    Height="150"
+                    Width="150">
+                    <Button.Content>
+                        <fa:IconBlock Icon="Print" 
+                                      RenderTransformOrigin="0.5,0.5" 
+                                      Padding="10,10,10,10"
+                                      FontSize="130">
+                            <fa:IconBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="0.99999999999999989" ScaleY="0.99999999999999989"/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="91.507607999999991"/>
+                                    <TranslateTransform Y="0"/>
+                                </TransformGroup>
+                            </fa:IconBlock.RenderTransform>
+                        </fa:IconBlock>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Row="2"
+                        Width="220"
+                        Height="100"
+                    Command="{Binding EditFolder}"
+                    Style="{StaticResource CommonButtonStyle}"
+                    VerticalAlignment="Center">
+                    <TextBlock Text="Изменить папку для сохранения шаблонов"
+                               TextWrapping="Wrap"
+                               FontSize="20"
+                               Width="210"/>
+                </Button>
+            </Grid>
+            
+            
         </Grid>
         <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 

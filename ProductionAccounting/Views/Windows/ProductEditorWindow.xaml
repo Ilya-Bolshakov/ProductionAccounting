@@ -5,47 +5,122 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
+        Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseDown="Window_MouseDown"
+        WindowStyle="None"
         d:DataContext="{d:DesignInstance viewmodels:ProductEditorViewModel, IsDesignTimeCreatable=True}"
-        Title="ProductEditorWindow" Height="450" Width="800">
+        Title="ProductEditorWindow">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetOperations}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Название изделия" />
-        <TextBlock Grid.Row="1" Text="Список операций"/>
-        <TextBox Grid.Column="1" 
-                 Text="{Binding Name}"/>
-        <ListBox Grid.Row="1" Grid.Column="1"
-                  ItemsSource="{Binding Operations}"
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Изделия"
+                           Style="{StaticResource DialogTextBox}"/>
+                <Button x:Name="btnMinimize"                           
+                            Grid.Column="1"
+                            Click="btnMinimize_Click"
+                            Style="{StaticResource minimizeBtn}">
+                </Button>
+
+                <Button x:Name="btnClose"                          
+                            Grid.Column="2"
+                            Click="btnClose_Click"
+                            Style="{StaticResource closeBtn}">
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Название изделия" 
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="1" 
+                           Text="Список операций"
+                           TextWrapping="Wrap"
+                           Foreground="White"
+                           FontSize="25"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" 
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="20"
+                         Style="{StaticResource ValidationTextBox}"
+                         Padding="20,0,0,0">
+                </TextBox>
+                <ListBox Grid.Row="1" Grid.Column="1"
+                  ItemsSource="{Binding Operations, UpdateSourceTrigger=PropertyChanged}"
                   SelectionMode="Multiple"
-                  Name="LB"/>
-        <Grid Grid.Column="1"
+                  Margin="10,10,10,10"
+                  Name="LB">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <StackPanel>
+                                <AdornedElementPlaceholder x:Name="textBox"/>
+                                <ItemsControl ItemsSource="{Binding}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                </ListBox>
+                <Grid Grid.Column="1"
               Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
-                    Margin="10,0,10,0"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                    Margin="10,10,10,10"
                     Command="{Binding EditProduct}"
                     CommandParameter="{Binding ElementName=LB, Path=SelectedItems}"
-                    Content="Применить"/>
-            <Button Grid.Column="1"
-                    Margin="10,0,10,0"
+                    Content="Применить"
+                    IsEnabled="{Binding IsEnabledCommand}"
+                    Style="{StaticResource CommonButtonStyle}"/>
+                    <Button Grid.Column="1"
+                    Margin="10,10,10,10"
                     Content="Отменить"
                     Command="{StaticResource DialogResultCommand}"
-                    CommandParameter="False"/>
+                    CommandParameter="False"
+                    Style="{StaticResource CommonButtonStyle}"/>
+                </Grid>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

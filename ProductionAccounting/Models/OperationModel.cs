@@ -91,7 +91,7 @@ namespace ProductionAccounting.Models
 
         public override string ToString()
         {
-            return $"Название операции: {Name}. Стоимость: {Cost}. Длительность: {OperationDuration}";
+            return $"{Name}. Стоимость: {Cost}. Длительность: {OperationDuration}. Коэф: {Coefficient.CoefficientValue}";
         }
     }
 }

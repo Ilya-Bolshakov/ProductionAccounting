@@ -6,43 +6,76 @@
         xmlns:local="clr-namespace:ProductionAccounting.Views.Windows" 
         xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels" 
         mc:Ignorable="d"
-        Title="PrintWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseDown="Window_MouseDown"
+        WindowStyle="None"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        Title="" Height="450" Width="800"
         d:DataContext="{d:DesignInstance {x:Type viewmodels:PrintViewModel}}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="1"
-                       Text="{Binding Name}"/>
-            <Button Grid.Column="3"
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Name, StringFormat=Создание шаблона для изделия {0}}"
+                           Style="{StaticResource DialogTextBox}"/>
+                <Button x:Name="btnMinimize"                           
+                            Grid.Column="1"
+                            Click="btnMinimize_Click"
+                            Style="{StaticResource minimizeBtn}">
+                </Button>
+
+                <Button x:Name="btnClose"                          
+                            Grid.Column="2"
+                            Click="btnClose_Click"
+                            Style="{StaticResource closeBtn}">
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1"
+                       Text="{Binding Name}"
+                       FontSize="40"
+                           Foreground="White"/>
+                <Button Grid.Column="3"
                     Height="40" 
                     Content="Вывод на печать"
                     Style="{StaticResource CommonButtonStyle}"
                     Command="{Binding ToPrint}"/>
-        </Grid>
-        <DataGrid Grid.Row="1"
+            </Grid>
+            <DataGrid Grid.Row="2"
+                      Margin="10,10,10,10"
             ItemsSource="{Binding Operations}"
             SelectedItem="{Binding SelectedItem}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Название"
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название"
                                     Width="150"
                                     Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Коэффициент"
+                    <DataGridTextColumn Header="Коэффициент"
                                     Width="140"
                                     Binding="{Binding Coefficient}"/>
-                <DataGridTextColumn Header="Итоговая цена"
+                    <DataGridTextColumn Header="Итоговая цена"
                                     Width="100"
                                     Binding="{Binding Price}"/>
-                <DataGridTextColumn Header="Поле для вписывания"
+                    <DataGridTextColumn Header="Поле для вписывания"
                                     Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
 </Window>

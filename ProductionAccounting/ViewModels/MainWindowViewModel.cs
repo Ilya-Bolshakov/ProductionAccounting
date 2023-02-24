@@ -3,6 +3,7 @@ using MathCore.WPF.ViewModels;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using ProductionAccounting.Services;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Reflection;
@@ -22,6 +23,10 @@ namespace ProductionAccounting.ViewModels
         private readonly IUserDialogWithRepository<OperationModel, OperationСoefficient> _operationDialog;
         private readonly IUserDialogWithRepository<ProductModel, Operation> _productDialog;
         private readonly IUserPrintDialog _printDialog;
+        private readonly IChangeSaveFolderService _changeSaveFolderService;
+        private readonly IAddingJobDataService _addingJobDataService;
+        private readonly ICalculateSalaryService _salaryService;
+
 
         public MainWindowViewModel(
             IRepository<Employee> employees,
@@ -33,7 +38,10 @@ namespace ProductionAccounting.ViewModels
             IUserDialog<CoefficientModel> coeffDialog,
             IUserDialogWithRepository<OperationModel, OperationСoefficient> operationDialog,
             IUserDialogWithRepository<ProductModel, Operation> productDialog,
-            IUserPrintDialog printDialog
+            IUserPrintDialog printDialog,
+            IChangeSaveFolderService changeSaveFolderService,
+            IAddingJobDataService addingJobDataService,
+            ICalculateSalaryService salaryService
             )
         {
             _employees = employees;
@@ -46,6 +54,9 @@ namespace ProductionAccounting.ViewModels
             _operationDialog = operationDialog;
             _productDialog = productDialog;
             _printDialog = printDialog;
+            _changeSaveFolderService = changeSaveFolderService;
+            _addingJobDataService = addingJobDataService;
+            _salaryService = salaryService;
 
             IsLoaded = true;
         }
@@ -99,7 +110,7 @@ namespace ProductionAccounting.ViewModels
             {
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
-            CurrentViewModel = new ProductsViewModel(_operation, _product, _productDialog, _printDialog);
+            CurrentViewModel = new ProductsViewModel(_operation, _product, _productDialog, _printDialog, _changeSaveFolderService);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -139,6 +150,67 @@ namespace ProductionAccounting.ViewModels
             }
             
             CurrentViewModel = new OperationsViewModel(_operation, _operationСoefficient,  _operationDialog);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+        #endregion
+
+        #region Команда открытия вьюхи добавления данных
+        private ICommand _showInsertDataViewCommand;
+
+        public ICommand ShowInsertDataViewCommand => _showInsertDataViewCommand ??= new LambdaCommand(ShowInsertDataViewCommandExecuted, ShowInsertDataViewCommandExecute);
+
+        private bool ShowInsertDataViewCommandExecute() => IsLoaded;
+
+        private void ShowInsertDataViewCommandExecuted()
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
+            CurrentViewModel = new InsertDataViewModel(_operation, _employees, _addingJobDataService);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+        #endregion
+
+        #region Команда открытия вьюхи расчет зарплат
+        private ICommand _showCalculateSalaryViewCommand;
+
+        public ICommand ShowCalculateSalaryViewCommand => _showCalculateSalaryViewCommand ??= new LambdaCommand(ShowCalculateSalaryViewCommandExecuted, ShowCalculateSalaryViewCommandExecute);
+
+        private bool ShowCalculateSalaryViewCommandExecute() => IsLoaded;
+
+        private void ShowCalculateSalaryViewCommandExecuted()
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
+            CurrentViewModel = new CalculateSalaryViewModel(_salaryService, _employees);
+            CurrentViewModelType = CurrentViewModel.GetType();
+            CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
+        }
+        #endregion
+
+
+        #region Команда открытия вьюхи расчет зарплат
+        private ICommand _showWorkDataViewCommand;
+
+        public ICommand ShowWorkDataViewCommand => _showWorkDataViewCommand ??= new LambdaCommand(ShowWorkDataViewCommandExecuted, ShowWorkDataViewCommandExecute);
+
+        private bool ShowWorkDataViewCommandExecute() => IsLoaded;
+
+        private void ShowWorkDataViewCommandExecuted()
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
+            }
+
+            CurrentViewModel = new WorkDataViewModel(_executedOperation);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }

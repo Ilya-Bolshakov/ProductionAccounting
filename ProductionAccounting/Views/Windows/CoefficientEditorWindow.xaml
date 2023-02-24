@@ -25,7 +25,7 @@
                     <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="5"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Сотрудники"
+                <TextBlock Text="Коэффициенты"
                            Style="{StaticResource DialogTextBox}"/>
                 <Button x:Name="btnMinimize"                           
                             Grid.Column="1"
@@ -68,41 +68,17 @@
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"/>
                 <TextBox Grid.Column="1" 
-                         Text="{Binding Name}"
+                         Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="LightGray"
-                         BorderBrush="DarkGray"
-                         BorderThickness="0,0,0,2"
-                         Height="28"
-                         VerticalContentAlignment="Center"
-                         Margin="0,5,15,0"
+                         Style="{StaticResource ValidationTextBox}"
                          Padding="20,0,0,0">
-                    <TextBox.Background>
-                        <ImageBrush     Stretch="None"
-                                        AlignmentX="Left"/>
-                    </TextBox.Background>
                 </TextBox>
 
                 <TextBox Grid.Row="1" Grid.Column="1" 
-                         Text="{Binding CoefficientValue}" 
+                         Text="{Binding CoefficientValueString, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="20"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="LightGray"
-                         BorderBrush="DarkGray"
-                         BorderThickness="0,0,0,2"
-                         Height="28"
-                         VerticalContentAlignment="Center"
-                         Margin="0,5,15,0"
+                         Style="{StaticResource ValidationTextBox}"
                          Padding="20,0,0,0">
-                    <TextBox.Background>
-                        <ImageBrush     Stretch="None"
-                                        AlignmentX="Left"/>
-                    </TextBox.Background>
                 </TextBox>
                 <Grid Grid.Column="1"
               Grid.Row="2">
@@ -115,6 +91,7 @@
                     Command="{StaticResource DialogResultCommand}"
                     Content="Применить"
                     CommandParameter="True"
+                    IsEnabled="{Binding IsEnabledCommand}"
                     Style="{StaticResource CommonButtonStyle}"/>
                     <Button Grid.Column="1"
                     Margin="10,0,10,10"

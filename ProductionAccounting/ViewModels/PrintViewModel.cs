@@ -4,6 +4,7 @@ using ProductionAccounting.Models;
 using System.Collections.Generic;
 using System.Windows.Input;
 using ProductionAccounting.Services;
+using System.Diagnostics;
 
 namespace ProductionAccounting.ViewModels
 {
@@ -39,8 +40,11 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        public TabelModel TabelModel { get; private set; }
+
         public PrintViewModel(TabelModel model)
         {
+            TabelModel = model;
             Operations = new List<OperationModel>(model.Operations);
             Name = model.Name;
         }
@@ -54,10 +58,23 @@ namespace ProductionAccounting.ViewModels
 
         private void ToPrintExecuted()
         {
-            using (var pdfCreator = new PdfCreator(Name))
+            string path;
+            try
             {
-                pdfCreator.CreatePdf(Operations);
+                using (var pdfCreator = new PdfCreator(TabelModel))
+                {
+                    path = pdfCreator.CreatePdf();
+                }
             }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            ProcessStartInfo startInfo = new ProcessStartInfo(path)
+            {
+                UseShellExecute = true,
+            };
+            Process.Start(startInfo);
         }
         #endregion
     }

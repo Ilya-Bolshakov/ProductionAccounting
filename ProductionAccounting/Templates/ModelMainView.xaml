@@ -15,4 +15,13 @@
     <DataTemplate DataType="{x:Type vm:OperationsViewModel}">
         <view:OperationsView DataContext="{Binding}"/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:InsertDataViewModel}">
+        <view:InsertDataView DataContext="{Binding}"/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CalculateSalaryViewModel}">
+        <view:CalculateSalaryView DataContext="{Binding}"/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:WorkDataViewModel}">
+        <view:WorkDataView DataContext="{Binding}"/>
+    </DataTemplate>
 </ResourceDictionary>

@@ -11,6 +11,11 @@ namespace ProductionAccounting.Services
 {
     public class CoefficientUserDialogService : IUserDialog<CoefficientModel>
     {
+        private readonly IShowExceptionDialogService _showExceptionDialogService;
+        public CoefficientUserDialogService(IShowExceptionDialogService showExceptionDialogService)
+        {
+            _showExceptionDialogService = showExceptionDialogService;
+        }
         public bool ConfirmOperation(string info, string caption)
         {
             return MessageBox.Show(info,
@@ -31,47 +36,15 @@ namespace ProductionAccounting.Services
                     DataContext = coeffVM,
                 };
 
-                Func<bool> errorMessage = new Func<bool>(() =>
-                {
-                    MessageBox.Show("Неправильный формат коэффициента. Необходимо ввести одно число с дробной частью через точку",
-                                    "Ошибка",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Error,
-                                    MessageBoxResult.Cancel);
-                    return false;
-                });
-
                 if (coeffV.ShowDialog() != true) return false;
-                var regex = new Regex(@"\b\d+\,\d{0,2}\b");
-                var coeffValueString = coeffVM.CoefficientValue.ToString();
-                if (int.TryParse(coeffValueString, out var num))
-                {
-                    coeffVM.CoefficientValue = num;
-                }
-                else
-                {
-                    var matches = regex.Matches(coeffValueString);
-                    if (matches.Count != 1)
-                    {
-                        return errorMessage();
-                    }
-                    else
-                    {
-                        if (!String.IsNullOrEmpty(coeffValueString.Replace(matches.First().ToString(), ""))) return errorMessage();
-                        model.CoefficientValue = coeffVM.CoefficientValue;
-                    }
-                }
 
+                model.CoefficientValue = coeffVM.CoefficientValue;
                 model.Name = coeffVM.Name;
                 return true;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                MessageBox.Show("Ошибка при работе программы, попробуйте еще раз",
-                                                 "Ошибка",
-                                                 MessageBoxButton.OK,
-                                                 MessageBoxImage.Error,
-                                                 MessageBoxResult.Yes);
+                _showExceptionDialogService.ShowDialog("Ошибка при работе программы, попробуйте еще раз. Показать ошибку для разработчика?", ex.Message);
                 return false;
             }
         }

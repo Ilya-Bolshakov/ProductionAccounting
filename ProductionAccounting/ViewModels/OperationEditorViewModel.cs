@@ -7,19 +7,38 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
+using System.ComponentModel;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using ProductionAccounting.ViewModels.Base;
+using System.Text.RegularExpressions;
 
 namespace ProductionAccounting.ViewModels
 {
-    public class OperationEditorViewModel : ViewModel
+    public class OperationEditorViewModel : ValidationViewModel
     {
         private readonly IRepository<OperationСoefficient> _repository;
-
         private string _name;
         public string Name
         {
             get { return _name; }
             set
             {
+                ClearErrors(nameof(Name));
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddError(nameof(Name), "Название должно быть заполнено");
+                }
+                else
+                {
+                    var regex = new Regex(@"^(\s*[a-zA-Zа-яА-Я\s]+)$");
+                    if (!regex.IsMatch(value))
+                    {
+                        AddError(nameof(Name), "Название должно представлять из себя несколько слов только из букв");
+                    }
+
+                }
                 Set(ref _name, value);
             }
         }
@@ -34,6 +53,38 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        private string _operationDurationString;
+        public string OperationDurationString
+        {
+            get { return _operationDurationString; }
+            set
+            {
+                int tempint = 0;
+                ClearErrors(nameof(OperationDurationString));
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddError(nameof(OperationDurationString), "Поле должно быть заполнено");
+                }
+                else
+                {
+                    if (int.TryParse(value, out tempint))
+                    {
+                        if (tempint < 0)
+                        {
+                            AddError(nameof(OperationDurationString), "Число должно быть положительным");
+                        }
+                    }
+                    else
+                    {
+                        AddError(nameof(OperationDurationString), "Поле должно представлять из положительное число");
+                    }
+                    
+                }
+                OperationDuration = tempint;
+                Set(ref _operationDurationString, value);
+            }
+        }
+
         private decimal _cost;
         public decimal Cost
         {
@@ -44,12 +95,49 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        private string _costString;
+        public string CostString
+        {
+            get { return _costString; }
+            set
+            {
+                decimal temp = 0;
+                ClearErrors(nameof(CostString));
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddError(nameof(CostString), "Поле должно быть заполнено");
+                }
+                else
+                {
+                    if (decimal.TryParse(value, out temp))
+                    {
+                        if (temp < 0)
+                        {
+                            AddError(nameof(CostString), "Число должно быть положительным");
+                        }
+                    }
+                    else
+                    {
+                        AddError(nameof(CostString), "Поле должно представлять из себя числовое значение");
+                    }
+
+                }
+                Cost = temp;
+                Set(ref _costString, value);
+            }
+        }
+
         private CoefficientModel _coefficient;
         public CoefficientModel Coefficient
         {
             get { return _coefficient; }
             set
             {
+                ClearErrors(nameof(Coefficient));
+                if (value == null)
+                {
+                    AddError(nameof(Coefficient), "Коэффициент должен быть выбран");
+                }
                 Set(ref _coefficient, value);
             }
         }
@@ -87,12 +175,11 @@ namespace ProductionAccounting.ViewModels
         {
             Name = operation.Name;
             Cost = operation.Cost;
+            CostString = Cost.ToString();
             OperationDuration = operation.OperationDuration;
+            OperationDurationString = OperationDuration.ToString();
             Coefficient = (CoefficientModel)operation.Coefficient?.Clone() ?? new CoefficientModel();
             _repository = repository;
         }
-
-        public OperationEditorViewModel()
-        { }
     }
 }

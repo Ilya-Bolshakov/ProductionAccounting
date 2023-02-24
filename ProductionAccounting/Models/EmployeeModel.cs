@@ -59,5 +59,10 @@ namespace ProductionAccounting.Models
             emp.Patronymic = Patronymic;
             return emp;
         }
+
+        public override string ToString()
+        {
+            return $"{Surname} {Name} {Patronymic}";
+        }
     }
 }

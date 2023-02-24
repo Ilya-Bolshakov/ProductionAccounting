@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Background="Transparent"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
-        Height="800" Width="1280"
+        Height="900" Width="1380"
         WindowStyle="None"
         DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}">
 
@@ -100,9 +101,22 @@
                              Style="{StaticResource SubMenuButtomTheme}"
                              Command="{Binding ShowCoefficientViewCommand}">
                 </RadioButton>
+                
+                <RadioButton Content="Расчет зарплат"
+                             Style="{StaticResource MenuButtomTheme}"
+                             Command="{Binding ShowCalculateSalaryViewCommand}"/>
 
-                <RadioButton Content="Будущее"
-                             Style="{StaticResource MenuButtomTheme}"/>
+                <RadioButton Content="Добавление данных из табелей"
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowInsertDataViewCommand}">
+                </RadioButton>
+
+                <RadioButton Content="Просмотр данных о выполненных операциях"
+                             Style="{StaticResource SubMenuButtomTheme}"
+                             Command="{Binding ShowWorkDataViewCommand}"
+                             Height="100">
+                </RadioButton>
+                
             </StackPanel>
             <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>

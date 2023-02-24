@@ -1,19 +1,20 @@
 ﻿using MathCore.WPF.Commands;
-using MathCore.WPF.ViewModels;
+using Microsoft.IdentityModel.Tokens;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Infrastructure.Commands;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using ProductionAccounting.ViewModels.Base;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
 {
-    public class ProductEditorViewModel : ViewModel
+    public class ProductEditorViewModel : ValidationViewModel
     {
         private readonly IRepository<Operation> _repository;
 
@@ -23,6 +24,20 @@ namespace ProductionAccounting.ViewModels
             get { return _name; }
             set
             {
+                ClearErrors(nameof(Name));
+                if (String.IsNullOrEmpty(value))
+                {
+                    AddError(nameof(Name), "Название должно быть заполнено");
+                }
+                else
+                {
+                    var regex = new Regex(@"^(\s*[a-zA-Zа-яА-Я\s]+)$");
+                    if (!regex.IsMatch(value))
+                    {
+                        AddError(nameof(Name), "Название должно представлять из себя несколько слов только из букв");
+                    }
+
+                }
                 Set(ref _name, value);
             }
         }
