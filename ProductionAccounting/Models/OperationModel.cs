@@ -18,7 +18,6 @@ namespace ProductionAccounting.Models
             get { return _cost; }
             set 
             {
-                value = decimal.Parse(value.ToString().Trim('0').Trim('.'));
                 _cost = value; OnPropertyChanged(nameof(Cost)); 
             }
         }
@@ -37,11 +36,10 @@ namespace ProductionAccounting.Models
             get
             {   
                 _price = Cost* OperationDuration *Coefficient.CoefficientValue;
-                return decimal.Parse(_price.ToString().Trim('0').Trim('.'));
+                return _price;
             }
             set
             {
-                value = decimal.Parse(value.ToString().Trim('0').Trim('.'));
                 _price = value; OnPropertyChanged(nameof(Price));  
             }
         }

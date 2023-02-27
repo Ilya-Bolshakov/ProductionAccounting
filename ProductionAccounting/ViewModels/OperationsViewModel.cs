@@ -93,9 +93,10 @@ namespace ProductionAccounting.ViewModels
                 return;
             }
             Operations.Add(operation);
-            _operationRepository.Add(operation.MapToOrm());
+            var entity = operation.MapToOrm();
+            _operationRepository.Add(entity);
             await _operationRepository.SaveChangesAsync();
-
+            operation.Id = entity.Id;
             SelectedItem = operation;
 
         }

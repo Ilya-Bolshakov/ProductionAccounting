@@ -93,9 +93,10 @@ namespace ProductionAccounting.ViewModels
                 return;
             }
             Employees.Add(employee);
-            _employeeRepository.Add(employee.MapToOrm());
+            var entity = employee.MapToOrm();
+            _employeeRepository.Add(entity);
             await _employeeRepository.SaveChangesAsync();
-
+            employee.Id = entity.Id;
             SelectedItem = employee;
 
         }

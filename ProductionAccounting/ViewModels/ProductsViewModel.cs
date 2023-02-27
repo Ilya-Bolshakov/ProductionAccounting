@@ -100,7 +100,7 @@ namespace ProductionAccounting.ViewModels
             }
             _productRepository.Add(productDb);
             await _productRepository.SaveChangesAsync();
-
+            product.Id = productDb.Id;
             SelectedItem = product;
 
         }

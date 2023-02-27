@@ -92,9 +92,10 @@ namespace ProductionAccounting.ViewModels
                 return;
             }
             Coefficients.Add(coeff);
-            _coefficientRepository.Add(coeff.MapToOrm());
+            var entity = coeff.MapToOrm();
+            _coefficientRepository.Add(entity);
             await _coefficientRepository.SaveChangesAsync();
-
+            coeff.Id = entity.Id;
             SelectedItem = coeff;
         }
         #endregion
