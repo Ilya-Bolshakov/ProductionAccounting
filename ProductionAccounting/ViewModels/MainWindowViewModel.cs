@@ -26,6 +26,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IChangeSaveFolderService _changeSaveFolderService;
         private readonly IAddingJobDataService _addingJobDataService;
         private readonly ICalculateSalaryService _salaryService;
+        private readonly IConfirmDeleteDialog _confirmDeleteDialog;
 
 
         public MainWindowViewModel(
@@ -41,7 +42,8 @@ namespace ProductionAccounting.ViewModels
             IUserPrintDialog printDialog,
             IChangeSaveFolderService changeSaveFolderService,
             IAddingJobDataService addingJobDataService,
-            ICalculateSalaryService salaryService
+            ICalculateSalaryService salaryService,
+            IConfirmDeleteDialog confirmDeleteDialog
             )
         {
             _employees = employees;
@@ -57,6 +59,7 @@ namespace ProductionAccounting.ViewModels
             _changeSaveFolderService = changeSaveFolderService;
             _addingJobDataService = addingJobDataService;
             _salaryService = salaryService;
+            _confirmDeleteDialog = confirmDeleteDialog;
 
             IsLoaded = true;
         }
@@ -210,7 +213,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new WorkDataViewModel(_executedOperation);
+            CurrentViewModel = new WorkDataViewModel(_executedOperation, _confirmDeleteDialog);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }

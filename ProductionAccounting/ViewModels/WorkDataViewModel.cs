@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,10 +22,12 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<Employee> _employeeRepository;
         private readonly IRepository<Operation> _operationRepository;
         private readonly IRepository<ExecutedOperation> _execRepository;
+        private readonly IConfirmDeleteDialog _confirmDeleteDialog;
 
-        public WorkDataViewModel(IRepository<ExecutedOperation> execRepository)
+        public WorkDataViewModel(IRepository<ExecutedOperation> execRepository, IConfirmDeleteDialog confirmDeleteDialog)
         {
             _execRepository = execRepository;
+            _confirmDeleteDialog = confirmDeleteDialog;
         }
 
         private bool _onLoading;
@@ -80,6 +83,7 @@ namespace ProductionAccounting.ViewModels
 
         private async void DeleteExecutedOperationsViewCommandExecuted()
         {
+            if (!_confirmDeleteDialog.ShowConfirmDeleteDialog("Удалить эту запись?")) return;
             OnLoading = true;
             await Task.Run(async () => 
             {

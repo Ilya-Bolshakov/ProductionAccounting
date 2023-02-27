@@ -19,6 +19,7 @@ namespace ProductionAccounting.Registrators
             .AddTransient<IAddingJobDataService, AddingJobDataService>()
             .AddTransient<ICalculateSalaryService, CalculateSalaryService>()
             .AddTransient<IShowExceptionDialogService, ShowExceptionDialogService>()
+            .AddTransient<IConfirmDeleteDialog, ConfirmDeleteDialog>()
             ;
     }
 }

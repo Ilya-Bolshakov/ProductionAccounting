@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows;
 
 namespace ProductionAccounting.Services
 {
@@ -12,8 +12,9 @@ namespace ProductionAccounting.Services
     {
         public void ShowDialog(string message, string exceptionMessage)
         {
-            var dialog = MessageBox.Show(message, "Ошибка", MessageBoxButtons.YesNo);
-            if (dialog == DialogResult.Yes)
+
+            var dialog = MessageBox.Show(message, "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Error);
+            if (dialog == MessageBoxResult.Yes)
             {
                 MessageBox.Show(exceptionMessage);
             }
