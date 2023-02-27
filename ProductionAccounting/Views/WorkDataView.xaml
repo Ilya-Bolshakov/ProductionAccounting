@@ -9,7 +9,7 @@
              xmlns:viewmodels="clr-namespace:ProductionAccounting.ViewModels"
              d:DataContext="{d:DesignInstance {x:Type viewmodels:WorkDataViewModel}}"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="1000">
+             d:DesignHeight="750" d:DesignWidth="1200">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetExecutedOperationsViewCommand}"/>
@@ -38,11 +38,11 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Сотрудник" Width="*" Binding="{Binding Employee}"/>
                         <DataGridTextColumn Header="Операция" Width="*" Binding="{Binding Operation}"/>
-                        <DataGridTextColumn Header="Цена" Width="*" Binding="{Binding Operation.Price}"/>
-                        <DataGridTextColumn Header="Количество выполненных операций" Width="*" Binding="{Binding CountExecutedOperation}"/>
-                        <DataGridTextColumn Header="Месяц" Width="*" Binding="{Binding Month}"/>
-                        <DataGridTextColumn Header="Год" Width="*" Binding="{Binding Year}"/>
-                        <DataGridTextColumn Header="Итого" Width="*" Binding="{Binding Total}"/>
+                        <DataGridTextColumn Header="Цена" Width="100" Binding="{Binding Operation.Price}"/>
+                        <DataGridTextColumn Header="Количество выполненных операций" Width="160" Binding="{Binding CountExecutedOperation}"/>
+                        <DataGridTextColumn Header="Месяц" Width="60" Binding="{Binding Month}"/>
+                        <DataGridTextColumn Header="Год" Width="60" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="Итого" Width="100" Binding="{Binding Total}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
