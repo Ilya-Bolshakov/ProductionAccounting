@@ -7,7 +7,6 @@ using ProductionAccounting.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
@@ -16,15 +15,16 @@ namespace ProductionAccounting.ViewModels
     {
         private readonly IRepository<Employee> _employeeRepository;
         private readonly IUserDialog<EmployeeModel> _userDialog;
-
+        private readonly IShowExceptionDialogService _showExceptionDialog;
         public EmployeeViewModel()
         {
         }
 
-        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog)
+        public EmployeeViewModel(IRepository<Employee> repository, IUserDialog<EmployeeModel> userDialog, IShowExceptionDialogService showExceptionDialog)
         {
             _employeeRepository = repository;
             _userDialog = userDialog;
+            _showExceptionDialog = showExceptionDialog;
         }
 
         private ObservableCollection<EmployeeModel> _employees;
@@ -68,13 +68,23 @@ namespace ProductionAccounting.ViewModels
         private async void GetEmployeesViewCommandExecuted()
         {
             OnLoading = true;
-            var task = Task.Run(() =>
+            try
             {
-                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
-            });
-            var employees = await task;
-            Employees = employees.ToObservableCollection();
-            OnLoading = false;
+                var task = Task.Run(() =>
+                {
+                    return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
+                });
+                var employees = await task;
+                Employees = employees.ToObservableCollection();
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }
         }
         #endregion
 
@@ -87,17 +97,24 @@ namespace ProductionAccounting.ViewModels
 
         private async void AddEmployeeViewCommandExecuted()
         {
-            EmployeeModel employee = new();
-            if (!_userDialog.Edit(employee))
+            try
             {
-                return;
+                EmployeeModel employee = new();
+                if (!_userDialog.Edit(employee))
+                {
+                    return;
+                }
+                Employees.Add(employee);
+                var entity = employee.MapToOrm();
+                _employeeRepository.Add(entity);
+                await _employeeRepository.SaveChangesAsync();
+                employee.Id = entity.Id;
+                SelectedItem = employee;
             }
-            Employees.Add(employee);
-            _employeeRepository.Add(employee.MapToOrm());
-            await _employeeRepository.SaveChangesAsync();
-
-            SelectedItem = employee;
-
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -110,17 +127,23 @@ namespace ProductionAccounting.ViewModels
 
         private async void EditEmployeeViewCommandExecuted()
         {
-            if (!_userDialog.Edit(SelectedItem))
+            try
             {
-                return;
+                if (!_userDialog.Edit(SelectedItem))
+                {
+                    return;
+                }
+                var updateEmp = _employeeRepository.GetById(SelectedItem.Id);
+                updateEmp.Name = SelectedItem.Name;
+                updateEmp.Surname = SelectedItem.Surname;
+                updateEmp.Patronymic = SelectedItem.Patronymic;
+                _employeeRepository.Update(updateEmp);
+                await _employeeRepository.SaveChangesAsync();
             }
-            var updateEmp = _employeeRepository.GetById(SelectedItem.Id);
-            updateEmp.Name = SelectedItem.Name;
-            updateEmp.Surname = SelectedItem.Surname;
-            updateEmp.Patronymic = SelectedItem.Patronymic;
-            _employeeRepository.Update(updateEmp);
-            await _employeeRepository.SaveChangesAsync();
-
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -133,12 +156,19 @@ namespace ProductionAccounting.ViewModels
 
         private async void DeleteEmployeeViewCommandExecuted()
         {
-            var removeModel = SelectedItem;
-            if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
-            Employees.Remove(removeModel);
-            await _employeeRepository.DeleteAsync(removeModel.Id);
-            await _employeeRepository.SaveChangesAsync();
-            if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            try
+            {
+                var removeModel = SelectedItem;
+                if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
+                Employees.Remove(removeModel);
+                await _employeeRepository.DeleteAsync(removeModel.Id);
+                await _employeeRepository.SaveChangesAsync();
+                if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
     }

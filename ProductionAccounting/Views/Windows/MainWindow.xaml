@@ -101,7 +101,7 @@
                              Style="{StaticResource SubMenuButtomTheme}"
                              Command="{Binding ShowCoefficientViewCommand}">
                 </RadioButton>
-                
+
                 <RadioButton Content="Расчет зарплат"
                              Style="{StaticResource MenuButtomTheme}"
                              Command="{Binding ShowCalculateSalaryViewCommand}"/>
@@ -116,32 +116,9 @@
                              Command="{Binding ShowWorkDataViewCommand}"
                              Height="100">
                 </RadioButton>
-                
+
             </StackPanel>
             <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding CurrentViewModel}"/>
         </Grid>
     </Border>
-
-
-
-    <!--<DockPanel>
-        <Menu IsMainMenu="True">
-            <MenuItem Header="Сотрудники" Command="{Binding ShowEmployeeViewCommand}"></MenuItem>
-            <MenuItem Header="Операции" Command="{Binding ShowOperationsViewCommand}"/>
-        </Menu>
-        <StatusBar>
-            <StatusBarItem>Тест</StatusBarItem>
-        </StatusBar>
-        <Grid>
-            <Grid.Resources>
-                <ResourceDictionary>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="../../Templates/ModelMainView.xaml">
-                        </ResourceDictionary>
-                    </ResourceDictionary.MergedDictionaries>
-                </ResourceDictionary>
-            </Grid.Resources>
-            <ContentControl Content="{Binding CurrentViewModel}"/>
-        </Grid>
-    </DockPanel>-->
 </Window>
