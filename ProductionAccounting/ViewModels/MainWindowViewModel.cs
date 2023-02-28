@@ -1,65 +1,21 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
-using ProductionAccounting.DAL.Entities;
-using ProductionAccounting.Interfaces;
-using ProductionAccounting.Models;
-using ProductionAccounting.Services;
+using ProductionAccounting.Enums;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Reflection;
 using System.Windows.Input;
+using static ProductionAccounting.Enums.ViewEnum;
 
 namespace ProductionAccounting.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
-        private readonly IRepository<Employee> _employees;
-        private readonly IRepository<ExecutedOperation> _executedOperation;
-        private readonly IRepository<OperationСoefficient> _operationСoefficient;
-        private readonly IRepository<Operation> _operation;
-        private readonly IRepository<Product> _product;
-        private readonly IUserDialog<EmployeeModel> _userDialog;
-        private readonly IUserDialog<CoefficientModel> _coeffDialog;
-        private readonly IUserDialogWithRepository<OperationModel, OperationСoefficient> _operationDialog;
-        private readonly IUserDialogWithRepository<ProductModel, Operation> _productDialog;
-        private readonly IUserPrintDialog _printDialog;
-        private readonly IChangeSaveFolderService _changeSaveFolderService;
-        private readonly IAddingJobDataService _addingJobDataService;
-        private readonly ICalculateSalaryService _salaryService;
-        private readonly IConfirmDeleteDialog _confirmDeleteDialog;
+        private readonly IViewModelFactory _viewModelFactory;
 
-
-        public MainWindowViewModel(
-            IRepository<Employee> employees,
-            IRepository<ExecutedOperation> executedOperation,
-            IRepository<OperationСoefficient> operationСoefficient,
-            IRepository<Operation> operation,
-            IRepository<Product> product,
-            IUserDialog<EmployeeModel> userDialog,
-            IUserDialog<CoefficientModel> coeffDialog,
-            IUserDialogWithRepository<OperationModel, OperationСoefficient> operationDialog,
-            IUserDialogWithRepository<ProductModel, Operation> productDialog,
-            IUserPrintDialog printDialog,
-            IChangeSaveFolderService changeSaveFolderService,
-            IAddingJobDataService addingJobDataService,
-            ICalculateSalaryService salaryService,
-            IConfirmDeleteDialog confirmDeleteDialog
-            )
+        public MainWindowViewModel(IViewModelFactory viewModelFactory)
         {
-            _employees = employees;
-            _executedOperation = executedOperation;
-            _operation = operation;
-            _product = product;
-            _operationСoefficient = operationСoefficient;
-            _userDialog = userDialog;
-            _coeffDialog = coeffDialog;
-            _operationDialog = operationDialog;
-            _productDialog = productDialog;
-            _printDialog = printDialog;
-            _changeSaveFolderService = changeSaveFolderService;
-            _addingJobDataService = addingJobDataService;
-            _salaryService = salaryService;
-            _confirmDeleteDialog = confirmDeleteDialog;
+            _viewModelFactory = viewModelFactory;
 
             IsLoaded = true;
         }
@@ -72,7 +28,7 @@ namespace ProductionAccounting.ViewModels
             private set 
             {
                 if (_currentViewModel?.GetType() != value?.GetType())
-                    Set(ref _currentViewModel, value); 
+                    Set(ref _currentViewModel, value); //^.^ это Илюшенька <3
             }
         }
 
@@ -94,7 +50,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new EmployeeViewModel(_employees, _userDialog);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.EmployeeViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -113,7 +69,7 @@ namespace ProductionAccounting.ViewModels
             {
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
-            CurrentViewModel = new ProductsViewModel(_operation, _product, _productDialog, _printDialog, _changeSaveFolderService);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.ProductsViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -132,7 +88,7 @@ namespace ProductionAccounting.ViewModels
             {
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
-            CurrentViewModel = new CoefficientViewModel(_operationСoefficient, _coeffDialog);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.CoefficientViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -151,8 +107,8 @@ namespace ProductionAccounting.ViewModels
             {
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
-            
-            CurrentViewModel = new OperationsViewModel(_operation, _operationСoefficient,  _operationDialog);
+
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.OperationsViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -172,7 +128,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new InsertDataViewModel(_operation, _employees, _addingJobDataService);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.InsertDataViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -192,14 +148,13 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new CalculateSalaryViewModel(_salaryService, _employees);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.CalculateSalaryViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
         #endregion
 
-
-        #region Команда открытия вьюхи расчет зарплат
+        #region Команда открытия вьюхи с данными о работе всех
         private ICommand _showWorkDataViewCommand;
 
         public ICommand ShowWorkDataViewCommand => _showWorkDataViewCommand ??= new LambdaCommand(ShowWorkDataViewCommandExecuted, ShowWorkDataViewCommandExecute);
@@ -213,7 +168,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = new WorkDataViewModel(_executedOperation, _confirmDeleteDialog);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.WorkDataViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }

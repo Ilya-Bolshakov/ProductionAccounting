@@ -16,14 +16,16 @@ namespace ProductionAccounting.ViewModels
     {
         private readonly IRepository<OperationСoefficient> _coefficientRepository;
         private readonly IUserDialog<CoefficientModel> _userDialog;
+        private readonly IShowExceptionDialogService _showExceptionDialog;
 
         public CoefficientViewModel()
         {}
 
-        public CoefficientViewModel(IRepository<OperationСoefficient> coeff, IUserDialog<CoefficientModel> userDialog)
+        public CoefficientViewModel(IRepository<OperationСoefficient> coeff, IUserDialog<CoefficientModel> userDialog, IShowExceptionDialogService showExceptionDialog)
         {
             _coefficientRepository = coeff;
             _userDialog = userDialog;
+            _showExceptionDialog = showExceptionDialog;
         }
 
         private ObservableCollection<CoefficientModel> _coefficients;
@@ -67,13 +69,24 @@ namespace ProductionAccounting.ViewModels
         private async void GetCoeffsViewCommandExecuted()
         {
             OnLoading = true;
-            var task = Task.Run(() =>
+            try
             {
-                return _coefficientRepository.Items.ToList().Select(e => new CoefficientModel(e));
-            });
-            var coefficients = await task;
-            Coefficients = coefficients.ToObservableCollection();
-            OnLoading = false;
+                var task = Task.Run(() =>
+                {
+                    return _coefficientRepository.Items.ToList().Select(e => new CoefficientModel(e));
+                });
+                var coefficients = await task;
+                Coefficients = coefficients.ToObservableCollection();
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }
+            
         }
         #endregion
 
@@ -86,16 +99,24 @@ namespace ProductionAccounting.ViewModels
 
         private async void AddCoeffsViewCommandExecuted()
         {
-            CoefficientModel coeff = new();
-            if (!_userDialog.Edit(coeff))
+            try
             {
-                return;
+                CoefficientModel coeff = new();
+                if (!_userDialog.Edit(coeff))
+                {
+                    return;
+                }
+                Coefficients.Add(coeff);
+                var entity = coeff.MapToOrm();
+                _coefficientRepository.Add(entity);
+                await _coefficientRepository.SaveChangesAsync();
+                coeff.Id = entity.Id;
+                SelectedItem = coeff;
             }
-            Coefficients.Add(coeff);
-            _coefficientRepository.Add(coeff.MapToOrm());
-            await _coefficientRepository.SaveChangesAsync();
-
-            SelectedItem = coeff;
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -108,16 +129,22 @@ namespace ProductionAccounting.ViewModels
 
         private async void EditCoeffsViewCommandExecuted()
         {
-            if (!_userDialog.Edit(SelectedItem))
+            try
             {
-                return;
+                if (!_userDialog.Edit(SelectedItem))
+                {
+                    return;
+                }
+                var updateC = _coefficientRepository.GetById(SelectedItem.Id);
+                updateC.Name = SelectedItem.Name;
+                updateC.CoefficientValue = SelectedItem.CoefficientValue;
+                _coefficientRepository.Update(updateC);
+                await _coefficientRepository.SaveChangesAsync();
             }
-            var updateC = _coefficientRepository.GetById(SelectedItem.Id);
-            updateC.Name = SelectedItem.Name;
-            updateC.CoefficientValue = SelectedItem.CoefficientValue;
-            _coefficientRepository.Update(updateC);
-            await _coefficientRepository.SaveChangesAsync();
-
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -130,12 +157,19 @@ namespace ProductionAccounting.ViewModels
 
         private async void DeleteCoeffsViewCommandExecuted()
         {
-            var removeModel = SelectedItem;
-            if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить это значение коэффициента?", "Удаление элемента")) return;
-            Coefficients.Remove(removeModel);
-            await _coefficientRepository.DeleteAsync(removeModel.Id);
-            await _coefficientRepository.SaveChangesAsync();
-            if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            try
+            {
+                var removeModel = SelectedItem;
+                if (!_userDialog.ConfirmOperation("Вы действительно хотите удалить это значение коэффициента?", "Удаление элемента")) return;
+                Coefficients.Remove(removeModel);
+                await _coefficientRepository.DeleteAsync(removeModel.Id);
+                await _coefficientRepository.SaveChangesAsync();
+                if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
     }

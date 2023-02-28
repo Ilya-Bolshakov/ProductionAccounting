@@ -12,7 +12,7 @@ namespace ProductionAccounting.ViewModels.Base
     public class ValidationViewModel : ViewModel, INotifyDataErrorInfo
     {
         protected readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
-        private bool _isEnabledCommand;
+        private bool _isEnabledCommand = true;
 
         public bool IsEnabledCommand
         {

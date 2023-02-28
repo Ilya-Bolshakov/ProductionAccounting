@@ -108,7 +108,7 @@
                         Margin="10,0,10,10"
                         Command="{StaticResource DialogResultCommand}"
                         Content="Применить"
-                        CommandParameter="{Binding HasErrors}"
+                        CommandParameter="True"
                         Style="{StaticResource CommonButtonStyle}"
                         IsEnabled="{Binding IsEnabledCommand}"/>
                     <Button Grid.Column="1"

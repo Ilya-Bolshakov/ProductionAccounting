@@ -6,11 +6,9 @@ using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -19,15 +17,15 @@ namespace ProductionAccounting.ViewModels
 {
     public class WorkDataViewModel : ViewModel
     {
-        private readonly IRepository<Employee> _employeeRepository;
-        private readonly IRepository<Operation> _operationRepository;
         private readonly IRepository<ExecutedOperation> _execRepository;
         private readonly IConfirmDeleteDialog _confirmDeleteDialog;
+        private readonly IShowExceptionDialogService _showExceptionDialog;
 
-        public WorkDataViewModel(IRepository<ExecutedOperation> execRepository, IConfirmDeleteDialog confirmDeleteDialog)
+        public WorkDataViewModel(IRepository<ExecutedOperation> execRepository, IConfirmDeleteDialog confirmDeleteDialog, IShowExceptionDialogService showExceptionDialog)
         {
             _execRepository = execRepository;
             _confirmDeleteDialog = confirmDeleteDialog;
+            _showExceptionDialog = showExceptionDialog;
         }
 
         private bool _onLoading;
@@ -60,16 +58,25 @@ namespace ProductionAccounting.ViewModels
         private async void GetExecutedOperationsViewCommandExecuted()
         {
             OnLoading = true;
-
-            var task = Task.Run(() =>
+            try
             {
-                return _execRepository.Items.ToList().Select(e => new ExecutedOperationDataGridModel(e));
-            });
-            var executedOperations = await task;
-            ExecutedOperation = executedOperations.ToObservableCollection();
-            OperationView = CollectionViewSource.GetDefaultView(ExecutedOperation);
-            OperationView.Filter += _dataView_Filter;
-            OnLoading = false;
+                var task = Task.Run(() =>
+                {
+                    return _execRepository.Items.ToList().Select(e => new ExecutedOperationDataGridModel(e));
+                });
+                var executedOperations = await task;
+                ExecutedOperation = executedOperations.ToObservableCollection();
+                OperationView = CollectionViewSource.GetDefaultView(ExecutedOperation);
+                OperationView.Filter += _dataView_Filter;
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }
         }
 
         #endregion
@@ -83,20 +90,30 @@ namespace ProductionAccounting.ViewModels
 
         private async void DeleteExecutedOperationsViewCommandExecuted()
         {
-            if (!_confirmDeleteDialog.ShowConfirmDeleteDialog("Удалить эту запись?")) return;
-            OnLoading = true;
-            await Task.Run(async () => 
+            try
             {
-                var deleteItem = await _execRepository.Items.FirstOrDefaultAsync(i => i.Id == SelectedItem.Id);
-                if (deleteItem != null)
+                if (!_confirmDeleteDialog.ShowConfirmDeleteDialog("Удалить эту запись?")) return;
+                OnLoading = true;
+                await Task.Run(async () =>
                 {
-                    await _execRepository.DeleteAsync(deleteItem.Id);
-                    await _execRepository.SaveChangesAsync();
-                }
-            });
-            ExecutedOperation.Remove(SelectedItem);
-            SelectedItem = null;
-            OnLoading = false;
+                    var deleteItem = await _execRepository.Items.FirstOrDefaultAsync(i => i.Id == SelectedItem.Id);
+                    if (deleteItem != null)
+                    {
+                        await _execRepository.DeleteAsync(deleteItem.Id);
+                        await _execRepository.SaveChangesAsync();
+                    }
+                });
+                ExecutedOperation.Remove(SelectedItem);
+                SelectedItem = null;
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }
         }
 
         #endregion
