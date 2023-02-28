@@ -9,10 +9,11 @@ namespace ProductionAccounting.Registrators
             .AddScoped<MainWindowViewModel>()
             .AddTransient<EmployeeViewModel>()
             .AddTransient<ProductsViewModel>()
-            .AddTransient<EmployeeEditorWindowViewModel>()
-            .AddTransient<CoefficientEditorViewModel>()
             .AddTransient<CoefficientViewModel>()
             .AddTransient<OperationsViewModel>()
+            .AddTransient<WorkDataViewModel>()
+            .AddTransient<InsertDataViewModel>()
+            .AddTransient<CalculateSalaryViewModel>()
         ;
     }
 }
