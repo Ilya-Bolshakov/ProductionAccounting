@@ -31,7 +31,7 @@ namespace ProductionAccounting.ViewModels
                 }
                 else
                 {
-                    var regex = new Regex(@"^(\s*[a-zA-Zа-яА-Я\s]+)$");
+                    var regex = new Regex(@"^(\s*[a-zA-Zа-яёЁА-Я-\s\d+]+)$");
                     if (!regex.IsMatch(value))
                     {
                         AddError(nameof(Name), "Название должно представлять из себя несколько слов только из букв");

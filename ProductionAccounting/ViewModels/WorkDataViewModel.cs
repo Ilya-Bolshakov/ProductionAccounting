@@ -129,8 +129,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private int _monthFilter = DateTime.Now.Month;
-        public int MonthFilter
+        private string _monthFilter = DateTime.Now.Month.ToString();
+        public string MonthFilter
         {
             get { return _monthFilter; }
             set
@@ -140,8 +140,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private int _yearFilter = DateTime.Now.Year;
-        public int YearFilter
+        private string _yearFilter = DateTime.Now.Year.ToString();
+        public string YearFilter
         {
             get { return _yearFilter; }
             set
@@ -177,8 +177,8 @@ namespace ProductionAccounting.ViewModels
             if (sender is ExecutedOperationDataGridModel model)
             {
                 return model.Employee.ToString().Contains(NameFilter ?? String.Empty, StringComparison.OrdinalIgnoreCase)
-                && model.Year.ToString().Contains(YearFilter.ToString(), StringComparison.OrdinalIgnoreCase)
-                && model.Month.ToString().Contains(MonthFilter.ToString(), StringComparison.OrdinalIgnoreCase)
+                && model.Year.ToString().Contains(YearFilter ?? String.Empty, StringComparison.OrdinalIgnoreCase)
+                && model.Month.ToString().Contains(MonthFilter ?? String.Empty, StringComparison.OrdinalIgnoreCase)
                 ;
             }
             return false;
