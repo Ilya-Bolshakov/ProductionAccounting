@@ -1,9 +1,11 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
+using ProductionAccounting.Enums;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Reflection;
 using System.Windows.Input;
+using static ProductionAccounting.Enums.ViewEnum;
 
 namespace ProductionAccounting.ViewModels
 {
@@ -48,8 +50,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            //CurrentViewModel = new EmployeeViewModel(_employees, _userDialog);
-            CurrentViewModel = _viewModelFactory.CreateViewModel(0);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.EmployeeViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -68,8 +69,7 @@ namespace ProductionAccounting.ViewModels
             {
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
-            //CurrentViewModel = new ProductsViewModel(_operation, _product, _productDialog, _printDialog, _changeSaveFolderService);
-            CurrentViewModel = _viewModelFactory.CreateViewModel(3);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.ProductsViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -88,8 +88,7 @@ namespace ProductionAccounting.ViewModels
             {
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
-            //CurrentViewModel = new CoefficientViewModel(_operationСoefficient, _coeffDialog);
-            CurrentViewModel = _viewModelFactory.CreateViewModel(1);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.CoefficientViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -109,8 +108,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            //CurrentViewModel = new OperationsViewModel(_operation, _operationСoefficient,  _operationDialog);
-            CurrentViewModel = _viewModelFactory.CreateViewModel(2);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.OperationsViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -130,8 +128,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = _viewModelFactory.CreateViewModel(6);
-            //CurrentViewModel = new InsertDataViewModel(_operation, _employees, _addingJobDataService);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.InsertDataViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
@@ -151,15 +148,13 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = _viewModelFactory.CreateViewModel(5);
-            //CurrentViewModel = new CalculateSalaryViewModel(_salaryService, _employees);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.CalculateSalaryViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
         #endregion
 
-
-        #region Команда открытия вьюхи расчет зарплат
+        #region Команда открытия вьюхи с данными о работе всех
         private ICommand _showWorkDataViewCommand;
 
         public ICommand ShowWorkDataViewCommand => _showWorkDataViewCommand ??= new LambdaCommand(ShowWorkDataViewCommandExecuted, ShowWorkDataViewCommandExecute);
@@ -173,8 +168,7 @@ namespace ProductionAccounting.ViewModels
                 CurrentViewModel.PropertyChanged -= CurrentViewModel_PropertyChanged;
             }
 
-            CurrentViewModel = _viewModelFactory.CreateViewModel(4);
-            //CurrentViewModel = new WorkDataViewModel(_executedOperation, _confirmDeleteDialog);
+            CurrentViewModel = _viewModelFactory.CreateViewModel((int)EnumView.WorkDataViewModel);
             CurrentViewModelType = CurrentViewModel.GetType();
             CurrentViewModel.PropertyChanged += CurrentViewModel_PropertyChanged;
         }
