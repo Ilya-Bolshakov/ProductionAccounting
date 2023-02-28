@@ -18,6 +18,9 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<Operation> _operationRepository;
         private readonly IRepository<Employee> _employeeRepository;
         private readonly IAddingJobDataService _jobDataService;
+        private readonly IShowExceptionDialogService _showExceptionDialog;
+
+
         private bool _onLoading;
         public bool OnLoading
         {
@@ -132,7 +135,7 @@ namespace ProductionAccounting.ViewModels
             NumberOfOperations = _jobDataService.GetNumberExecutedOperations(SelectedEmployee.Id, SelectedOperation.Id, CurrentMonth, CurrentYear);
         }
 
-        public InsertDataViewModel(IRepository<Operation> operationRepository, IRepository<Employee> employeeRepository, IAddingJobDataService addingJobDataService)
+        public InsertDataViewModel(IRepository<Operation> operationRepository, IRepository<Employee> employeeRepository, IAddingJobDataService addingJobDataService, IShowExceptionDialogService showExceptionDialog)
         {
             _jobDataService = addingJobDataService;
             Monthes = Enumerable.Range(1, 12).ToArray();
@@ -140,6 +143,7 @@ namespace ProductionAccounting.ViewModels
             CurrentMonth = DateTime.Now.Month;
             _operationRepository = operationRepository;
             _employeeRepository = employeeRepository;
+            _showExceptionDialog = showExceptionDialog;
         }
 
 
@@ -153,21 +157,33 @@ namespace ProductionAccounting.ViewModels
         private async void GetDataExecuted()
         {
             OnLoading = true;
-            var task = Task.Run(() =>
+            try
             {
-                return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
-            });
-            var operations = await task;
-            OperationList = operations.ToList();
-            var getEmployeeTask = Task.Run(() =>
+                var task = Task.Run(() =>
+                {
+                    return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
+                });
+                var operations = await task;
+                OperationList = operations.ToList();
+                var getEmployeeTask = Task.Run(() =>
+                {
+                    return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
+                });
+                var employees = await getEmployeeTask;
+                EmployeeList = employees.ToList();
+                OnLoading = false;
+                SelectedEmployee = EmployeeList.FirstOrDefault();
+                SelectedOperation = OperationList.FirstOrDefault();
+            }
+            catch (System.Exception ex)
             {
-                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
-            });
-            var employees = await getEmployeeTask;
-            EmployeeList = employees.ToList();
-            OnLoading = false;
-            SelectedEmployee = EmployeeList.FirstOrDefault();
-            SelectedOperation = OperationList.FirstOrDefault();
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }
+
         }
         #endregion
 
@@ -181,14 +197,24 @@ namespace ProductionAccounting.ViewModels
         private async void InsertDataExecuted()
         {
             OnLoading = true;
-            if (SelectedOperation == null || SelectedEmployee == null)
+            try
             {
-                NumberOfOperations = null;
-                return;
+                if (SelectedOperation == null || SelectedEmployee == null)
+                {
+                    NumberOfOperations = null;
+                    return;
+                }
+                await _jobDataService.InsertData(SelectedEmployee.Id, SelectedOperation.Id, CurrentMonth, CurrentYear, NewNumberOfOperations);
+                UpdateData();
             }
-            await _jobDataService.InsertData(SelectedEmployee.Id, SelectedOperation.Id, CurrentMonth, CurrentYear, NewNumberOfOperations);
-            UpdateData();
-            OnLoading = false;
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }            
         }
         #endregion
     }

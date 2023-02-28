@@ -28,7 +28,7 @@ namespace ProductionAccounting.ViewModels
             private set 
             {
                 if (_currentViewModel?.GetType() != value?.GetType())
-                    Set(ref _currentViewModel, value); 
+                    Set(ref _currentViewModel, value); //^.^ это Илюшенька <3
             }
         }
 

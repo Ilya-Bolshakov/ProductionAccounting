@@ -17,11 +17,14 @@ namespace ProductionAccounting.ViewModels
         private readonly IRepository<Operation> _operationRepository;
         private readonly IRepository<OperationСoefficient> _operationCoefficient;
         private readonly IUserDialogWithRepository<OperationModel, OperationСoefficient> _userDialogWithRepo;
-        public OperationsViewModel(IRepository<Operation> repository, IRepository<OperationСoefficient> coefficientRepository, IUserDialogWithRepository<OperationModel, OperationСoefficient> userDialog)
+        private readonly IShowExceptionDialogService _showExceptionDialog;
+
+        public OperationsViewModel(IRepository<Operation> repository, IRepository<OperationСoefficient> coefficientRepository, IUserDialogWithRepository<OperationModel, OperationСoefficient> userDialog, IShowExceptionDialogService showExceptionDialog)
         {
             _operationRepository = repository;
             _userDialogWithRepo = userDialog;
             _operationCoefficient = coefficientRepository;
+            _showExceptionDialog = showExceptionDialog;
         }
 
         public OperationsViewModel()
@@ -68,13 +71,23 @@ namespace ProductionAccounting.ViewModels
         private async void GetOperationsExecuted()
         {
             OnLoading = true;
-            var task = Task.Run(() =>
+            try
             {
-                return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
-            });
-            var operations = await task;
-            Operations = operations.ToObservableCollection();
-            OnLoading = false;
+                var task = Task.Run(() =>
+                {
+                    return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
+                });
+                var operations = await task;
+                Operations = operations.ToObservableCollection();
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally{
+                OnLoading = false;
+            }
+            
         }
         #endregion
 
@@ -87,18 +100,24 @@ namespace ProductionAccounting.ViewModels
 
         private async void AddOperationsExecuted()
         {
-            OperationModel operation = new();
-            if (!_userDialogWithRepo.Edit(operation, _operationCoefficient))
+            try
             {
-                return;
+                OperationModel operation = new();
+                if (!_userDialogWithRepo.Edit(operation, _operationCoefficient))
+                {
+                    return;
+                }
+                Operations.Add(operation);
+                var entity = operation.MapToOrm();
+                _operationRepository.Add(entity);
+                await _operationRepository.SaveChangesAsync();
+                operation.Id = entity.Id;
+                SelectedItem = operation;
             }
-            Operations.Add(operation);
-            var entity = operation.MapToOrm();
-            _operationRepository.Add(entity);
-            await _operationRepository.SaveChangesAsync();
-            operation.Id = entity.Id;
-            SelectedItem = operation;
-
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -111,17 +130,24 @@ namespace ProductionAccounting.ViewModels
 
         private async void EditOperationsExecuted()
         {
-            if (!_userDialogWithRepo.Edit(SelectedItem, _operationCoefficient))
+            try
             {
-                return;
+                if (!_userDialogWithRepo.Edit(SelectedItem, _operationCoefficient))
+                {
+                    return;
+                }
+                var updateop = _operationRepository.GetById(SelectedItem.Id);
+                updateop.Name = SelectedItem.Name;
+                updateop.Cost = SelectedItem.Cost;
+                updateop.OperationDuration = SelectedItem.OperationDuration;
+                updateop.OperationСoefficient = _operationCoefficient.GetById(SelectedItem.Coefficient.Id);
+                _operationRepository.Update(updateop);
+                await _operationRepository.SaveChangesAsync();
             }
-            var updateop = _operationRepository.GetById(SelectedItem.Id);
-            updateop.Name = SelectedItem.Name;
-            updateop.Cost = SelectedItem.Cost;
-            updateop.OperationDuration = SelectedItem.OperationDuration;
-            updateop.OperationСoefficient = _operationCoefficient.GetById(SelectedItem.Coefficient.Id);
-            _operationRepository.Update(updateop);
-            await _operationRepository.SaveChangesAsync();
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -134,12 +160,19 @@ namespace ProductionAccounting.ViewModels
 
         private async void DeleteOperationsExecuted()
         {
-            var removeModel = SelectedItem;
-            if (!_userDialogWithRepo.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
-            Operations.Remove(removeModel);
-            await _operationRepository.DeleteAsync(removeModel.Id);
-            await _operationRepository.SaveChangesAsync();
-            if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            try
+            {
+                var removeModel = SelectedItem;
+                if (!_userDialogWithRepo.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
+                Operations.Remove(removeModel);
+                await _operationRepository.DeleteAsync(removeModel.Id);
+                await _operationRepository.SaveChangesAsync();
+                if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
     }

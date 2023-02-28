@@ -16,10 +16,12 @@ namespace ProductionAccounting.ViewModels
     {
         private readonly ICalculateSalaryService _service;
         private readonly IRepository<Employee> _employeeRepository;
-        public CalculateSalaryViewModel(ICalculateSalaryService service, IRepository<Employee> employeeRepository)
+        private readonly IShowExceptionDialogService _showExceptionDialog;
+        public CalculateSalaryViewModel(ICalculateSalaryService service, IRepository<Employee> employeeRepository, IShowExceptionDialogService showExceptionDialog)
         {
             _service = service;
             _employeeRepository = employeeRepository;
+            _showExceptionDialog = showExceptionDialog;
         }
 
         private bool _onLoading;
@@ -102,17 +104,27 @@ namespace ProductionAccounting.ViewModels
         private async void GetDataExecuted()
         {
             OnLoading = true;
-            var getEmployeeTask = Task.Run(() =>
+            try
             {
-                return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
-            });
-            var employees = await getEmployeeTask;
-            EmployeeList = employees.ToList();
-            Monthes = Enumerable.Range(1, 12).ToArray();
-            CurrentMonth = DateTime.Now.Month;
-            CurrentYear = DateTime.Now.Year;
-            OnLoading = false;
-            SelectedEmployee = EmployeeList.FirstOrDefault();
+                var getEmployeeTask = Task.Run(() =>
+                {
+                    return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
+                });
+                var employees = await getEmployeeTask;
+                EmployeeList = employees.ToList();
+                Monthes = Enumerable.Range(1, 12).ToArray();
+                CurrentMonth = DateTime.Now.Month;
+                CurrentYear = DateTime.Now.Year;
+                OnLoading = false;
+                SelectedEmployee = EmployeeList.FirstOrDefault();
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally{
+                OnLoading = false;
+            }
         }
         #endregion
 

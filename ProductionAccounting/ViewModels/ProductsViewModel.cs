@@ -1,7 +1,5 @@
 ﻿using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
@@ -11,7 +9,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
@@ -23,6 +20,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IUserDialogWithRepository<ProductModel, Operation> _userDialogWithRepo;
         private readonly IUserPrintDialog _printDialog;
         private readonly IChangeSaveFolderService _changeSaveFolderService;
+        private readonly IShowExceptionDialogService _showExceptionDialog;
 
 
         private ObservableCollection<ProductModel> _products;
@@ -65,13 +63,23 @@ namespace ProductionAccounting.ViewModels
         private async void GetProductsExecuted()
         {
             OnLoading = true;
-            var task = Task.Run(() =>
+            try
             {
-                return _productRepository.Items.ToList().Select(e => new ProductModel(e));
-            });
-            var products = await task;
-            Products = products.ToObservableCollection();
-            OnLoading = false;
+                var task = Task.Run(() =>
+                {
+                    return _productRepository.Items.ToList().Select(e => new ProductModel(e));
+                });
+                var products = await task;
+                Products = products.ToObservableCollection();
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
+            finally
+            {
+                OnLoading = false;
+            }            
         }
         #endregion
 
@@ -84,25 +92,31 @@ namespace ProductionAccounting.ViewModels
 
         private async void AddProductsExecuted()
         {
-            ProductModel product = new();
-            if (!_userDialogWithRepo.Edit(product, _operationRepository))
+            try
             {
-                return;
+                ProductModel product = new();
+                if (!_userDialogWithRepo.Edit(product, _operationRepository))
+                {
+                    return;
+                }
+                Products.Add(product);
+                var productDb = new Product();
+                productDb.Name = product.Name;
+                productDb.Operations = new List<Operation>();
+                foreach (var item in product.Operations)
+                {
+                    var operDb = _operationRepository.GetById(item.Id);
+                    productDb.Operations.Add(operDb);
+                }
+                _productRepository.Add(productDb);
+                await _productRepository.SaveChangesAsync();
+                product.Id = productDb.Id;
+                SelectedItem = product;
             }
-            Products.Add(product);
-            var productDb = new Product();
-            productDb.Name = product.Name;
-            productDb.Operations = new List<Operation>();
-            foreach (var item in product.Operations)
+            catch (System.Exception ex)
             {
-                var operDb = _operationRepository.GetById(item.Id);
-                productDb.Operations.Add(operDb);
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
             }
-            _productRepository.Add(productDb);
-            await _productRepository.SaveChangesAsync();
-            product.Id = productDb.Id;
-            SelectedItem = product;
-
         }
         #endregion
 
@@ -115,20 +129,27 @@ namespace ProductionAccounting.ViewModels
 
         private async void EditProductsExecuted()
         {
-            if (!_userDialogWithRepo.Edit(SelectedItem, _operationRepository))
+            try
             {
-                return;
+                if (!_userDialogWithRepo.Edit(SelectedItem, _operationRepository))
+                {
+                    return;
+                }
+                var updatep = _productRepository.GetById(SelectedItem.Id);
+                updatep.Name = SelectedItem.Name;
+                updatep.Operations = new List<Operation>();
+                foreach (var item in SelectedItem.Operations)
+                {
+                    var operDb = _operationRepository.GetById(item.Id);
+                    updatep.Operations.Add(operDb);
+                }
+                _productRepository.Update(updatep);
+                await _productRepository.SaveChangesAsync();
             }
-            var updatep = _productRepository.GetById(SelectedItem.Id);
-            updatep.Name = SelectedItem.Name;
-            updatep.Operations = new List<Operation>();
-            foreach (var item in SelectedItem.Operations)
+            catch (System.Exception ex)
             {
-                var operDb = _operationRepository.GetById(item.Id);
-                updatep.Operations.Add(operDb);
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
             }
-            _productRepository.Update(updatep);
-            await _productRepository.SaveChangesAsync();
         }
         #endregion
 
@@ -141,12 +162,19 @@ namespace ProductionAccounting.ViewModels
 
         private async void DeleteProductsExecuted()
         {
-            var removeModel = SelectedItem;
-            if (!_userDialogWithRepo.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
-            Products.Remove(removeModel);
-            await _productRepository.DeleteAsync(removeModel.Id);
-            await _productRepository.SaveChangesAsync();
-            if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            try
+            {
+                var removeModel = SelectedItem;
+                if (!_userDialogWithRepo.ConfirmOperation("Вы действительно хотите удалить этого сотрудника?", "Удаление сотрудника")) return;
+                Products.Remove(removeModel);
+                await _productRepository.DeleteAsync(removeModel.Id);
+                await _productRepository.SaveChangesAsync();
+                if (ReferenceEquals(SelectedItem, removeModel)) SelectedItem = null;
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
 
@@ -182,13 +210,14 @@ namespace ProductionAccounting.ViewModels
         #endregion
 
         public ProductsViewModel(IRepository<Operation> operationRepository, IRepository<Product> productRepository,
-            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog, IChangeSaveFolderService changeSaveFolderService)
+            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog, IChangeSaveFolderService changeSaveFolderService, IShowExceptionDialogService showExceptionDialog)
         {
             _operationRepository = operationRepository;
             _productRepository = productRepository;
             _userDialogWithRepo = userDialog;
             _printDialog = printDialog;
             _changeSaveFolderService = changeSaveFolderService;
+            _showExceptionDialog = showExceptionDialog;
         }
     }
 }
