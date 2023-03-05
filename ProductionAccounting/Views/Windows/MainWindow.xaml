@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
-        Height="900" Width="1380"
+        Height="750" Width="1380"
         WindowStyle="None"
         DataContext="{Binding MainWindowModel, Source={StaticResource ViewModelLocator}}">
 

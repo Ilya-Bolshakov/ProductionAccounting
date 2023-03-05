@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using ProductionAccounting.Services;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ProductionAccounting.ViewModels
 {
@@ -40,6 +41,16 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        private decimal _productPrice;
+        public decimal ProductPrice
+        {
+            get { return _productPrice; }
+            private set
+            {
+                Set(ref _productPrice, value);
+            }
+        }
+
         public TabelModel TabelModel { get; private set; }
 
         public PrintViewModel(TabelModel model)
@@ -47,6 +58,7 @@ namespace ProductionAccounting.ViewModels
             TabelModel = model;
             Operations = new List<OperationModel>(model.Operations);
             Name = model.Name;
+            ProductPrice = Operations.Select(i => i.Price).Sum();
         }
 
         #region Команда вывода на печать
