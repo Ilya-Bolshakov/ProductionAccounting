@@ -6,6 +6,7 @@ using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -31,6 +32,7 @@ namespace ProductionAccounting.ViewModels
             private set
             {
                 Set(ref _onLoading, value);
+                IsEnable = !HasPickedAll && !OnLoading;
             }
         }
 
@@ -44,13 +46,33 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private EmployeeModel _selectedEmployee;
-        public EmployeeModel SelectedEmployee
+        private List<EmployeeModel> _selectedEmployee;
+        public List<EmployeeModel> SelectedEmployee
         {
             get { return _selectedEmployee; }
             set
             {
                 Set(ref _selectedEmployee, value);
+            }
+        }
+
+        private EmployeeModel _selectedItem;
+        public EmployeeModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                Set(ref _selectedItem, value);
+            }
+        }
+
+        private ObservableCollection<EmployeeAndHisSalary> _employeeAndHisSalaries = new();
+        public ObservableCollection<EmployeeAndHisSalary> EmployeeAndHisSalaries
+        {
+            get { return _employeeAndHisSalaries; }
+            set
+            {
+                Set(ref _employeeAndHisSalaries, value);
             }
         }
 
@@ -84,13 +106,34 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
-        private decimal _salary;
-        public decimal Salary
+        //private decimal _salary;
+        //public decimal Salary
+        //{
+        //    get { return _salary; }
+        //    set
+        //    {
+        //        Set(ref _salary, value);
+        //    }
+        //}
+
+        private bool _hasPickedAll;
+        public bool HasPickedAll
         {
-            get { return _salary; }
+            get { return _hasPickedAll; }
             set
             {
-                Set(ref _salary, value);
+                Set(ref _hasPickedAll, value);
+                IsEnable = !HasPickedAll && !OnLoading;
+            }
+        }
+
+        private bool _isEnable;
+        public bool IsEnable
+        {
+            get { return _isEnable; }
+            set 
+            {
+                Set(ref _isEnable, value);
             }
         }
 
@@ -116,7 +159,6 @@ namespace ProductionAccounting.ViewModels
                 CurrentMonth = DateTime.Now.Month;
                 CurrentYear = DateTime.Now.Year;
                 OnLoading = false;
-                SelectedEmployee = EmployeeList.FirstOrDefault();
             }
             catch (System.Exception ex)
             {
@@ -132,14 +174,20 @@ namespace ProductionAccounting.ViewModels
         #region Команда получения зп
         private ICommand _getSalary;
 
-        public ICommand GetSalary => _getSalary ??= new LambdaCommand(GetSalaryExecuted, GetSalaryExecute);
+        public ICommand GetSalary => _getSalary ??= new LambdaCommand<IList<object>>(GetSalaryExecuted, GetSalaryExecute);
 
-        private bool GetSalaryExecute() => !OnLoading && SelectedEmployee != null;
+        private bool GetSalaryExecute() => !OnLoading && SelectedItem != null;
 
-        private void GetSalaryExecuted()
+        private void GetSalaryExecuted(IList<object> employees)
         {
             OnLoading = true;
-            Salary = _service.CalculateEmployeeSalary(SelectedEmployee.Id, CurrentYear, CurrentMonth);
+            var selEm = employees.Select(o => (EmployeeModel)o).ToList();
+            EmployeeAndHisSalaries.Clear();
+            foreach (var e in selEm)
+            {
+                var salary = _service.CalculateEmployeeSalary(e.Id, CurrentYear, CurrentMonth);
+                EmployeeAndHisSalaries.Add(new EmployeeAndHisSalary() { Employee = e, Salary = salary });
+            }
             OnLoading = false;
         }
         #endregion

@@ -27,7 +27,7 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="150"/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -41,7 +41,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Сотрудник"
                            Foreground="White"
@@ -51,19 +50,25 @@
                            FontFamily="Montserrat"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"/>
-                <ComboBox Grid.Row="1"
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1">
+                    <CheckBox Content="Все"
+                              Foreground="White"
+                              FontSize="18"
+                              Margin="0 0 0 2"
+                              IsChecked="{Binding HasPickedAll}"/>
+                    <ListBox
                           ItemsSource="{Binding EmployeeList}"
-                          SelectedItem="{Binding SelectedEmployee}"
-                          IsEnabled="{Binding OnLoading, Converter={StaticResource reverveConverter}}"
-                          Height="30"
+                          IsEnabled="{Binding IsEnable}"
+                          SelectedItem="{Binding SelectedItem}"
+                          Height="85"
                           FontSize="14"
-                          Name="CB_Employee"
-                          IsEditable="True"
+                          Name="LB"
+                          SelectionMode="Multiple"
                           VerticalAlignment="Top"
-                           IsTextSearchEnabled="False"
-                          TextBoxBase.TextChanged="CB_Employee_TextChanged">
-                </ComboBox>
-
+                           IsTextSearchEnabled="False">
+                    </ListBox>
+                </StackPanel>
                 <TextBlock Text="Год"
                            Grid.Column="1"
                            Margin="10,0,10,0"
@@ -76,6 +81,7 @@
                            VerticalAlignment="Center"/>
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
+                         VerticalAlignment="Top"
                  Text="{Binding CurrentYear, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20"
                          FontWeight="Medium"
@@ -122,6 +128,14 @@
                            VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="2">
+                <ListBox ItemsSource="{Binding EmployeeAndHisSalaries}"
+                         >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Employee}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <TextBlock Text="{Binding Salary, StringFormat='{}{0:c}'}"
                            Foreground="White"
                            TextWrapping="Wrap"
@@ -134,6 +148,7 @@
             <Button Grid.Row="3"
                     Style="{StaticResource CommonButtonStyle}"
                     Command="{Binding GetSalary}"
+                     CommandParameter="{Binding ElementName=LB, Path=SelectedItems}"
                     Content="Расчитать"
                     Height="40"
                     Width="120"/>
