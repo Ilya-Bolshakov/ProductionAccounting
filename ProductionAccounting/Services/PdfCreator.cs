@@ -32,7 +32,7 @@ namespace ProductionAccounting.Services
                 var font = new Font(baseFont, 18, Font.NORMAL);
 
                 _stream = GetNewPdfStream();
-                _document = new Document(PageSize.A4, 25, 25, 30, 30);
+                _document = new Document(PageSize.A4.Rotate(), 25, 25, 30, 30);
 
                 _writer = PdfWriter.GetInstance(_document, _stream);
                 _document.AddAuthor("Ilya B.");

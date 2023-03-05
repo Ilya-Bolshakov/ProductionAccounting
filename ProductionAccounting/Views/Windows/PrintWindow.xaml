@@ -78,9 +78,10 @@
                 </DataGrid.Columns>
             </DataGrid>
             <TextBlock Text="{Binding ProductPrice, StringFormat={}Итого: {0} }"
+                       FontSize="26"
                        VerticalAlignment="Bottom"
                        Foreground="White"
-                       Margin="305 0 0 20"
+                       Margin="305 0 0 10"
                        Grid.Row="2"/>
         </Grid>
     </Border>
