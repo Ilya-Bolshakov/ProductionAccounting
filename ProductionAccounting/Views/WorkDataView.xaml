@@ -46,7 +46,8 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1" Orientation="Horizontal"
+                        VerticalAlignment="Top">
                 <TextBlock Grid.Row="1" 
                            Text="Имя сотрудника"
                            TextWrapping="Wrap"

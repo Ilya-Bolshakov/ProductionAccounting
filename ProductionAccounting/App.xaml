@@ -6,6 +6,7 @@
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/MainStyles.xaml"/>
                 <ResourceDictionary Source="Styles/DialogStyles.xaml"/>
@@ -15,6 +16,10 @@
                 <ResourceDictionary Source="Infrastructure/Commands/AppCommands.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <locators:ViewModelLocator x:Key="ViewModelLocator"/>
+            <Style TargetType="ComboBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
