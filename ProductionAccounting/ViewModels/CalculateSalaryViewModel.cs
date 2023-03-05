@@ -176,16 +176,17 @@ namespace ProductionAccounting.ViewModels
 
         public ICommand GetSalary => _getSalary ??= new LambdaCommand<IList<object>>(GetSalaryExecuted, GetSalaryExecute);
 
-        private bool GetSalaryExecute() => !OnLoading && SelectedItem != null;
+        private bool GetSalaryExecute() => !OnLoading && (SelectedItem != null || HasPickedAll);
 
-        private void GetSalaryExecuted(IList<object> employees)
+        private async void GetSalaryExecuted(IList<object> employees)
         {
             OnLoading = true;
-            var selEm = employees.Select(o => (EmployeeModel)o).ToList();
+            var selEm = HasPickedAll ? EmployeeList : employees.Select(o => (EmployeeModel)o).ToList();
             EmployeeAndHisSalaries.Clear();
             foreach (var e in selEm)
             {
-                var salary = _service.CalculateEmployeeSalary(e.Id, CurrentYear, CurrentMonth);
+                var salaryTask = _service.CalculateEmployeeSalaryAsync(e.Id, CurrentYear, CurrentMonth);
+                var salary = await salaryTask;
                 EmployeeAndHisSalaries.Add(new EmployeeAndHisSalary() { Employee = e, Salary = salary });
             }
             OnLoading = false;

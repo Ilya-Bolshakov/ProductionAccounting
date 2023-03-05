@@ -129,21 +129,32 @@
             </Grid>
             <Grid Grid.Row="2">
                 <ListBox ItemsSource="{Binding EmployeeAndHisSalaries}"
-                         >
+                         Background="Transparent"
+                         BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Employee}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Employee, StringFormat='{}{0}:'}"
+                                           Foreground="White"
+                                           TextWrapping="Wrap"
+                                           FontSize="30"
+                                           Margin="0 0 10 0"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Salary, StringFormat='{}{0:c}'}"
+                                           Foreground="White"
+                                           TextWrapping="Wrap"
+                                           FontSize="30"
+                                           FontWeight="Medium"
+                                           FontFamily="Montserrat"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <TextBlock Text="{Binding Salary, StringFormat='{}{0:c}'}"
-                           Foreground="White"
-                           TextWrapping="Wrap"
-                           FontSize="34"
-                           FontWeight="Medium"
-                           FontFamily="Montserrat"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
             </Grid>
             <Button Grid.Row="3"
                     Style="{StaticResource CommonButtonStyle}"
