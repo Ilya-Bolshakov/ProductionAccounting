@@ -23,6 +23,7 @@
         <Setter Property="Background" Value="AliceBlue"/>
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="26"/>
     </Style>
 
     <Style TargetType="DataGridColumnHeader">
