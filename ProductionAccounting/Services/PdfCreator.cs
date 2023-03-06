@@ -76,7 +76,7 @@ namespace ProductionAccounting.Services
             catch (Exception)
             {
                 Dispose();
-                if (File.Exists(_stream.Name))
+                if (File.Exists(_stream?.Name))
                     File.Delete(_stream.Name);
                 throw;
             }
@@ -86,8 +86,12 @@ namespace ProductionAccounting.Services
         {
             
             var fileName = $"Изделие '{TabelModel.Name}' Шаблон.pdf";
-            IConfiguration config = App.Host.Services.GetRequiredService<IConfiguration>();
-            var filePath = Path.Combine(config["SavePdfsFolder"], fileName);
+            var stream = File.Open("savePdfsFolder.txt", FileMode.OpenOrCreate);
+            var sr = new StreamReader(stream);
+            var folder = sr.ReadLine();
+            var filePath = Path.Combine(folder, fileName);
+            sr.Close();
+            stream.Close();
             return new FileStream(
                 filePath, FileMode.Create);
         }
@@ -100,9 +104,9 @@ namespace ProductionAccounting.Services
             {
                 if (disposing)
                 {
-                    _document.Dispose();
-                    _writer.Dispose();
-                    _stream.Dispose();
+                    _document?.Dispose();
+                    _writer?.Dispose();
+                    _stream?.Dispose();
                 }
 
                 _disposed = true;
