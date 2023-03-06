@@ -11,7 +11,7 @@ namespace ProductionAccounting.Registrators
             .AddDbContext<ProductionAccountingContext>(opt =>
             {
                 //opt.UseSqlServer(configuration.GetConnectionString("DevDB"))
-                opt.UseMySQL(configuration.GetConnectionString("MySql"))
+                opt.UseMySql(configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(configuration.GetConnectionString("MySql")))
                 ;
                 //opt.UseSqlServer(configuration["MSSQL"]);
             });
