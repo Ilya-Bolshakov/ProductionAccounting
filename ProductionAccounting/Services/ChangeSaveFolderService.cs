@@ -25,21 +25,11 @@ namespace ProductionAccounting.Services
 
         public void EditFolder()
         {
-            var appSettingsPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "appsettings.json");
-            var json = File.ReadAllText(appSettingsPath);
-
-            var jsonSettings = new JsonSerializerSettings();
-            jsonSettings.Converters.Add(new ExpandoObjectConverter());
-            jsonSettings.Converters.Add(new StringEnumConverter());
-
-            dynamic config = JsonConvert.DeserializeObject<ExpandoObject>(json, jsonSettings);
-
-            var expando = config as IDictionary<string, object>;
-            expando["SavePdfsFolder"] = FolderPath;
-
-            var newJson = JsonConvert.SerializeObject(config, Formatting.Indented, jsonSettings);
-
-            File.WriteAllText(appSettingsPath, newJson);
+            var stream = File.Open("savePdfsFolder.txt", FileMode.Create);
+            var sr = new StreamWriter(stream);
+            sr.Write(FolderPath);
+            sr.Close();
+            stream.Close();
         }
     }
 }
