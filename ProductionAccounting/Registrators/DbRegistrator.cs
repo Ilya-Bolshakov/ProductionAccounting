@@ -10,7 +10,8 @@ namespace ProductionAccounting.Registrators
         public static IServiceCollection AddDb(this IServiceCollection services, IConfiguration configuration) => services
             .AddDbContext<ProductionAccountingContext>(opt =>
             {
-                opt.UseSqlServer(configuration.GetConnectionString("DevDB"))
+                //opt.UseSqlServer(configuration.GetConnectionString("DevDB"))
+                opt.UseMySql(configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(configuration.GetConnectionString("MySql")))
                 ;
                 //opt.UseSqlServer(configuration["MSSQL"]);
             });
