@@ -28,8 +28,8 @@
                 <ColumnDefinition Width="100*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="480"/>
-                <RowDefinition/>
+                <RowDefinition Height="550*"/>
+                <RowDefinition Height="200*"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Сотрудники" Foreground="White">
                 <DataGrid ItemsSource="{Binding Employees}"

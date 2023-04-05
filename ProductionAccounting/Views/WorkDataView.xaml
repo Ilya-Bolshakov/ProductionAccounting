@@ -29,8 +29,8 @@
                 <ColumnDefinition Width="100*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="480"/>
-                <RowDefinition/>
+                <RowDefinition Height="480*"/>
+                <RowDefinition Height="200*"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Сведения о выполненных операциях" Foreground="White">
                 <DataGrid ItemsSource="{Binding OperationView}"

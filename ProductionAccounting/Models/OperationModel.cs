@@ -89,7 +89,9 @@ namespace ProductionAccounting.Models
 
         public override string ToString()
         {
-            return $"{Name}. Стоимость: {string.Format("{0:F2}", Cost)}. Длительность: {OperationDuration}. Коэф: {string.Format("{0:F2}", Coefficient.CoefficientValue)}";
+            //return $"{Name}. Стоимость: {string.Format("{0:F2}", Cost)}. Длительность: {OperationDuration}. Коэф: {string.Format("{0:F2}", Coefficient.CoefficientValue)}";
+            return $"{Name}. Коэф: {string.Format("{0:F2}", Coefficient.CoefficientValue)}";
+
         }
     }
 }
