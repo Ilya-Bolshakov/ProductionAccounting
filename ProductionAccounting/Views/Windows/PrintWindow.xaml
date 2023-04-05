@@ -18,12 +18,13 @@
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="90"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="5"/>
@@ -36,8 +37,14 @@
                             Style="{StaticResource minimizeBtn}">
                 </Button>
 
-                <Button x:Name="btnClose"                          
+                <Button x:Name="btnFullScreen"                           
                             Grid.Column="2"
+                            Click="btnFullScreen_Click"
+                            Style="{StaticResource btnFullScreen}">
+                </Button>
+
+                <Button x:Name="btnClose"                          
+                            Grid.Column="3"
                             Click="btnClose_Click"
                             Style="{StaticResource closeBtn}">
                 </Button>
@@ -60,21 +67,21 @@
             </Grid>
             <DataGrid Grid.Row="2"
                       Margin="10,10,10,10"
-                      Height="260"
+                      Height="auto"
             ItemsSource="{Binding Operations}"
             SelectedItem="{Binding SelectedItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Название"
-                                    Width="150"
+                                    Width="150*"
                                     Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Коэффициент"
-                                    Width="140"
+                                    Width="140*"
                                     Binding="{Binding Coefficient}"/>
                     <DataGridTextColumn Header="Итоговая цена"
-                                    Width="100"
-                                    Binding="{Binding Price}"/>
+                                    Width="100*"
+                                    Binding="{Binding Price, StringFormat={}{0:F2}}"/>
                     <DataGridTextColumn Header="Поле для вписывания"
-                                    Width="*"/>
+                                    Width="100*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <TextBlock Text="{Binding ProductPrice, StringFormat={}Итого: {0} }"

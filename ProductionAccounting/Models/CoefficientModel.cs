@@ -50,7 +50,7 @@ namespace ProductionAccounting.Models
 
         public override string ToString()
         {
-            return $"{Name}, Значение: {CoefficientValue}";
+            return $"{Name}, Значение: {string.Format("{0:F2}", CoefficientValue)}";
         }
     }
 }
