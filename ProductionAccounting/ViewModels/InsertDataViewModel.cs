@@ -8,6 +8,7 @@ using ProductionAccounting.Services;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -152,7 +153,6 @@ namespace ProductionAccounting.ViewModels
 
         }
 
-
         #region Команда загрузки всех данных
         private ICommand _getData;
 
@@ -228,6 +228,26 @@ namespace ProductionAccounting.ViewModels
             {
                 OnLoading = false;
             }            
+        }
+        #endregion
+
+        #region Команда открытия калькулятора
+        private ICommand _openCalculator;
+
+        public ICommand OpenCalculator => _openCalculator ??= new LambdaCommand(OpenCalculatorExecuted, OpenCalculatorExecute);
+
+        private bool OpenCalculatorExecute() => true;
+
+        private async void OpenCalculatorExecuted()
+        {
+            try
+            {
+                Process.Start("calc.exe");
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
     }
