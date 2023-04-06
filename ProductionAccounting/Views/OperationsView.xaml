@@ -17,6 +17,7 @@
     </i:Interaction.Triggers>
     <UserControl.Resources>
         <c:VisibleBoolConverter x:Key="converter"/>
+        <CollectionViewSource x:Key="Coeffs" Source="{Binding Coefficients}"/>
     </UserControl.Resources>
     <Grid Background="#272537">
         <Grid.ColumnDefinitions>
@@ -34,11 +35,12 @@
             </Grid.RowDefinitions>
             <GroupBox Header="Операции" Foreground="White">
                 <DataGrid ItemsSource="{Binding Operations}"
-                          SelectedItem="{Binding SelectedItem}">
+                          SelectedItem="{Binding SelectedItem}"
+                          IsReadOnly="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Название операции" Width="*" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Стоимость" Width="*" Binding="{Binding Cost, StringFormat={}{0:F2}}"/>
-                        <DataGridTextColumn Header="Коэффициент" Width="*" Binding="{Binding Coefficient.CoefficientValue, StringFormat={}{0:F2}}"/>
+                        <DataGridComboBoxColumn Header="Коэффициент" Width="*" ItemsSource="{Binding Source={StaticResource Coeffs}}" SelectedValueBinding="{Binding Coefficient, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Длительность операции" Width="*" Binding="{Binding OperationDuration}"/>
                         <DataGridTextColumn Header="Итоговая цена" Width="*" Binding="{Binding Price, StringFormat={}{0:F2}}"/>
                     </DataGrid.Columns>
@@ -49,12 +51,23 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button 
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button 
                     Height="40" 
                     Content="Добавить операцию"
                     Style="{StaticResource CommonButtonStyle}"
                     Command="{Binding AddOperations}">
-                </Button>
+                    </Button>
+                    <Button Grid.Row="1"
+                    Height="40"
+                    Content="Сохранить изменения"
+                    Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding SaveChanges}"/>
+                </Grid>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>

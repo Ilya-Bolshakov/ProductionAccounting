@@ -4,6 +4,7 @@ using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using ProductionAccounting.Services.Interfaces;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,8 @@ namespace ProductionAccounting.ViewModels
             }
         }
 
+        public IEnumerable<OperationModel> Initial { get; set; }
+
         private bool _onLoading;
         public bool OnLoading
         {
@@ -58,6 +61,16 @@ namespace ProductionAccounting.ViewModels
             set
             {
                 Set(ref _selectedItem, value);
+            }
+        }
+
+        private IEnumerable<CoefficientModel> _coefficients;
+        public IEnumerable<CoefficientModel> Coefficients
+        {
+            get { return _coefficients; }
+            set
+            {
+                Set(ref _coefficients, value);
             }
         }
 
@@ -79,6 +92,15 @@ namespace ProductionAccounting.ViewModels
                 });
                 var operations = await task;
                 Operations = operations.ToObservableCollection();
+                Initial = operations.AsEnumerable();
+
+                var taskCoeffs = Task.Run(() =>
+                {
+                    return _operationCoefficient.Items.ToList().Select(e => new CoefficientModel(e));
+                });
+
+                var coeffs = await taskCoeffs;
+                Coefficients = coeffs;
             }
             catch (System.Exception ex)
             {
@@ -173,6 +195,28 @@ namespace ProductionAccounting.ViewModels
             {
                 _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
             }
+        }
+        #endregion
+
+        #region Команда сохранения изменений
+        private ICommand _saveChanges;
+
+        public ICommand SaveChanges => _saveChanges ??= new LambdaCommand(SaveChangesExecuted, SaveChangesExecute);
+
+        private bool SaveChangesExecute() => SelectedItem != null;
+
+        private async void SaveChangesExecuted()
+        {
+            var changedItems = Operations.Except(Initial);
+
+            foreach (var o in changedItems)
+            {
+                var item = _operationRepository.GetById(o.Id);
+                var u = o.MapToOrm(item);
+                u.OperationСoefficient = _operationCoefficient.GetById(o.Coefficient.Id);
+                _operationRepository.Update(u);
+            }
+            await _operationRepository.SaveChangesAsync();
         }
         #endregion
     }
