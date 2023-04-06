@@ -1,5 +1,6 @@
 ﻿using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Models.Base;
+using System;
 
 namespace ProductionAccounting.Models
 {
@@ -19,6 +20,19 @@ namespace ProductionAccounting.Models
             set { _coefficientValue = value; OnPropertyChanged(nameof(CoefficientValue)); }
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            var o = obj as CoefficientModel;
+            return Name == o.Name && CoefficientValue == o.CoefficientValue;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.Name, this.CoefficientValue);
+        }
 
         public CoefficientModel()
         { }
@@ -50,7 +64,7 @@ namespace ProductionAccounting.Models
 
         public override string ToString()
         {
-            return $"{Name}, Значение: {CoefficientValue}";
+            return $"{Name}, {string.Format("{0:F2}", CoefficientValue)}";
         }
     }
 }

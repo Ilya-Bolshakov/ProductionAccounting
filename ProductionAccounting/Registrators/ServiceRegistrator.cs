@@ -21,6 +21,11 @@ namespace ProductionAccounting.Registrators
             .AddTransient<IShowExceptionDialogService, ShowExceptionDialogService>()
             .AddTransient<IConfirmDeleteDialog, ConfirmDeleteDialog>()
             .AddTransient<IViewModelFactory, ViewModelFactory>()
+
+
+
+
+            .AddSingleton<AppStateService>()
             ;
     }
 }

@@ -179,6 +179,7 @@
                                         AlignmentX="Left"/>
                     </TextBox.Background>
                 </TextBox>
+                
             </Grid>
             <Button Grid.Row="3"
                     Style="{StaticResource CommonButtonStyle}"
@@ -187,6 +188,14 @@
                     Height="40"
                     Width="120"/>
         </Grid>
+        <Button Grid.Column="2" 
+                Content="Калькулятор"
+                FontSize="16"
+                Height="100"
+                Command="{Binding OpenCalculator}"
+                VerticalAlignment="Top"
+                Margin="10 10 10 10"
+                Style="{StaticResource CommonButtonStyle}"></Button>
         <fa:IconBlock Grid.Column="1" 
                       Icon="Spinner" 
                       Visibility="{Binding OnLoading, Converter={StaticResource converter}}"/>

@@ -39,5 +39,17 @@ namespace ProductionAccounting.Views.Windows
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
                 DragMove();
         }
+
+        private void btnFullScreen_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.ActiveWindow.WindowState != WindowState.Maximized)
+            {
+                App.ActiveWindow.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                App.ActiveWindow.WindowState = WindowState.Normal;
+            }
+        }
     }
 }

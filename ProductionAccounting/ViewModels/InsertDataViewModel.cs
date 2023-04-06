@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
+using ProductionAccounting.Services;
 using ProductionAccounting.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,8 +19,10 @@ namespace ProductionAccounting.ViewModels
     {
         private readonly IRepository<Operation> _operationRepository;
         private readonly IRepository<Employee> _employeeRepository;
+        private readonly IRepository<Product> _productRepository;
         private readonly IAddingJobDataService _jobDataService;
         private readonly IShowExceptionDialogService _showExceptionDialog;
+        private readonly AppStateService _appStateService;
 
 
         private bool _onLoading;
@@ -135,7 +139,7 @@ namespace ProductionAccounting.ViewModels
             NumberOfOperations = _jobDataService.GetNumberExecutedOperations(SelectedEmployee.Id, SelectedOperation.Id, CurrentMonth, CurrentYear);
         }
 
-        public InsertDataViewModel(IRepository<Operation> operationRepository, IRepository<Employee> employeeRepository, IAddingJobDataService addingJobDataService, IShowExceptionDialogService showExceptionDialog)
+        public InsertDataViewModel(IRepository<Operation> operationRepository, IRepository<Employee> employeeRepository, IAddingJobDataService addingJobDataService, IShowExceptionDialogService showExceptionDialog, AppStateService appStateService, IRepository<Product> productRepository)
         {
             _jobDataService = addingJobDataService;
             Monthes = Enumerable.Range(1, 12).ToArray();
@@ -144,8 +148,10 @@ namespace ProductionAccounting.ViewModels
             _operationRepository = operationRepository;
             _employeeRepository = employeeRepository;
             _showExceptionDialog = showExceptionDialog;
-        }
+            _appStateService = appStateService;
+            _productRepository = productRepository;
 
+        }
 
         #region Команда загрузки всех данных
         private ICommand _getData;
@@ -159,12 +165,19 @@ namespace ProductionAccounting.ViewModels
             OnLoading = true;
             try
             {
-                var task = Task.Run(() =>
+                if (_appStateService.SelectedProductModel != null)
                 {
-                    return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
-                });
-                var operations = await task;
-                OperationList = operations.ToList();
+                    OperationList = _productRepository.Items.FirstOrDefault(p => p.Id == _appStateService.SelectedProductModel.Id).Operations.Select(o => new OperationModel(o)).ToList();
+                }
+                else
+                {
+                    var task = Task.Run(() =>
+                    {
+                        return _operationRepository.Items.ToList().Select(e => new OperationModel(e));
+                    });
+                    var operations = await task;
+                    OperationList = operations.ToList();
+                }
                 var getEmployeeTask = Task.Run(() =>
                 {
                     return _employeeRepository.Items.ToList().Select(e => new EmployeeModel(e));
@@ -215,6 +228,26 @@ namespace ProductionAccounting.ViewModels
             {
                 OnLoading = false;
             }            
+        }
+        #endregion
+
+        #region Команда открытия калькулятора
+        private ICommand _openCalculator;
+
+        public ICommand OpenCalculator => _openCalculator ??= new LambdaCommand(OpenCalculatorExecuted, OpenCalculatorExecute);
+
+        private bool OpenCalculatorExecute() => true;
+
+        private async void OpenCalculatorExecuted()
+        {
+            try
+            {
+                Process.Start("calc.exe");
+            }
+            catch (System.Exception ex)
+            {
+                _showExceptionDialog.ShowDialog("В работе приложения произошла ошибка. Попробуйте еще раз.\nПоказать сообщения для разработчика?", ex.Message);
+            }
         }
         #endregion
     }

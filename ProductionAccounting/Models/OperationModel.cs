@@ -1,5 +1,6 @@
 ﻿using ProductionAccounting.DAL.Entities;
 using ProductionAccounting.Models.Base;
+using System;
 
 namespace ProductionAccounting.Models
 {
@@ -9,7 +10,26 @@ namespace ProductionAccounting.Models
         public CoefficientModel Coefficient
         {
             get { return _coefficient; }
-            set { _coefficient = value; OnPropertyChanged(nameof(Coefficient)); }
+            set { _coefficient = value; OnPropertyChanged(nameof(Coefficient));
+                OnPropertyChanged(nameof(Price));
+            }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            var o = obj as OperationModel;
+            return Name == o.Name 
+                && Cost == o.Cost
+                && Coefficient.Equals(o.Coefficient)
+                && OperationDuration == o.OperationDuration;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.Coefficient, this.Cost, Name, OperationDuration);
         }
 
         private decimal _cost;
@@ -19,6 +39,7 @@ namespace ProductionAccounting.Models
             set 
             {
                 _cost = value; OnPropertyChanged(nameof(Cost)); 
+                OnPropertyChanged(nameof(Price));
             }
         }
 
@@ -76,6 +97,15 @@ namespace ProductionAccounting.Models
             };
         }
 
+        public Operation MapToOrm(Operation operation)
+        {
+            operation.Name = Name;
+            operation.Cost = Cost;
+            operation.OperationDuration = OperationDuration;
+            //operation.OperationСoefficient = Coefficient.MapToOrm();
+            return operation;
+        }
+
         public override object Clone()
         {
             var model = new OperationModel();
@@ -89,7 +119,9 @@ namespace ProductionAccounting.Models
 
         public override string ToString()
         {
-            return $"{Name}. Стоимость: {Cost}. Длительность: {OperationDuration}. Коэф: {Coefficient.CoefficientValue}";
+            //return $"{Name}. Стоимость: {string.Format("{0:F2}", Cost)}. Длительность: {OperationDuration}. Коэф: {string.Format("{0:F2}", Coefficient.CoefficientValue)}";
+            return $"{Name}. Коэф: {string.Format("{0:F2}", Coefficient.CoefficientValue)}";
+
         }
     }
 }

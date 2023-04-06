@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProductionAccounting.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ProductionAccounting.Services;
 
 namespace ProductionAccounting
 {
@@ -44,6 +45,14 @@ namespace ProductionAccounting
             var host = Host;
             base.OnStartup(e);
             await host.StartAsync();
+            while (!Internet.IsWork())
+            {
+                if (MessageBox.Show("Отсутствует подключение к интернету. Проверье подключение и попробуйте еще раз.", "Ошибка", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+            }
             using var serv = Services.CreateAsyncScope();
             var db = serv.ServiceProvider.GetRequiredService<ProductionAccountingContext>();
             await db.Database.MigrateAsync();

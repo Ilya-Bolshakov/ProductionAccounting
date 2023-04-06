@@ -25,19 +25,19 @@
     </Grid.ColumnDefinitions>
     <Grid Grid.Column="1">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="850"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="850*"/>
+            <ColumnDefinition Width="100*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="480"/>
-            <RowDefinition/>
+            <RowDefinition Height="500*"/>
+            <RowDefinition Height="200*"/>
         </Grid.RowDefinitions>
         <GroupBox Header="Таблица коэффициентов" Foreground="White">
             <DataGrid ItemsSource="{Binding Coefficients}"
                           SelectedItem="{Binding SelectedItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Название" Width="200" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Коэффициент" Width="100" Binding="{Binding CoefficientValue}"/>
+                    <DataGridTextColumn Header="Коэффициент" Width="100*" Binding="{Binding CoefficientValue}"/>
                     </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
