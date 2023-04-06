@@ -21,6 +21,7 @@ namespace ProductionAccounting.ViewModels
         private readonly IUserPrintDialog _printDialog;
         private readonly IChangeSaveFolderService _changeSaveFolderService;
         private readonly IShowExceptionDialogService _showExceptionDialog;
+        private readonly AppStateService _appStateService;
 
 
         private ObservableCollection<ProductModel> _products;
@@ -51,6 +52,7 @@ namespace ProductionAccounting.ViewModels
             set
             {
                 Set(ref _selectedItem, value);
+                _appStateService.SelectedProductModel = value;
             }
         }
         #region Команда загрузки изделий
@@ -210,7 +212,8 @@ namespace ProductionAccounting.ViewModels
         #endregion
 
         public ProductsViewModel(IRepository<Operation> operationRepository, IRepository<Product> productRepository,
-            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog, IChangeSaveFolderService changeSaveFolderService, IShowExceptionDialogService showExceptionDialog)
+            IUserDialogWithRepository<ProductModel, Operation> userDialog, IUserPrintDialog printDialog, IChangeSaveFolderService changeSaveFolderService, IShowExceptionDialogService showExceptionDialog,
+            AppStateService appStateService)
         {
             _operationRepository = operationRepository;
             _productRepository = productRepository;
@@ -218,6 +221,7 @@ namespace ProductionAccounting.ViewModels
             _printDialog = printDialog;
             _changeSaveFolderService = changeSaveFolderService;
             _showExceptionDialog = showExceptionDialog;
+            _appStateService = appStateService;
         }
     }
 }
