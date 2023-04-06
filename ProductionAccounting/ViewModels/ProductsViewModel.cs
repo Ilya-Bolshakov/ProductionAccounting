@@ -5,10 +5,13 @@ using ProductionAccounting.Interfaces;
 using ProductionAccounting.Models;
 using ProductionAccounting.Services;
 using ProductionAccounting.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ProductionAccounting.ViewModels
@@ -32,6 +35,16 @@ namespace ProductionAccounting.ViewModels
             private set
             {
                 Set(ref _products, value);
+            }
+        }
+
+        private ICollectionView _productsView;
+        public ICollectionView ProductsView
+        {
+            get { return _productsView; }
+            set
+            {
+                Set(ref _productsView, value);
             }
         }
 
@@ -73,6 +86,8 @@ namespace ProductionAccounting.ViewModels
                 });
                 var products = await task;
                 Products = products.ToObservableCollection();
+                ProductsView = CollectionViewSource.GetDefaultView(Products);
+                ProductsView.Filter += _dataView_Filter;
             }
             catch (System.Exception ex)
             {
@@ -84,6 +99,7 @@ namespace ProductionAccounting.ViewModels
             }            
         }
         #endregion
+
 
         #region Команда добавления изделия
         private ICommand _addProducts;
@@ -222,6 +238,27 @@ namespace ProductionAccounting.ViewModels
             _changeSaveFolderService = changeSaveFolderService;
             _showExceptionDialog = showExceptionDialog;
             _appStateService = appStateService;
+        }
+
+        private string _nameFilter;
+        public string NameFilter
+        {
+            get { return _nameFilter; }
+            set
+            {
+                Set(ref _nameFilter, value);
+                ProductsView.Refresh();
+            }
+        }
+
+        private bool _dataView_Filter(object sender)
+        {
+            if (sender is ProductModel model)
+            {
+                return model.Name.Contains(NameFilter ?? String.Empty, StringComparison.OrdinalIgnoreCase)
+                ;
+            }
+            return false;
         }
     }
 }
